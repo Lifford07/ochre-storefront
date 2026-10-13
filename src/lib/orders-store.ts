@@ -48,3 +48,7 @@ export function listUnpaid() {
 export function markPaid(order: Parameters<typeof fileStore.markPaid>[0]) {
   return guard(() => backend().markPaid(order))
 }
+
+export function deleteOrder(id: string) {
+  return guard(() => backend().deleteOrder(id))
+}

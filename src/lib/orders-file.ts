@@ -98,3 +98,9 @@ export function markPaid(order: StoredOrder) {
     return next
   })
 }
+
+export function deleteOrder(id: string) {
+  return locked(async () => {
+    await writeAll((await readAll()).filter((order) => order.id !== id))
+  })
+}

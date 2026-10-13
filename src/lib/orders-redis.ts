@@ -95,3 +95,12 @@ export async function markPaid(order: StoredOrder) {
   await pipe.exec()
   return next
 }
+
+export async function deleteOrder(id: string) {
+  const redis = client()
+  const pipe = redis.pipeline()
+  pipe.del(orderKey(id))
+  pipe.zrem(INDEX, id)
+  pipe.srem(UNPAID, id)
+  await pipe.exec()
+}

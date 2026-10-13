@@ -1,4 +1,5 @@
 import { AccountShell } from "@/components/account/account-shell"
+import { DeleteAccount } from "@/components/account/delete-account"
 import { DetailsForm } from "@/components/account/details-form"
 import { currentUser } from "@/lib/account-auth"
 
@@ -9,7 +10,12 @@ export default async function DetailsPage() {
   const user = await currentUser()
   return (
     <AccountShell user={user} active="/account/details" title="My details">
-      {user ? <DetailsForm firstName={user.firstName} lastName={user.lastName} email={user.email} /> : null}
+      {user ? (
+        <>
+          <DetailsForm firstName={user.firstName} lastName={user.lastName} email={user.email} />
+          <DeleteAccount />
+        </>
+      ) : null}
     </AccountShell>
   )
 }
