@@ -1,5 +1,9 @@
 const FOUNDER = "segunjunaid1@gmail.com"
 
+export function mailEnabled() {
+  return Boolean(process.env.RESEND_API_KEY?.trim() && process.env.RESEND_FROM?.trim())
+}
+
 type Letter = { to: string; subject: string; text: string }
 
 export async function sendMail(letter: Letter) {

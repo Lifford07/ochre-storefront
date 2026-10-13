@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation"
 import { Buffer } from "buffer"
 import { ConnectionProvider, useConnection, useWallet, WalletProvider } from "@solana/wallet-adapter-react"
 import { WalletModalProvider, useWalletModal } from "@solana/wallet-adapter-react-ui"
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom"
-import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare"
+import { buildWalletAdapters } from "@/lib/wallet-adapters"
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
 import { createTransfer } from "@solana/pay"
 import { PublicKey } from "@solana/web3.js"
@@ -380,7 +379,7 @@ function WalletShell({
   const network = cluster === "devnet" && process.env.NEXT_PUBLIC_SOLANA_CLUSTER !== "mainnet-beta"
     ? WalletAdapterNetwork.Devnet
     : WalletAdapterNetwork.Mainnet
-  const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network })], [network])
+  const wallets = useMemo(() => buildWalletAdapters(network), [network])
   const endpoint = typeof window === "undefined" ? "https://api.mainnet-beta.solana.com" : `${window.location.origin}/api/rpc`
   return (
     <ConnectionProvider endpoint={endpoint}>

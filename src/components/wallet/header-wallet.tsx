@@ -3,8 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ConnectionProvider, useWallet, WalletProvider } from "@solana/wallet-adapter-react"
 import { WalletAdapterNetwork, WalletReadyState, type WalletName } from "@solana/wallet-adapter-base"
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom"
-import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare"
+import { buildWalletAdapters, walletConnectProjectId } from "@/lib/wallet-adapters"
 
 /**
  * Header wallet. Uses the same adapter set and the same localStorage key ("walletName")
@@ -36,7 +35,7 @@ export function openWalletPicker() {
 
 export function HeaderWallet({ className = "" }: { className?: string }) {
   const network = process.env.NEXT_PUBLIC_SOLANA_CLUSTER === "mainnet-beta" ? WalletAdapterNetwork.Mainnet : WalletAdapterNetwork.Devnet
-  const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network })], [network])
+  const wallets = useMemo(() => buildWalletAdapters(network), [network])
   const endpoint = typeof window === "undefined" ? "https://api.mainnet-beta.solana.com" : `${window.location.origin}/api/rpc`
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -136,9 +135,10 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
     return { entry, found, ready: found ? installed(found) : false }
   })
   const extras = wallets.filter(
-    (w) => installed(w) && !CATALOGUE.some((c) => c.match.some((m) => w.adapter.name.toLowerCase().includes(m))),
+    (w) => (installed(w) || w.adapter.name === "WalletConnect") && !CATALOGUE.some((c) => c.match.some((m) => w.adapter.name.toLowerCase().includes(m))),
   )
-  const walletConnectReady = Boolean(process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID)
+  const walletConnectReady = Boolean(walletConnectProjectId())
+  const wcAdapter = wallets.find((w) => w.adapter.name === "WalletConnect")
 
   function choose(name: string) {
     setError(null)
@@ -183,18 +183,20 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
               )}
             </li>
           ))}
-          <li>
-            <div className={`${row} cursor-default opacity-70 hover:border-[var(--navy)]/12`} aria-disabled>
-              <span className="flex items-center gap-3">
-                <WalletLogo name="WalletConnect" />
-                <span>
-                  WalletConnect
-                  <span className="block text-[11px] text-[var(--navy)]/55">Scan with a mobile wallet</span>
+          {wcAdapter ? null : (
+            <li>
+              <div className={`${row} cursor-default opacity-70 hover:border-[var(--navy)]/12`} aria-disabled>
+                <span className="flex items-center gap-3">
+                  <WalletLogo name="WalletConnect" />
+                  <span>
+                    WalletConnect
+                    <span className="block text-[11px] text-[var(--navy)]/55">Scan with a mobile wallet</span>
+                  </span>
                 </span>
-              </span>
-              <span className="text-[10px] tracking-[0.16em] text-[var(--navy)]/55 uppercase">{walletConnectReady ? "Soon" : "Needs setup"}</span>
-            </div>
-          </li>
+                <span className="text-[10px] tracking-[0.16em] text-[var(--navy)]/55 uppercase">{walletConnectReady ? "Loading" : "Needs setup"}</span>
+              </div>
+            </li>
+          )}
         </ul>
         {error ? <p role="alert" className="mt-3 text-sm text-[#a33a2b]">{error}</p> : null}
         <p className="mt-5 text-center text-[11px] text-[var(--navy)]/55">On a phone, open ochre-storefront.vercel.app inside your wallet app’s browser, or pay by QR code at checkout.</p>

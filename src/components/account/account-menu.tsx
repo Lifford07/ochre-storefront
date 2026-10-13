@@ -21,6 +21,7 @@ export function openAccountModal(mode: "signin" | "register" = "signin") {
 export function AccountMenu({ className = "", compact = false }: { className?: string; compact?: boolean }) {
   const [me, setMe] = useState<Me | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [google, setGoogle] = useState(false)
   const [mode, setMode] = useState<Mode>(null)
   const [menu, setMenu] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -28,7 +29,10 @@ export function AccountMenu({ className = "", compact = false }: { className?: s
   useEffect(() => {
     fetch("/api/account/me", { cache: "no-store" })
       .then((r) => r.json())
-      .then((d) => setMe(d.user ?? null))
+      .then((d) => {
+        setMe(d.user ?? null)
+        setGoogle(Boolean(d.google))
+      })
       .catch(() => setMe(null))
       .finally(() => setLoaded(true))
     const open = (e: Event) => setMode(((e as CustomEvent).detail as Mode) ?? "signin")
@@ -86,7 +90,7 @@ export function AccountMenu({ className = "", compact = false }: { className?: s
           </button>
         </div>
       ) : null}
-      {mode ? <AccountModal mode={mode} setMode={setMode} onDone={(u) => { setMe(u); setMode(null) }} /> : null}
+      {mode ? <AccountModal google={google} mode={mode} setMode={setMode} onDone={(u) => { setMe(u); setMode(null) }} /> : null}
     </div>
   )
 }
@@ -95,7 +99,7 @@ const input = "mt-1 block w-full border border-[var(--navy)]/20 bg-white px-3 py
 const labelCls = "block text-left text-xs tracking-[0.06em] text-[var(--navy)]/80"
 const primary = "mt-5 w-full bg-[var(--navy)] py-3 font-sans text-[12px] font-semibold tracking-[0.2em] text-[#F3EFE7] uppercase hover:bg-[#131d47] disabled:opacity-60"
 
-function AccountModal({ mode, setMode, onDone }: { mode: Exclude<Mode, null>; setMode: (m: Mode) => void; onDone: (u: Me) => void }) {
+function AccountModal({ google, mode, setMode, onDone }: { google: boolean; mode: Exclude<Mode, null>; setMode: (m: Mode) => void; onDone: (u: Me) => void }) {
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -149,11 +153,7 @@ function AccountModal({ mode, setMode, onDone }: { mode: Exclude<Mode, null>; se
         <p className="font-display text-[28px] leading-none tracking-[0.2em] text-[#C6B849]">OCHRÉ</p>
         <h2 className="font-display mt-4 text-2xl leading-tight">{title}</h2>
         {mode === "forgot" ? (
-          <div className="mt-5 text-sm text-[var(--navy)]/80">
-            <p>Write to us from the email on your account and we will reset it for you within a day.</p>
-            <Link href="/contact" onClick={() => setMode(null)} className={`${primary} block`}>Contact Ochré</Link>
-            <button type="button" className="mt-4 text-sm underline underline-offset-4" onClick={() => setMode("signin")}>Back to sign in</button>
-          </div>
+          <ForgotForm onBack={() => setMode("signin")} onContact={() => setMode(null)} />
         ) : (
           <form onSubmit={submit} className="mt-5 space-y-3" noValidate>
             {mode === "register" ? (
@@ -182,6 +182,11 @@ function AccountModal({ mode, setMode, onDone }: { mode: Exclude<Mode, null>; se
             <div className="my-5 flex items-center gap-3 text-xs text-[var(--navy)]/50">
               <span className="h-px flex-1 bg-[var(--navy)]/15" /> or <span className="h-px flex-1 bg-[var(--navy)]/15" />
             </div>
+            {google ? (
+              <a href="/api/auth/google" className="mb-4 flex w-full items-center justify-center gap-2 border border-[var(--navy)]/20 bg-white py-2.5 text-sm hover:border-[#C6B849]">
+                <span className="font-semibold text-[#4285F4]">G</span> Continue with Google
+              </a>
+            ) : null}
             {mode === "signin" ? (
               <p className="text-sm">
                 New to Ochré?{" "}
@@ -196,6 +201,41 @@ function AccountModal({ mode, setMode, onDone }: { mode: Exclude<Mode, null>; se
           </>
         ) : null}
       </div>
+    </div>
+  )
+}
+
+function ForgotForm({ onBack, onContact }: { onBack: () => void; onContact: () => void }) {
+  const [msg, setMsg] = useState<{ text: string; disabled?: boolean } | null>(null)
+  const [busy, setBusy] = useState(false)
+  return (
+    <div className="mt-5 text-sm text-[var(--navy)]/80">
+      {msg ? (
+        <>
+          <p role="status">{msg.text}</p>
+          {msg.disabled ? (
+            <Link href="/contact" onClick={onContact} className={`${primary} block`}>Contact Ochré</Link>
+          ) : null}
+        </>
+      ) : (
+        <form
+          className="space-y-3"
+          onSubmit={async (e) => {
+            e.preventDefault()
+            setBusy(true)
+            const email = String(new FormData(e.currentTarget).get("email") ?? "")
+            const res = await fetch("/api/account/forgot", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) })
+            const body = await res.json().catch(() => ({}))
+            setBusy(false)
+            setMsg({ text: body.message ?? "Please try again shortly.", disabled: body.disabled })
+          }}
+        >
+          <p>Enter your email and we will send a link to choose a new password.</p>
+          <label className={labelCls}>Email<input name="email" type="email" required autoComplete="email" className={input} /></label>
+          <button type="submit" disabled={busy} className={primary}>{busy ? "One moment…" : "Send reset link"}</button>
+        </form>
+      )}
+      <button type="button" className="mt-4 text-sm underline underline-offset-4" onClick={onBack}>Back to sign in</button>
     </div>
   )
 }
