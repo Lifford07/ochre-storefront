@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   // The preview is opened at 127.0.0.1, and also through a temporary public tunnel.
   // Next only trusts localhost unless we name the other hosts.
   allowedDevOrigins: ["127.0.0.1", "differently-hart-ron-techrepublic.trycloudflare.com"],
+  async redirects() {
+    return [
+      { source: "/collection/call-it-clean-sweep", destination: "/collection/fela-the-goat", permanent: true },
+      { source: "/collect/call-it-clean-sweep", destination: "/collect/fela-the-goat", permanent: true },
+      { source: "/call-it-clean-sweep.webp", destination: "/fela-the-goat.webp", permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

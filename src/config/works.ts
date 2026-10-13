@@ -1,6 +1,6 @@
 /**
  * Stand-in works for the house collection.
- * Swap `image` for a real photograph and `artist` for a Superteam artist.
+ * Swap `image` for a real photograph and `artist` for a house artist.
  * Prices on the page come from the catalogue, not from these notes.
  */
 
@@ -24,7 +24,7 @@ export type HouseWork = {
   motif: Motif
   /** Set this to a public path when a real artwork file replaces the drawing. */
   image?: string
-  materialId: "real-glass" | "acrylic" | "gallery-bond" | "porcelain" | "card"
+  materialId: "real-glass" | "acrylic" | "canvas" | "gallery-bond" | "porcelain" | "card"
   sizeId: string
   editionSize: number
   year: number
@@ -55,6 +55,62 @@ export const artists: HouseArtist[] = [
 
 export const works: HouseWork[] = [
   {
+    slug: "fela-the-goat",
+    title: "Fela the Goat",
+    artist: "SJ",
+    artistSlug: "sj",
+    line: "art",
+    motif: "sweep",
+    image: "/fela-the-goat.webp",
+    materialId: "real-glass",
+    sizeId: "sq30-square",
+    editionSize: 20,
+    year: 2026,
+    statement: "Fela the Goat, by SJ.",
+  },
+  {
+    slug: "fingerprint-of-god",
+    title: "Fingerprint of God — Arabic Edition",
+    artist: "SJ",
+    artistSlug: "sj",
+    line: "art",
+    motif: "solstice",
+    image: "/fingerprint-of-god.webp",
+    materialId: "real-glass",
+    sizeId: "sq30-square",
+    editionSize: 20,
+    year: 2026,
+    statement: "Fingerprint of God, Arabic Edition, by SJ.",
+  },
+  {
+    slug: "fingerprint-of-god-christian",
+    title: "Fingerprint of God — Christian Edition",
+    artist: "SJ",
+    artistSlug: "sj",
+    line: "art",
+    motif: "solstice",
+    image: "/fingerprint-of-god-christian.webp",
+    materialId: "real-glass",
+    sizeId: "sq30-square",
+    editionSize: 20,
+    year: 2026,
+    statement: "Fingerprint of God, Christian Edition, by SJ.",
+  },
+  {
+    slug: "curious-cat",
+    title: "Curious Cat",
+    artist: "SJ",
+    artistSlug: "sj",
+    line: "art",
+    motif: "curve",
+    image: "/curious-cat.webp",
+    materialId: "canvas",
+    sizeId: "sq30-square",
+    editionSize: 25,
+    year: 2026,
+    statement: "Curious Cat, by SJ. On canvas.",
+  },
+  {
     slug: "three-arches",
     title: "Three Arches",
     artist: "Artist name",
@@ -79,20 +135,6 @@ export const works: HouseWork[] = [
     editionSize: 30,
     year: 2026,
     statement: "A single stroke, the way a broom leaves a darker path in dust.",
-  },
-  {
-    slug: "fingerprint-of-god",
-    title: "Fingerprint of God",
-    artist: "SJ",
-    artistSlug: "sj",
-    line: "art",
-    motif: "solstice",
-    image: "/fingerprint-of-god.webp",
-    materialId: "real-glass",
-    sizeId: "sq30-square",
-    editionSize: 20,
-    year: 2026,
-    statement: "Fingerprint of God, by SJ.",
   },
   {
     slug: "low-tide-moon",

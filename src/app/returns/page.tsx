@@ -7,7 +7,7 @@ export default function ReturnsPage() {
   return (
     <LegalPage kicker="Care" title="Returns and refunds">
       <p>
-        This is a draft for [TRADING NAME], [REGISTERED ADDRESS]. A solicitor should confirm it against the Consumer Contracts Regulations 2013 and the Consumer Rights Act 2015 before the shop takes payment.
+        This is a draft for Ochre Store Ltd (trading as Ochré), company number 15837574, 20 Wenlock Road, London, England, N1 7GU. A solicitor should confirm it against the Consumer Contracts Regulations 2013 and the Consumer Rights Act 2015 before the shop takes payment.
       </p>
       <p>
         Pieces are made to order from the file and the size you chose. Personalised goods are usually outside the 14-day change-of-mind cancellation right. Once printing has started, a change of mind is not a refund.

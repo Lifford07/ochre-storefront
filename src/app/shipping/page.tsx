@@ -7,7 +7,7 @@ export default function ShippingPage() {
   return (
     <LegalPage kicker="Care" title="Shipping">
       <p>
-        [TRADING NAME] currently prices delivery to the United Kingdom, a single European Union zone, and the United States. Other countries are not offered at checkout.
+        Ochre Store Ltd currently prices delivery to the United Kingdom, a single European Union zone, and the United States. Other countries are not offered at checkout.
       </p>
       <p>
         The price you pay already includes packaging and shipping for that zone. The working assumptions, until a carrier contract replaces them, are £6 packaging, £8 inside the UK, £18 to the EU, and £28 to the US. Duties and local taxes outside the UK are not included.

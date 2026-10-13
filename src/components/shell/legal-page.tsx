@@ -18,7 +18,7 @@ export function LegalPage({
         <h1 className="font-display mt-2 text-4xl">{title}</h1>
         <div className="mt-6 space-y-4 text-sm leading-relaxed text-[var(--charcoal)]">{children}</div>
         <p className="mt-10 border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-xs leading-relaxed text-[var(--mute)]">
-          Draft for [TRADING NAME], [REGISTERED ADDRESS]. Replace both placeholders, and have a solicitor read this, before the shop takes a customer&apos;s money.
+          Ochre Store Ltd (trading as Ochré). Registered in England and Wales, company number 15837574. Registered office: 20 Wenlock Road, London, England, N1 7GU.
         </p>
       </main>
       <SiteFooter />

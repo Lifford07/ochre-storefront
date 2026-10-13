@@ -156,7 +156,7 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
         </button>
         <p className="text-center font-display text-[28px] leading-none tracking-[0.2em] text-[#C6B849]">OCHRÉ</p>
         <h2 className="mt-4 text-center font-display text-2xl">Connect a wallet</h2>
-        <p className="mt-1 text-center text-sm text-[var(--navy)]/65">Pay in USDC on Solana. The same wallet is used at checkout.</p>
+        <p className="mt-1 text-center text-sm text-[var(--navy)]/65">For USDC on Solana. Card payments need no wallet.</p>
         <ul className="mt-6 space-y-2">
           {[...rows.map(({ entry, found, ready }) => ({ key: entry.name, name: entry.name, icon: found?.adapter.icon, ready, install: entry.install, note: entry.note, id: found?.adapter.name })),
             ...extras.map((w) => ({ key: w.adapter.name, name: w.adapter.name, icon: w.adapter.icon, ready: true, install: "", note: undefined, id: w.adapter.name }))].map((item) => (

@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: "Contact — OCHRÉ" }
 export default function ContactPage() {
   return (
     <LegalPage kicker="Care" title="Contact">
-      <p>[TRADING NAME]</p>
-      <p>[REGISTERED ADDRESS]</p>
+      <p>Ochre Store Ltd (trading as Ochré) · Company no. 15837574</p>
+      <p>Registered office: 20 Wenlock Road, London, England, N1 7GU</p>
       <p>
         Email{" "}
         <a className="underline" href="mailto:segunjunaid1@gmail.com">

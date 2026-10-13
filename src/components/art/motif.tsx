@@ -42,7 +42,7 @@ export function WorkImage({
     return (
       // Real files replace the drawing by setting `image` on the work.
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={image} alt={title} className={`h-full w-full object-contain ${className}`} />
+      <img src={image} alt={title} className={`h-full w-full object-cover ${className}`} />
     )
   }
   return <Motif motif={motif} title={title} className={`h-full w-full ${className}`} />

@@ -13,7 +13,7 @@ const lines = [
 ]
 
 export default function HomePage() {
-  const featured = works.slice(0, 4)
+  const featured = works.filter((work) => work.artistSlug === "sj").slice(0, 4)
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-12">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="eyebrow">Featured artists · from Superteam</p>
+                <p className="eyebrow">Featured artist · SJ</p>
                 <h2 className="font-display mt-3 text-4xl md:text-5xl">New editions, quietly released.</h2>
               </div>
               <Link href="/collection" className="lnk">
@@ -76,7 +76,7 @@ export default function HomePage() {
             <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featured.map((work) => (
                 <li key={work.slug}>
-                  <Link href={`/collection/${work.slug}`} className="art-card block">
+                  <Link href="/artists/sj" className="art-card block">
                     <div className="aspect-[4/5] bg-[var(--bone)] shadow-[var(--shadow-art)]">
                       <WorkImage motif={work.motif} image={work.image} title={work.title} />
                     </div>
@@ -150,7 +150,7 @@ export default function HomePage() {
               ["i.", "Begin", "Upload a photograph from this computer."],
               ["ii.", "Refine", "Crop, colour and the size of the print."],
               ["iii.", "Choose", "Real glass, acrylic glass or canvas."],
-              ["iv.", "Ready", "Pay in USDC. We check the file, then make and number the piece."],
+              ["iv.", "Ready", "Pay by card or USDC. We check the file, then make and number the piece."],
             ].map(([index, title, copy]) => (
               <li key={index}>
                 <p className="font-display text-3xl italic text-[var(--gold-ink)]">{index}</p>

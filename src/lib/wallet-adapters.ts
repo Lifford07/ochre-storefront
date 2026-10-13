@@ -20,7 +20,7 @@ export function buildWalletAdapters(network: WalletAdapterNetwork): Adapter[] {
             projectId,
             metadata: {
               name: "Ochré",
-              description: "Your image, made into an object. Pay in USDC on Solana.",
+              description: "Your image, made into an object. Pay by card or USDC.",
               url: window.location.origin,
               icons: [`${window.location.origin}/icon.svg`],
             },

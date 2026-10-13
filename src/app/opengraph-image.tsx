@@ -21,7 +21,7 @@ export default function OpenGraphImage() {
       >
         <div style={{ fontSize: 28, letterSpacing: 8, color: "#D9CB7E" }}>OCHRÉ</div>
         <div style={{ fontSize: 72, marginTop: 24, lineHeight: 1.05 }}>Your image, made into an object.</div>
-        <div style={{ fontSize: 28, marginTop: 28, color: "#F7F1E6" }}>Numbered. Made to order. Pay in USDC.</div>
+        <div style={{ fontSize: 28, marginTop: 28, color: "#F7F1E6" }}>Numbered. Made to order. Pay by card or USDC.</div>
       </div>
     ),
     { ...size },

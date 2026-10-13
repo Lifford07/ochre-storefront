@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage kicker="Care" title="Privacy">
       <p>
-        [TRADING NAME] of [REGISTERED ADDRESS] is the controller for this shop. This draft says what the shop stores so an order can be made and delivered.
+        Ochre Store Ltd (trading as Ochré), company number 15837574, registered office 20 Wenlock Road, London, England, N1 7GU, is the controller for this shop. This draft says what the shop stores so an order can be made and delivered.
       </p>
       <p>
         We store your name, email, street address, city, postcode, country, and phone if you give one. We store the print file, the crop and colour choices, the order id, the price, and the Solana wallet that paid. Payment confirmation is a public transaction on Solana.

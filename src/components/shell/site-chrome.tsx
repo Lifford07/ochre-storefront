@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { useState, type ReactNode } from "react"
 import { AccountMenu } from "@/components/account/account-menu"
 import { Crest, Wordmark } from "@/components/brand/mark"
+import { BasketButton } from "@/components/basket/basket-drawer"
 import { NewsletterBand } from "@/components/shell/newsletter-band"
 
 const HeaderWallet = dynamic(() => import("@/components/wallet/header-wallet").then((m) => m.HeaderWallet), { ssr: false })
@@ -44,9 +45,7 @@ export function SiteHeader() {
         <nav className="flex items-center justify-end gap-6" aria-label="Shop">
           <span className="hidden md:block"><AccountMenu className={`inline-flex cursor-pointer ${sideBase}`} /></span>
           <span className="hidden min-w-[92px] md:block"><HeaderWallet className={`inline-flex cursor-pointer ${sideBase}`} /></span>
-          <Link href="/make" className={`inline-flex ${sideBase}`} aria-label="Basket">
-            <BagIcon /> <span className="hidden md:inline">Basket</span>
-          </Link>
+          <BasketButton className={`inline-flex cursor-pointer ${sideBase}`} icon={<BagIcon />} />
         </nav>
       </div>
       <div className="mx-auto h-px max-w-[1440px] bg-[var(--navy)]/15" />
@@ -80,7 +79,7 @@ export function SiteHeader() {
         </div>
       ) : null}
       <p className="bg-[var(--navy)] px-4 py-2 text-center font-mono text-[10px] tracking-[0.14em] text-[var(--foil)] uppercase sm:tracking-[0.18em]">
-        Every piece is numbered. A certificate of authenticity is issued for every piece. Pay in USDC.
+        Every piece is numbered. A certificate of authenticity is issued for every piece. Pay by card or USDC.
       </p>
     </header>
   )
@@ -112,7 +111,7 @@ export function SiteFooter() {
           links={[
             ["Begin with your image", "/make"],
             ["The collection", "/collection"],
-            ["Superteam artists", "/artists/example-artist"],
+            ["SJ", "/artists/sj"],
             ["Certificates", "/orders/preview"],
           ]}
         />

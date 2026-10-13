@@ -30,7 +30,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
           <div className="mx-auto flex max-w-[1440px] flex-col gap-6 px-5 py-12 text-[var(--porcelain)] md:flex-row md:items-end md:px-12 md:py-16">
             <div className="size-24 shrink-0 rounded-full bg-[#E7C8A5]" aria-hidden />
             <div>
-              <p className="eyebrow text-[var(--gold)]">Superteam artists · profile</p>
+              <p className="eyebrow text-[var(--gold)]">{artist.name} · profile</p>
               <h1 className="font-display mt-2 text-5xl text-[var(--porcelain)] md:text-6xl">
                 {artist.name} {artist.example ? <span className="ex">Example</span> : null}
               </h1>

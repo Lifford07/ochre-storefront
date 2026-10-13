@@ -1,5 +1,7 @@
 "use client"
 
+import { addToBasket } from "@/lib/basket"
+
 import { isExampleWork } from "@/config/works"
 
 import Link from "next/link"
@@ -77,7 +79,7 @@ export function WorkStudio({
       </div>
 
       <div>
-        <p className="eyebrow">Superteam artists · edition</p>
+        <p className="eyebrow">{work.artist} · edition</p>
         <h1 className="font-display mt-2 text-5xl md:text-6xl">{work.title}</h1>
         <p className="mt-2 text-[var(--charcoal)]">
           {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
@@ -166,6 +168,30 @@ export function WorkStudio({
           >
             Collect
           </Link>
+        ) : null}
+        {material.payable && price != null && countKnown && left > 0 && size ? (
+          <button
+            type="button"
+            className="mt-3 flex w-full items-center justify-center border border-[var(--navy)] py-3 text-[11px] tracking-[0.2em] uppercase transition hover:border-[#C6B849] hover:text-[#9a8c2e]"
+            data-testid="add-to-basket"
+            onClick={() =>
+              addToBasket({
+                slug: work.slug,
+                title: work.title,
+                artist: work.artist,
+                image: work.image,
+                materialId,
+                materialName: material.name,
+                sizeId: size.id,
+                sizeName: size.name,
+                editionNumber: nextNumber,
+                editionSize: work.editionSize,
+                pricePence: price,
+              })
+            }
+          >
+            Add to basket
+          </button>
         ) : (
           <p className="mt-6 text-sm text-[var(--mute)]">
             {!material.payable || price == null
