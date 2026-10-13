@@ -35,10 +35,16 @@ export type HouseArtist = {
   slug: string
   name: string
   line: string
-  example: true
+  example: boolean
 }
 
 export const artists: HouseArtist[] = [
+  {
+    slug: "sj",
+    name: "SJ",
+    line: "Founder of Ochré. Artist.",
+    example: false,
+  },
   {
     slug: "example-artist",
     name: "Artist name",
@@ -75,17 +81,18 @@ export const works: HouseWork[] = [
     statement: "A single stroke, the way a broom leaves a darker path in dust.",
   },
   {
-    slug: "solstice",
-    title: "Solstice",
-    artist: "Artist name",
-    artistSlug: "example-artist",
+    slug: "fingerprint-of-god",
+    title: "Fingerprint of God",
+    artist: "SJ",
+    artistSlug: "sj",
     line: "art",
     motif: "solstice",
+    image: "/fingerprint-of-god.webp",
     materialId: "real-glass",
     sizeId: "sq30-square",
     editionSize: 20,
     year: 2026,
-    statement: "Rings of the longest day, held under glass.",
+    statement: "Fingerprint of God, by SJ.",
   },
   {
     slug: "low-tide-moon",
@@ -177,4 +184,8 @@ export function artistBySlug(slug: string): HouseArtist | undefined {
 
 export function worksByArtist(slug: string): HouseWork[] {
   return works.filter((work) => work.artistSlug === slug)
+}
+
+export function isExampleWork(work: HouseWork) {
+  return work.artistSlug === "example-artist"
 }

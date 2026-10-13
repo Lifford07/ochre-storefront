@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react"
+import { DeliveryNote } from "@/components/checkout/delivery-note"
 import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { FlowHeader } from "@/components/shell/site-chrome"
@@ -178,7 +179,7 @@ export function Editor() {
     setPhoto(next)
     setCrop(null)
     setError(null)
-    setStep("preview")
+    setStep("material")
   }, [])
 
   function adoptIngested(ingested: IngestedPhoto) {
@@ -266,7 +267,10 @@ export function Editor() {
             look={look}
             onPrintColour={setPrintColour}
             onLook={setLook}
-            onContinue={() => setStep("material")}
+            onContinue={() => {
+              if (!canReady) return
+              setStep("checkout")
+            }}
           />
         ) : null}
 
@@ -315,7 +319,7 @@ export function Editor() {
             onEdgeInk={setEdgeInk}
             onReady={() => {
               if (!canReady) return
-              setStep("checkout")
+              setStep("preview")
             }}
           />
         ) : null}
@@ -350,10 +354,10 @@ export function Editor() {
 }
 
 function previousStep(step: Step): Step {
-  if (step === "preview") return "upload"
-  if (step === "material") return "preview"
+  if (step === "material") return "upload"
   if (step === "size") return "material"
-  return "size"
+  if (step === "preview") return "size"
+  return "preview"
 }
 
 function sizeLabel(size: { name: string; orientation: Orientation }) {
@@ -503,7 +507,7 @@ function PreviewStep({
           </div>
         </div>
         <Button className="btn-foil mt-8 h-14 w-full text-base md:w-auto md:px-10" onClick={onContinue}>
-          Continue
+          Ready
         </Button>
       </div>
     </section>
@@ -742,8 +746,9 @@ function SizeStep({
         <h1 className="font-display text-5xl">Size</h1>
         <p className="mt-2 text-sm text-[#5e574e]">
           {material.name}
-          {material.mark ? ` · ${material.mark}` : ""}. {material.lead}
+          {material.mark ? ` · ${material.mark}` : ""}.
         </p>
+        <DeliveryNote materialId={material.id} className="mt-3" />
         {material.note ? <p className="mt-2 text-sm text-[#5e574e]">{material.note}</p> : null}
         <div className="mt-4 flex gap-2 text-sm">
           <button
@@ -856,7 +861,7 @@ function SizeStep({
         </div>
         <div className="mt-6 hidden md:block">
           <Button className="btn-foil h-14 w-full text-base" disabled={!canReady} onClick={onReady}>
-            Ready
+            Continue to edit
           </Button>
           {!canReady && needsSoftAck ? (
             <p className="mt-2 text-xs text-[var(--mute)]">Tick print it anyway, or choose a size the meter calls sharp.</p>
@@ -866,7 +871,7 @@ function SizeStep({
 
       <div className="fixed inset-x-0 bottom-0 border-t border-border bg-[#f3eee6]/95 p-4 md:hidden">
         <Button className="btn-foil h-14 w-full text-base" disabled={!canReady} onClick={onReady}>
-          Ready
+          Continue to edit
         </Button>
         {!canReady && needsSoftAck ? (
           <p className="mt-2 text-xs text-[var(--mute)]">Tick print it anyway, or choose a size the meter calls sharp.</p>

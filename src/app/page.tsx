@@ -3,7 +3,7 @@ import { HeroRoom } from "@/components/art/hero-room"
 import { WorkImage } from "@/components/art/motif"
 import { Crest, Endband } from "@/components/brand/mark"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
-import { works } from "@/config/works"
+import { works, isExampleWork } from "@/config/works"
 
 const lines = [
   { index: "01", name: "Art", note: "Bespoke artwork, made from real glass, acrylic glass and canvas.", href: "/collection", live: true },
@@ -82,7 +82,7 @@ export default function HomePage() {
                     </div>
                     <h3 className="font-display mt-4 text-2xl italic">{work.title}</h3>
                     <p className="mt-1 text-sm text-[var(--mute)]">
-                      {work.artist} <span className="ex">Example</span>
+                      {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
                     </p>
                     <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-[var(--gold-ink)] uppercase">
                       Edition of {work.editionSize}
@@ -99,33 +99,46 @@ export default function HomePage() {
             <div>
               <p className="eyebrow text-[var(--gold)]">Provenance</p>
               <h2 className="font-display mt-3 text-4xl md:text-6xl">
-                Every piece is numbered. <span className="italic text-[var(--foil)]">A certificate is issued with it.</span>
+                A <span className="italic text-[var(--foil)]">certificate of authenticity</span> is issued for every physical piece we create.
               </h2>
               <p className="mt-5 max-w-md text-[var(--porcelain)]/75">
-                When you pay, the edition is recorded against that transfer. The certificate will be issued. It is not minted on-chain yet.
+                Each work will also come with its own NFT (coming soon), a digital twin that proves you own the original.
               </p>
               <dl className="mt-8 grid grid-cols-3 gap-4 text-sm">
                 <div>
                   <dt className="text-[var(--gold)]">Ordered</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">Made after you pay</dd>
+                  <dd className="mt-1 text-[var(--porcelain)]/70">Pay in fiat or crypto.</dd>
                 </div>
                 <div>
                   <dt className="text-[var(--gold)]">Numbered</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">Edition 1/1, or No. of N</dd>
+                  <dd className="mt-1 text-[var(--porcelain)]/70">Edition 1 of 1, or No. X of N.</dd>
                 </div>
                 <div>
                   <dt className="text-[var(--gold)]">Certified</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">Issued with the piece</dd>
+                  <dd className="mt-1 text-[var(--porcelain)]/70">A certificate of authenticity comes with every piece.</dd>
                 </div>
               </dl>
             </div>
-            <Link href="/orders/preview" className="mx-auto block w-full max-w-sm bg-[url('/endpaper.svg')] bg-[length:96px_72px] p-3">
-              <div className="bg-[var(--paper)] px-6 py-8 text-[var(--ink)]">
-                <p className="font-display text-center text-3xl">Certificate of Edition</p>
-                <p className="font-display mt-6 text-center text-5xl">1 / 1</p>
-                <p className="mt-2 text-center text-sm">Edition 1/1</p>
-              </div>
-            </Link>
+            <figure className="mx-auto w-full max-w-[340px] md:max-w-[400px]">
+              <Link href="/orders/preview" className="group block rotate-[-2deg] bg-[#1a1a1a] p-2.5 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.75),0_10px_20px_-10px_rgba(0,0,0,0.5)] transition-transform duration-500 hover:rotate-0 md:p-3">
+                <div className="bg-[#F3EFE7] p-3 md:p-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/certificate-of-authenticity.webp"
+                    alt="Ochré certificate of authenticity"
+                    width={990}
+                    height={1400}
+                    loading="lazy"
+                    className="block h-auto w-full"
+                  />
+                </div>
+              </Link>
+              <figcaption className="mt-6 text-center">
+                <Link href="/orders/preview" className="text-sm text-[var(--foil)] underline underline-offset-4 hover:text-[var(--gold)]">
+                  View a sample certificate
+                </Link>
+              </figcaption>
+            </figure>
           </div>
         </section>
 
@@ -136,7 +149,7 @@ export default function HomePage() {
             {[
               ["i.", "Begin", "Upload a photograph from this computer."],
               ["ii.", "Refine", "Crop, colour and the size of the print."],
-              ["iii.", "Choose", "Glass, acrylic, Gallery Bond or porcelain."],
+              ["iii.", "Choose", "Real glass, acrylic glass or canvas."],
               ["iv.", "Ready", "Pay in USDC. We check the file, then make and number the piece."],
             ].map(([index, title, copy]) => (
               <li key={index}>

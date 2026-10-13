@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useMemo, useState } from "react"
 import { WorkImage } from "@/components/art/motif"
 import { formatPrice, fromPrice, materialById, type MaterialId } from "@/config/catalogue"
-import { works, type HouseWork } from "@/config/works"
+import { works, type HouseWork, isExampleWork } from "@/config/works"
 
 const filters: { id: "all" | MaterialId; label: string }[] = [
   { id: "all", label: "All" },
@@ -58,7 +58,7 @@ export function CollectionGrid({ items = works }: { items?: HouseWork[] }) {
                     <div>
                       <h3 className="font-display text-2xl italic">{work.title}</h3>
                       <p className="mt-1 text-sm text-[var(--mute)]">
-                        {work.artist} <span className="ex">Example</span>
+                        {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
                       </p>
                     </div>
                     <p className="text-right text-sm">

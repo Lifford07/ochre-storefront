@@ -75,6 +75,9 @@ export type StoredOrder = {
   paidAt?: string
   /** overpaid, duplicate, or split, when more than the single expected transfer arrived. */
   paymentFlags?: Array<"overpaid" | "duplicate" | "split">
+  paymentMethod?: "usdc" | "card"
+  stripeSessionId?: string
+  stripePaymentIntent?: string
   imageUrl?: string
   imageStore?: "blob" | "file"
   imageContentType?: string

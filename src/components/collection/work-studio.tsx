@@ -1,5 +1,7 @@
 "use client"
 
+import { isExampleWork } from "@/config/works"
+
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { WorkImage } from "@/components/art/motif"
@@ -78,14 +80,14 @@ export function WorkStudio({
         <p className="eyebrow">Superteam artists · edition</p>
         <h1 className="font-display mt-2 text-5xl md:text-6xl">{work.title}</h1>
         <p className="mt-2 text-[var(--charcoal)]">
-          {work.artist} <span className="ex">Example</span>
+          {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
           <span className="text-[var(--mute)]"> · {work.year}</span>
         </p>
 
         <div className="mt-6 bg-[var(--navy)] px-5 py-4 text-[var(--porcelain)]">
           <div className="flex items-start justify-between gap-4">
             <p className="font-mono text-[11px] tracking-[0.14em] text-[var(--gold)] uppercase">
-              Edition of {work.editionSize} <span className="ex">Example</span>
+              Edition of {work.editionSize} {isExampleWork(work) ? <span className="ex">Example</span> : null}
             </p>
             <p className="font-mono text-[11px] tracking-[0.14em] text-[var(--foil)] uppercase">
               {countKnown ? `${left} left` : "Count unavailable"}
@@ -189,7 +191,7 @@ export function WorkStudio({
           <p className="eyebrow">About the work</p>
           <blockquote className="font-display mt-3 text-2xl italic">“{work.statement}”</blockquote>
           <p className="mt-3 text-sm text-[var(--mute)]">
-            Artist statement <span className="ex">Example</span>
+            Artist statement {isExampleWork(work) ? <span className="ex">Example</span> : null}
           </p>
         </section>
         <section>

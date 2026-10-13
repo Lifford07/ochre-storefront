@@ -41,6 +41,7 @@ type CreateBody = {
   country?: string
   phone?: string
   printSpec?: unknown
+  paymentMethod?: string
 }
 
 type ClaimedImage = { imageUrl?: string; imageStore?: "file" | "blob"; imageContentType?: string }
@@ -309,6 +310,7 @@ export async function POST(request: Request) {
     label,
     message,
     payUrl,
+    paymentMethod: body.paymentMethod === "card" ? "card" : "usdc",
     ...claimed.image,
   }
 
@@ -318,7 +320,7 @@ export async function POST(request: Request) {
     await confirmCustomer({
       to: saved.email || contact.contact.email,
       id: saved.id,
-      summary: `${saved.materialName}, ${saved.sizeName}, ${saved.usdcAmount} USDC. Ship to ${saved.city}, ${saved.country}.`,
+      summary: `${saved.materialName}, ${saved.sizeName}, ${saved.paymentMethod === "card" ? `£${(saved.pricePence / 100).toFixed(2)} by card (Stripe)` : `${saved.usdcAmount} USDC`}. Ship to ${saved.city}, ${saved.country}.`,
       link,
     })
     return Response.json({ order: buyerOrder(saved) }, { status: 201 })

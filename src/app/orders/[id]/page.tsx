@@ -7,6 +7,7 @@ import { workBySlug } from "@/config/works"
 import { getOrder } from "@/lib/orders-store"
 import type { StoredOrder } from "@/lib/order-types"
 import { ordersAvailable } from "@/lib/storage-mode"
+import { settleStripe, stripeReady } from "@/lib/stripe"
 
 export const dynamic = "force-dynamic"
 
@@ -20,10 +21,10 @@ export default async function OrderCertificatePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ t?: string }>
+  searchParams: Promise<{ t?: string; session_id?: string; cancelled?: string }>
 }) {
   const { id } = await params
-  const { t } = await searchParams
+  const { t, session_id: sessionId } = await searchParams
   if (!ordersAvailable()) {
     return (
       <>
@@ -39,6 +40,13 @@ export default async function OrderCertificatePage({
   let order: StoredOrder | null
   try {
     order = await getOrder(id)
+    if (order && sessionId && stripeReady() && t && order.viewToken === t) {
+      try {
+        order = (await settleStripe(id, sessionId)) ?? order
+      } catch (error) {
+        console.error("stripe-settle", error instanceof Error ? error.message : "failed")
+      }
+    }
   } catch {
     return (
       <>

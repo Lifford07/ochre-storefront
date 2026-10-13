@@ -32,7 +32,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
             <div>
               <p className="eyebrow text-[var(--gold)]">Superteam artists · profile</p>
               <h1 className="font-display mt-2 text-5xl text-[var(--porcelain)] md:text-6xl">
-                {artist.name} <span className="ex">Example</span>
+                {artist.name} {artist.example ? <span className="ex">Example</span> : null}
               </h1>
               <p className="mt-3 max-w-xl text-[var(--porcelain)]/80">{artist.line}</p>
               <p className="mt-4 font-mono text-[11px] tracking-[0.14em] uppercase">

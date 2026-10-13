@@ -14,6 +14,7 @@ import QRCode from "qrcode"
 import "@solana/wallet-adapter-react-ui/styles.css"
 import { formatPrice, priceFor, sizes, type MaterialId } from "@/config/catalogue"
 import { Whorl } from "@/components/brand/mark"
+import { DeliveryNote } from "@/components/checkout/delivery-note"
 import type { PrintSpec, StoredOrder } from "@/lib/order-types"
 import { renderPrintFile } from "@/lib/render-print"
 import { COUNTRIES, parseContact } from "@/lib/shipping"
@@ -133,7 +134,7 @@ export function PayPanel(props: PayPanelProps) {
     return () => window.clearTimeout(handle)
   }, [])
 
-  async function start() {
+  async function start(method: "usdc" | "card" = "usdc") {
     if (lock.current || !attested || !contactOk) return
     lock.current = true
     setStarting(true)
@@ -198,11 +199,23 @@ export function PayPanel(props: PayPanelProps) {
           country: contact.country,
           phone: contact.phone,
           printSpec,
+          paymentMethod: method,
           ...image,
         }),
       })
       const body = (await response.json()) as { order?: StoredOrder; error?: string }
       if (!response.ok || !body.order) throw new Error(body.error || "The order could not be opened.")
+      if (method === "card") {
+        const card = await fetch(`/api/orders/${body.order.id}/stripe`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ t: body.order.viewToken }),
+        })
+        const cardBody = (await card.json()) as { url?: string; error?: string }
+        if (!card.ok || !cardBody.url) throw new Error(cardBody.error || "Card checkout could not be opened.")
+        window.location.assign(cardBody.url)
+        return
+      }
       setOrder(body.order)
       sessionStorage.setItem("ochre-open-order", JSON.stringify(body.order))
     } catch (reason) {
@@ -313,6 +326,7 @@ export function PayPanel(props: PayPanelProps) {
           <Row label="Delivery" value="Included in the landed price" />
           <Row label="Arrives" value={props.summary.lead} />
         </dl>
+        <DeliveryNote materialId={props.materialId} className="mt-4" />
         <div className="mt-4 flex items-end justify-between border-t border-[var(--navy)] pt-4">
           <span className="text-lg">Total</span>
           <span className="text-right">
@@ -321,9 +335,17 @@ export function PayPanel(props: PayPanelProps) {
           </span>
         </div>
         {order ? null : (
-          <button type="button" className="btn-foil mt-5 w-full" disabled={!attested || !contactOk || starting} onClick={() => void start()}>
-            {starting ? (props.photoBlob ? "Saving the print…" : "Preparing…") : "Pay with USDC (Solana Pay)"}
+          <button type="button" className="btn-foil mt-5 w-full" disabled={!attested || !contactOk || starting} onClick={() => void start("card")}>
+            {starting ? (props.photoBlob ? "Saving the print…" : "Preparing…") : "Pay by card"}
           </button>
+        )}
+        {order ? null : (
+          <>
+            <p className="mt-2 text-center font-mono text-[10px] tracking-[0.16em] text-[var(--mute)] uppercase">Visa · Mastercard · Amex · Apple Pay · Google Pay</p>
+            <button type="button" className="mt-3 w-full border border-[var(--navy)] px-4 py-3 text-sm tracking-[0.08em] uppercase disabled:opacity-40" disabled={!attested || !contactOk || starting} onClick={() => void start("usdc")}>
+              Or pay with USDC (Solana Pay)
+            </button>
+          </>
         )}
         {!attested ? <p className="mt-2 text-xs text-[var(--mute)]">Tick the rights line before payment.</p> : null}
         {!contactOk ? <p className="mt-2 text-xs text-[var(--mute)]">Add a valid email, name, street, city, postcode, and country.</p> : null}

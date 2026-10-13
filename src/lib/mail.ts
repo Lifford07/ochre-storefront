@@ -29,7 +29,7 @@ export function confirmCustomer(input: { to: string; id: string; summary: string
     text: [
       `Your Ochré order ${input.id} is open.`,
       input.summary,
-      "We make the piece after the USDC payment has cleared and a person has checked the file.",
+      "We make the piece after the payment has cleared and a person has checked the file.",
       `Certificate: ${input.link}`,
     ].join("\n\n"),
   })
