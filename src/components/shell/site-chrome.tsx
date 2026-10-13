@@ -113,6 +113,7 @@ export function SiteFooter() {
             ["The collection", "/collection"],
             ["SJ", "/artists/sj"],
             ["Certificates", "/orders/preview"],
+            ["Gift cards · soon", "/gift-cards"],
           ]}
         />
         <FooterCol

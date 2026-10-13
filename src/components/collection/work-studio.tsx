@@ -18,7 +18,7 @@ import {
 } from "@/config/catalogue"
 import type { HouseWork } from "@/config/works"
 
-const offered: MaterialId[] = ["real-glass", "acrylic", "gallery-bond", "porcelain"]
+const offered: MaterialId[] = ["real-glass", "acrylic", "canvas"]
 
 export function WorkStudio({
   work,

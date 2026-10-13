@@ -27,6 +27,8 @@ import { CARE_PROMISE, lookLabel, previewFilter, type Look } from "@/lib/copy"
 import { centredOffset, PrintView, type FitMode } from "@/components/editor/print-view"
 import { QualityMeter } from "@/components/editor/quality-meter"
 import { RoomPreview } from "@/components/editor/room-preview"
+import { MaterialExtras } from "@/components/editor/material-extras"
+import { WallPanel } from "@/components/editor/wall-preview"
 
 const PayPanel = dynamic(() => import("@/components/checkout/pay-panel").then((mod) => mod.PayPanel), {
   ssr: false,
@@ -34,7 +36,7 @@ const PayPanel = dynamic(() => import("@/components/checkout/pay-panel").then((m
 })
 
 const COLOUR_NOTE =
-  "A screen glows. Canvas prints softer and more matte. Acrylic and Gallery Bond are a 12-colour print and look deeper. The same photo will not match across materials."
+  "A screen glows. Canvas prints softer and more matte. Acrylic glass and real glass look deeper. The same photo will not match across materials."
 
 type CanvasEdge = "mirror" | "fold" | "colour"
 type EdgeInk = "ivory" | "ink" | "ochre"
@@ -249,6 +251,19 @@ export function Editor() {
       <FlowHeader step={step} onBack={step === "upload" ? undefined : () => setStep(previousStep(step))} />
       <p className="border-b border-[var(--line)] bg-[var(--paper)] px-5 py-2 text-center text-sm">{CARE_PROMISE}</p>
       <main className="mx-auto max-w-6xl px-4 py-6 pb-28 md:px-8 md:pb-10">
+        {(step === "material" || step === "size" || step === "preview" || step === "checkout") && photo && selected ? (
+          <WallPanel
+            key={step}
+            src={photo.src}
+            widthMm={selected.size.widthMm}
+            heightMm={selected.size.heightMm}
+            materialId={materialId}
+            materialName={material.name}
+            sizeName={sizeLabel(selected.size)}
+            filter={filter}
+            defaultOpen
+          />
+        ) : null}
         {step === "upload" ? (
           <UploadStep
             progress={progress}
@@ -324,6 +339,7 @@ export function Editor() {
           />
         ) : null}
 
+
         {step === "checkout" && photo && selected ? (
           <Checkout
             photo={photo}
@@ -383,7 +399,7 @@ function UploadStep({
     <section className="mx-auto max-w-lg">
       <h1 className="font-display text-5xl">Begin with your image.</h1>
       <p className="mt-3 text-base leading-relaxed text-[#3c3832]">
-        It becomes real glass, fine-art acrylic, Gallery Bond, canvas, or porcelain. One step at a time.
+        It becomes real glass, acrylic glass, or canvas. One step at a time.
       </p>
       <label
         className="mt-8 flex min-h-52 cursor-pointer flex-col items-center justify-center border border-dashed border-[#1a1814]/40 bg-[#faf6f1] px-6 py-10 text-center"
@@ -559,7 +575,7 @@ function MaterialStep({
       <h1 className="font-display text-5xl">Material</h1>
       <p className="mt-2 text-sm leading-relaxed text-[#5e574e]">{CATALOGUE_NOTICE}</p>
       <div className="mt-6 space-y-2">
-        {materials.filter((item) => item.id !== "card").map((item) => {
+        {materials.filter((item) => item.id === "real-glass" || item.id === "acrylic" || item.id === "canvas").map((item) => {
           const on = selected === item.id
           const from = fromPrice(item.id)
           return (
@@ -593,6 +609,7 @@ function MaterialStep({
           )
         })}
       </div>
+      <MaterialExtras materialId={selected} />
       <Button className="btn-foil mt-8 h-14 w-full text-base" disabled={fromPrice(selected) == null} onClick={onContinue}>
         Continue
       </Button>
