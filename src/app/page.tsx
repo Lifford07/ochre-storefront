@@ -6,10 +6,10 @@ import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
 import { works } from "@/config/works"
 
 const lines = [
-  { index: "01", name: "Art", note: "Prints, glass and objects, made in a numbered edition.", href: "/collection", live: true },
-  { index: "02", name: "Home", note: "Furniture, table and objects for the room.", href: "/collection", live: false },
-  { index: "03", name: "Garms", note: "Cut and embroidered pieces, in small runs.", href: "/collection", live: false },
-  { index: "04", name: "Jewellery", note: "Gold, seal and engraved. Numbered.", href: "/collection", live: false },
+  { index: "01", name: "Art", note: "Bespoke artwork, made from real glass, acrylic glass and canvas.", href: "/collection", live: true },
+  { index: "02", name: "Home", note: "The most aesthetically pleasing home decor.", href: "/collection", live: false },
+  { index: "03", name: "Ochré Atelier", note: "Cut and embroidered pieces, in small runs.", href: "/collection", live: false },
+  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/collection", live: false },
 ]
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
               </h1>
               <div className="hairline mt-5" />
               <p className="mt-6 max-w-md text-lg leading-relaxed text-[var(--porcelain)]/80">
-                Printed on glass, acrylic, Gallery Bond or porcelain. Each piece is numbered. A certificate is issued with it.
+                Bespoke artwork on real glass, acrylic glass and canvas. Each piece is numbered. A certificate is issued with it.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link href="/make" className="btn-foil">
