@@ -9,7 +9,7 @@ const lines = [
   { index: "01", name: "Art", note: "Bespoke artwork, made from real glass, acrylic glass and canvas.", href: "/collection", live: true },
   { index: "02", name: "Home", note: "The most aesthetically pleasing home decor.", href: "/collection", live: false },
   { index: "03", name: "Ochré Atelier", note: "Cut and embroidered pieces, in small runs.", href: "/collection", live: false },
-  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/collection", live: false },
+  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/jewellery", live: true },
 ]
 
 export default function HomePage() {
