@@ -365,3 +365,154 @@
   40% { transform: scale(1.25); box-shadow: 0 0 0 8px rgba(198, 184, 73, 0); }
   100% { transform: scale(1); }
 }
+
+/* Jewellery Mix (Parts A–B): aliases map to existing Ochré tokens — not a second palette. */
+.jewellery-museum {
+  --gallery-bg: var(--navy);
+  --gallery-panel: var(--navy-2);
+  --gallery-line: color-mix(in srgb, var(--gold) 32%, transparent);
+  --gallery-ink: var(--porcelain);
+  --gallery-muted: color-mix(in srgb, var(--porcelain) 58%, transparent);
+  --gallery-ochre: var(--gold);
+  background:
+    radial-gradient(900px 500px at 12% -8%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 55%),
+    radial-gradient(700px 420px at 100% 0%, color-mix(in srgb, var(--foil) 10%, transparent), transparent 50%),
+    var(--navy);
+  color: var(--gallery-ink);
+}
+
+.jewellery-museum .museum-shell,
+.museum-shell {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.jewellery-museum .gallery-panel {
+  border: 1px solid var(--gallery-line);
+  background: color-mix(in srgb, var(--navy-2) 92%, black);
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .jewellery-museum .gallery-panel {
+    padding: 1.5rem;
+  }
+}
+
+.jewellery-museum .choice {
+  border: 1px solid var(--gallery-line);
+  background: transparent;
+  padding: 0.75rem;
+  text-align: left;
+  color: var(--gallery-muted);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.jewellery-museum .choice:hover {
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--gallery-line));
+}
+
+.jewellery-museum .choice-on {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--porcelain);
+}
+
+.jewellery-museum .chip {
+  border: 1px solid var(--gallery-line);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--gallery-muted);
+  background: transparent;
+  border-radius: 0;
+  min-height: 36px;
+}
+
+.jewellery-museum .chip-on,
+.jewellery-museum .chip.on {
+  border-color: var(--gold);
+  color: var(--porcelain);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+}
+
+.jewellery-museum .field {
+  width: 100%;
+  border: 1px solid var(--gallery-line);
+  background: color-mix(in srgb, var(--navy) 88%, black);
+  padding: 0.7rem 0.8rem;
+  color: var(--porcelain);
+  outline: none;
+}
+
+.jewellery-museum .field:focus {
+  border-color: var(--gold);
+}
+
+.jewellery-museum .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--navy);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.jewellery-museum .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--gallery-line);
+  background: transparent;
+  color: var(--porcelain);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jewellery-museum .btn-secondary:hover {
+  border-color: var(--gold);
+}
+
+.jewellery-museum .preview-stage {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
+}
+
+.jewellery-museum .gold-leaf-shimmer,
+.gold-leaf-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    color-mix(in srgb, var(--gold) 18%, transparent) 35%,
+    color-mix(in srgb, var(--foil) 35%, transparent) 50%,
+    color-mix(in srgb, var(--gold) 18%, transparent) 65%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  animation: gold-sheen 4.5s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@keyframes gold-sheen {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-leaf-shimmer {
+    animation: none;
+  }
+}
