@@ -6,6 +6,8 @@ import { WorkImage } from "@/components/art/motif"
 import { formatPrice, fromPrice, materialById, type MaterialId } from "@/config/catalogue"
 import { works, type HouseWork, isExampleWork } from "@/config/works"
 import { sizesFor } from "@/config/catalogue"
+import { wallFacts } from "@/lib/caption"
+import { WallCaption } from "@/components/gallery/wall-label"
 
 const houseWorks = works.filter((work) => work.artistSlug === "sj")
 const offers = (work: HouseWork, id: MaterialId) => work.materialId === id || sizesFor(id).length > 0
@@ -47,33 +49,27 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
       {visible.length === 0 ? (
         <p className="mt-10 text-sm text-[var(--mute)]">Nothing in this material yet.</p>
       ) : (
-        <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-14 grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((work) => {
             const shownMaterial = filter === "all" ? work.materialId : filter
             const material = materialById(shownMaterial)
             const from = fromPrice(shownMaterial, { numbered: work.editionSize > 1 })
             return (
               <li key={work.slug}>
-                <Link href={`/collection/${work.slug}${filter === "all" ? "" : `?material=${filter}`}`} className="art-card group block">
-                  <div className="aspect-[4/5] overflow-hidden bg-[var(--bone)] shadow-[var(--shadow-art)]">
+                <Link href={`/collection/${work.slug}${filter === "all" ? "" : `?material=${filter}`}`} className="block">
+                  <div className="plate-frame aspect-[4/5] overflow-hidden">
                     <WorkImage motif={work.motif} image={work.image} title={work.title} />
                   </div>
-                  <div className="mt-4 flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-display text-2xl italic">{work.title}</h3>
-                      <p className="mt-1 text-sm text-[var(--mute)]">
-                        {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
-                      </p>
-                    </div>
-                    <p className="text-right text-sm">
-                      {from == null ? "Soon" : formatPrice(from)}
-                      <span className="mt-1 block font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">
-                        {material.name}
-                      </span>
-                    </p>
-                  </div>
-                  <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-[var(--gold-ink)] uppercase">
-                    Edition of {work.editionSize}
+                  <h3 className="font-display mt-6 text-3xl italic">{work.title}</h3>
+                  <p className="mt-2 text-sm text-[var(--mute)]">
+                    {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
+                  </p>
+                  <WallCaption facts={wallFacts(work, shownMaterial)} className="mt-4" />
+                  <p className="mt-4 text-sm">
+                    {from == null ? "Soon" : formatPrice(from)}
+                    <span className="mt-1 block font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">
+                      {material.name}
+                    </span>
                   </p>
                 </Link>
               </li>

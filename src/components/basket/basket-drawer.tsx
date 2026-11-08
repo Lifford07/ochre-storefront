@@ -4,11 +4,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useBasket } from "@/lib/basket"
 import { BasketView } from "@/components/basket/basket-view"
+import { useOverlayLock } from "@/components/gallery/overlay-lock"
 
 export function BasketButton({ className, icon }: { className: string; icon: React.ReactNode }) {
   const { count } = useBasket()
   const [open, setOpen] = useState(false)
   const [pulse, setPulse] = useState(false)
+  useOverlayLock(open)
   useEffect(() => {
     const show = () => {
       setOpen(true)
@@ -43,6 +45,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
         <aside
           role="dialog"
           aria-label="Your basket"
+          data-lenis-prevent
           className={`absolute top-0 right-0 flex h-full w-full max-w-[460px] flex-col bg-[#F3EFE7] text-[var(--navy)] shadow-[-30px_0_60px_-30px_rgba(11,19,50,0.6)] transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "translate-x-0" : "translate-x-full"}`}
           data-testid="basket-drawer"
         >

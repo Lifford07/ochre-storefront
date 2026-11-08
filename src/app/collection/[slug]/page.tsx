@@ -37,7 +37,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
   return (
     <>
       <SiteHeader />
-      <main className="page-enter mx-auto max-w-[1440px] px-5 py-10 md:px-12 md:py-14">
+      <main className="page-enter mx-auto max-w-[1440px] px-5 py-16 md:px-12 md:py-24">
         <WorkStudio work={work} taken={taken} countKnown={countKnown} />
       </main>
       <Endband />
