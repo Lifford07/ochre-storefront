@@ -3,8 +3,10 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { WorkImage } from "@/components/art/motif"
 import { Endband } from "@/components/brand/mark"
+import { WallCaption } from "@/components/gallery/wall-label"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
 import { artistBySlug, artists, worksByArtist } from "@/config/works"
+import { wallFacts } from "@/lib/caption"
 
 export function generateStaticParams() {
   return artists.map((artist) => ({ slug: artist.slug }))
@@ -43,17 +45,15 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
         </section>
         <section className="mx-auto max-w-[1440px] px-5 py-12 md:px-12">
           <h2 className="font-display text-4xl">Works in numbered editions.</h2>
-          <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-14 grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((work) => (
               <li key={work.slug}>
-                <Link href={`/collection/${work.slug}`} className="art-card block">
-                  <div className="aspect-[4/5] bg-[var(--bone)] shadow-[var(--shadow-art)]">
+                <Link href={`/collection/${work.slug}`} className="block">
+                  <div className="plate-frame aspect-[4/5]">
                     <WorkImage motif={work.motif} image={work.image} title={work.title} />
                   </div>
-                  <h3 className="font-display mt-4 text-2xl italic">{work.title}</h3>
-                  <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-[var(--gold-ink)] uppercase">
-                    Edition of {work.editionSize}
-                  </p>
+                  <h3 className="font-display mt-6 text-3xl italic">{work.title}</h3>
+                  <WallCaption facts={wallFacts(work)} className="mt-4" />
                 </Link>
               </li>
             ))}

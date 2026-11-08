@@ -336,19 +336,163 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
+.btn-gallery {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--porcelain);
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: background-color 420ms ease, color 420ms ease, border-color 420ms ease;
+}
+
+.btn-gallery:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.btn-gallery.on-light {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: var(--porcelain);
+}
+
+.btn-gallery.on-light:hover {
+  background: var(--navy-2);
+  border-color: var(--navy-2);
+  color: var(--porcelain);
+}
+
+.btn-gallery.quiet {
+  border-color: var(--navy);
+  background: transparent;
+  color: var(--navy);
+}
+
+.btn-gallery.quiet:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--porcelain);
+}
+
+.btn-gallery:focus-visible,
+.inspect-plate:focus-visible,
+.gallery-text-link:focus-visible {
+  outline: 2px solid var(--gold-ink);
+  outline-offset: 4px;
+}
+
+.btn-gallery:focus-visible {
+  outline-color: var(--foil);
+}
+
+.wall-caption {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.wall-caption div {
+  display: grid;
+  grid-template-columns: 6.75rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.wall-caption dt,
+.wall-caption dd {
+  margin: 0;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.gallery-rule {
+  height: 1px;
+  background: var(--line);
+}
+
+.gallery-rule.on-dark {
+  background: rgb(221 208 143 / 45%);
+}
+
+.inspect-plate {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: inherit;
+  cursor: zoom-in;
+}
+
+.inspect-hint {
+  display: block;
+  margin-top: 0.85rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+.plate-frame {
+  background: var(--bone);
+  box-shadow: var(--shadow-art);
+}
+
+.ochre-lightbox {
+  --yarl__color_backdrop: rgb(11 19 50 / 94%);
+  --yarl__color_button: #f5f1ea;
+  --yarl__color_button_active: #ddd08f;
+  --yarl__slide_title_color: #f5f1ea;
+  --yarl__slide_description_color: #ddd08f;
+}
+
+.ochre-lightbox .yarl__slide_title {
+  font-family: var(--font-bodoni), "Bodoni Moda", serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.012em;
+}
+
+.ochre-lightbox .yarl__slide_description {
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn-foil::after,
   .whorl-spin,
   .seal-stamp,
   .hairline,
-  .art-card {
+  .art-card,
+  .btn-gallery,
+  .certificate-rest {
     animation: none;
     transition: none;
   }
   .art-card:hover,
   .btn-foil:active,
   .btn-navy:active,
-  .btn-ghost:active {
+  .btn-ghost:active,
+  .certificate-rest,
+  .certificate-rest:hover {
     transform: none;
   }
   .page-enter {
