@@ -34,8 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
-# demo orders and local print files
+# demo orders, local print files, and desk edits to provenance passports
 /data/orders.json
+/data/passports.json
 /data/uploads/
 /data/upload-tickets.json
 
