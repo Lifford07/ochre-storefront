@@ -20,6 +20,7 @@ import {
 } from "@/config/catalogue"
 import { loadEditorDraft, saveEditorDraft } from "@/lib/editor-draft"
 import { preferredSizeId, scorePrint, verdictFor, type PrintScore } from "@/lib/quality"
+import { hiddenSizeCount, visibleSizes } from "@/lib/size-window"
 import { editionWording } from "@/lib/edition"
 import { saveToAccount } from "@/lib/save-to-account"
 import { ingestFile, type IngestedPhoto, type IngestProgress } from "@/lib/ingest-file"
@@ -677,7 +678,11 @@ function SizeStep({
   onCanvasEdge: (edge: CanvasEdge) => void
   onEdgeInk: (ink: EdgeInk) => void
 }) {
+  const [moreSizes, setMoreSizes] = useState(false)
   const chosen = options.find((option) => option.size.id === selectedId)!
+  const selectedIndex = options.findIndex((option) => option.size.id === selectedId)
+  const shown = visibleSizes(options, selectedIndex, moreSizes)
+  const hidden = hiddenSizeCount(options.length, false)
 
   return (
     <section className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start">
@@ -853,7 +858,7 @@ function SizeStep({
         ) : null}
         <p className="mt-5 text-sm text-[var(--charcoal)]">{UPLOAD_EDITION}. Your photograph is made once.</p>
         <div className="mt-5 space-y-2">
-          {options.map((option) => {
+          {shown.map((option) => {
             const soft = option.score.band === "red"
             const on = option.size.id === selectedId
             return (
@@ -876,6 +881,11 @@ function SizeStep({
             )
           })}
         </div>
+        {hidden > 0 ? (
+          <button type="button" onClick={() => setMoreSizes((open) => !open)} className="mt-3 inline-flex min-h-11 items-center text-sm underline underline-offset-4">
+            {moreSizes ? "Fewer formats" : `More formats (${hidden})`}
+          </button>
+        ) : null}
         <div className="mt-6 hidden md:block">
           <Button className="btn-foil h-14 w-full text-base" disabled={!canReady} onClick={onReady}>
             Continue to edit

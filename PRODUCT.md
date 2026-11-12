@@ -45,6 +45,7 @@ Inferred from the repo, and left as they are:
 - House editions are numbered. A customer upload is treated as edition 1/1.
 - A certificate of authenticity is part of the physical piece. An on-chain twin is described on the site as not ready.
 - Prices in the catalogue are examples until replaced.
+- The sizes, photographs, and written notes on the customer pages are a sample, about a fifth of what will be published. The pages keep a short first view as those lists grow. The missing works, sizes, and copy are not invented here.
 - The studio location, printer rules, and VAT handling in `SCOPE.md` are planning notes, not customer-facing claims to invent or extend.
 
 Undecided, and not to be closed by design work:

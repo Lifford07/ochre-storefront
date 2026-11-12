@@ -15,8 +15,11 @@ import {
   sizes,
   sizesFor,
   type MaterialId,
+  type Size,
 } from "@/config/catalogue"
 import type { HouseWork } from "@/config/works"
+import { artworkSources } from "@/lib/artwork-sources"
+import { hiddenSizeCount, orientationChoices, sizeFamilies, visibleSizes } from "@/lib/size-window"
 
 const offered: MaterialId[] = ["real-glass", "acrylic", "canvas"]
 
@@ -32,8 +35,13 @@ export function WorkStudio({
   const [materialId, setMaterialId] = useState<MaterialId>(work.materialId)
   const [sizeId, setSizeId] = useState(work.sizeId)
   const [room, setRoom] = useState(false)
+  const [moreSizes, setMoreSizes] = useState(false)
+  const [frame, setFrame] = useState(0)
   const material = materialById(materialId)
   const options = useMemo(() => sizesFor(materialId), [materialId])
+  const families = useMemo(() => sizeFamilies(options), [options])
+  const frames = work.images && work.images.length > 0 ? work.images : work.image ? [work.image] : []
+  const activeImage = frames[frame] ?? work.image
   const size = options.find((item) => item.id === sizeId) ?? options[0] ?? sizes.find((item) => item.id === work.sizeId)
   const price = size && size.prices[materialId] != null && material.payable ? priceFor(size, materialId, { numbered: true }) : null
   const left = Math.max(0, work.editionSize - taken)
@@ -53,7 +61,7 @@ export function WorkStudio({
             <div className="grid min-h-[420px] place-items-center bg-[#e7e1d6] px-8 py-16">
               <div className="w-full max-w-sm">
                 <div className="mx-auto w-1/2 shadow-[var(--shadow-art)]">
-                  <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                  <WorkImage motif={work.motif} image={activeImage} title={work.title} />
                 </div>
                 <div className="mt-6 h-16 rounded-sm bg-[#f7f4ee]" />
                 <p className="mt-4 text-center font-mono text-[11px] tracking-[0.14em] text-[var(--mute)] uppercase">
@@ -65,10 +73,10 @@ export function WorkStudio({
             <div className="mx-auto max-w-lg p-6 md:p-10">
               <p className="mb-3 text-center font-mono text-[10px] tracking-[0.16em] text-[var(--mute)] uppercase">
                 Shown in {material.name}
-                {size ? ` · ${size.name}` : ""}
+                {size ? ` · ${size.name}${size.widthMm === size.heightMm ? "" : ` · ${size.orientation}`}` : ""}
               </p>
               <div className="shadow-[var(--shadow-art)]">
-                <WorkImage motif={work.motif} image={work.image} title={work.title} priority sizes="(min-width: 1024px) 46vw, 92vw" />
+                <WorkImage motif={work.motif} image={activeImage} title={work.title} priority sizes="(min-width: 1024px) 46vw, 92vw" />
               </div>
             </div>
           )}
@@ -76,6 +84,24 @@ export function WorkStudio({
             {room ? "View the work" : "View in your room"}
           </button>
         </div>
+        {frames.length > 1 ? (
+          <ul className="mt-3 flex gap-2 overflow-x-auto">
+            {frames.map((src, index) => (
+              <li key={src} className="shrink-0">
+                <button
+                  type="button"
+                  aria-pressed={index === frame}
+                  aria-label={`Photograph ${index + 1} of ${work.title}`}
+                  onClick={() => setFrame(index)}
+                  className={`size-14 overflow-hidden border ${index === frame ? "border-[var(--navy)]" : "border-[var(--line)]"}`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img {...artworkSources(src)} alt="" sizes="56px" className="h-full w-full object-cover" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
 
       <div>
@@ -118,6 +144,7 @@ export function WorkStudio({
                   aria-pressed={on}
                   onClick={() => {
                     setMaterialId(id)
+                    setMoreSizes(false)
                     const nextSizes = sizesFor(id)
                     if (!nextSizes.some((entry) => entry.id === sizeId) && nextSizes[0]) setSizeId(nextSizes[0].id)
                   }}
@@ -134,25 +161,15 @@ export function WorkStudio({
           </div>
         </fieldset>
 
-        <fieldset className="mt-8">
-          <legend className="eyebrow">Size · cm</legend>
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {options.map((option) => {
-              const on = option.id === size?.id
-              return (
-                <button
-                  key={option.id}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => setSizeId(option.id)}
-                  className={`min-h-11 border px-3 py-3 text-left text-sm ${on ? "border-[var(--navy)] bg-[var(--navy)] text-[var(--porcelain)]" : "border-[var(--line)] bg-[var(--paper)]"}`}
-                >
-                  {option.orientation === "square" ? option.name : `${option.name} · ${option.orientation}`}
-                </button>
-              )
-            })}
-          </div>
-        </fieldset>
+        <SizeChoices
+          families={families}
+          more={moreSizes}
+          selectedId={size?.id}
+          materialId={materialId}
+          payable={material.payable}
+          onMore={() => setMoreSizes((open) => !open)}
+          onSelect={setSizeId}
+        />
 
         <p className="font-display mt-8 text-5xl">{price == null ? "—" : formatPrice(price)}</p>
         <p className="mt-1 text-sm text-[var(--mute)]">
@@ -215,7 +232,11 @@ export function WorkStudio({
       <div className="grid gap-8 border-t border-[var(--line)] pt-10 md:grid-cols-3 lg:col-span-2">
         <section>
           <p className="eyebrow">About the work</p>
-          <blockquote className="font-display mt-3 text-2xl italic">“{work.statement}”</blockquote>
+          {work.statement.length > 180 ? (
+            <p className="mt-3 max-w-prose text-sm leading-relaxed text-[var(--charcoal)]">{work.statement}</p>
+          ) : (
+            <blockquote className="font-display mt-3 text-2xl italic">“{work.statement}”</blockquote>
+          )}
           <p className="mt-3 text-sm text-[var(--mute)]">
             Artist statement {isExampleWork(work) ? <span className="ex">Example</span> : null}
           </p>
@@ -233,5 +254,75 @@ export function WorkStudio({
         </section>
       </div>
     </div>
+  )
+}
+
+function SizeChoices({
+  families,
+  more,
+  selectedId,
+  materialId,
+  payable,
+  onMore,
+  onSelect,
+}: {
+  families: { name: string; sizes: Size[] }[]
+  more: boolean
+  selectedId?: string
+  materialId: MaterialId
+  payable: boolean
+  onMore: () => void
+  onSelect: (id: string) => void
+}) {
+  const selectedIndex = families.findIndex((family) => family.sizes.some((size) => size.id === selectedId))
+  const shown = visibleSizes(families, selectedIndex, more)
+  const hidden = hiddenSizeCount(families.length, false)
+  return (
+    <fieldset className="mt-8">
+      <legend className="eyebrow">Size · cm</legend>
+      <ul className="mt-3 border-t border-[var(--line)]">
+        {shown.map((family) => {
+          const current = family.sizes.find((size) => size.id === selectedId)
+          const preferred = family.sizes.find((size) => size.orientation !== "landscape") ?? family.sizes[0]
+          const pick = current ?? preferred
+          const on = Boolean(current)
+          const amount = payable && pick.prices[materialId] != null ? priceFor(pick, materialId, { numbered: true }) : null
+          const orientations = orientationChoices(family.sizes)
+          return (
+            <li key={family.sizes[0]?.id ?? family.name} className="border-b border-[var(--line)]">
+              <button
+                type="button"
+                aria-pressed={on}
+                onClick={() => onSelect(pick.id)}
+                className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 py-3 text-left text-sm ${on ? "bg-[var(--navy)] text-[var(--porcelain)]" : "bg-[var(--paper)]"}`}
+              >
+                <span>{family.name}</span>
+                <span>{amount == null ? "Soon" : formatPrice(amount)}</span>
+              </button>
+              {on && orientations.length > 1 ? (
+                <div className="flex gap-2 bg-[var(--paper)] px-3 py-2">
+                  {orientations.map((size) => (
+                    <button
+                      key={size.id}
+                      type="button"
+                      aria-pressed={size.id === selectedId}
+                      onClick={() => onSelect(size.id)}
+                      className={`min-h-11 flex-1 border px-3 text-sm capitalize ${size.id === selectedId ? "border-[var(--navy)] bg-[var(--navy)] text-[var(--porcelain)]" : "border-[var(--line)] bg-[var(--paper)]"}`}
+                    >
+                      {size.orientation}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </li>
+          )
+        })}
+      </ul>
+      {hidden > 0 ? (
+        <button type="button" onClick={onMore} className="mt-3 inline-flex min-h-11 items-center text-sm text-[var(--gold-ink)] underline underline-offset-4">
+          {more ? "Fewer formats" : `More formats (${hidden})`}
+        </button>
+      ) : null}
+    </fieldset>
   )
 }

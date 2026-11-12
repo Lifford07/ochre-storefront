@@ -1,19 +1,12 @@
+import { scaledArtwork } from "@/config/image-variants"
 import type { Motif } from "@/config/works"
-
-const ground = "#E7E1D6"
-
-const scaled = new Set([
-  "/fela-the-goat.webp",
-  "/fingerprint-of-god.webp",
-  "/fingerprint-of-god-christian.webp",
-  "/curious-cat.webp",
-])
+import { artworkSources as pictureSources } from "@/lib/artwork-sources"
 
 export function artworkSources(src: string) {
-  if (!scaled.has(src)) return { src }
-  const small = src.replace(/\.webp$/, "-800.webp")
-  return { src: small, srcSet: `${small} 800w, ${src} 1200w` }
+  return pictureSources(src, scaledArtwork)
 }
+
+const ground = "#E7E1D6"
 
 export function Motif({
   motif,
