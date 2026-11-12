@@ -63,11 +63,11 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
               </p>
               <div className="mt-auto flex items-center justify-between pt-3">
                 <div className="inline-flex items-center border border-[var(--navy)]/20">
-                  <button type="button" aria-label="Fewer" className="size-8" onClick={() => setQty(item.key, item.qty - 1)}>−</button>
+                  <button type="button" aria-label="Fewer" className="grid size-11 place-items-center" onClick={() => setQty(item.key, item.qty - 1)}>−</button>
                   <span className="w-8 text-center text-sm" data-testid="basket-qty">{item.qty}</span>
-                  <button type="button" aria-label="More" className="size-8" onClick={() => setQty(item.key, item.qty + 1)}>+</button>
+                  <button type="button" aria-label="More" className="grid size-11 place-items-center" onClick={() => setQty(item.key, item.qty + 1)}>+</button>
                 </div>
-                <button type="button" className="text-[11px] tracking-[0.16em] text-[var(--navy)]/60 uppercase underline-offset-4 hover:underline" onClick={() => removeItem(item.key)}>
+                <button type="button" className="inline-flex min-h-11 items-center text-[11px] tracking-[0.16em] text-[var(--navy)]/80 uppercase underline-offset-4 hover:underline" onClick={() => removeItem(item.key)}>
                   Remove
                 </button>
               </div>
