@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import dynamic from "next/dynamic"
-import { useState, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { AccountMenu } from "@/components/account/account-menu"
 import { Crest, Wordmark } from "@/components/brand/mark"
 import { BasketButton } from "@/components/basket/basket-drawer"
@@ -25,8 +25,21 @@ const MenuIcon = () => (<svg viewBox="0 0 24 24" className={ico} aria-hidden {..
 
 const sideBase = "min-h-11 items-center gap-2 font-sans text-[11px] font-medium tracking-[0.2em] uppercase text-[var(--navy)] hover:text-[var(--gold-ink)]"
 
+function useAtLeast(px: number) {
+  const [ok, setOk] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${px}px)`)
+    const sync = () => setOk(mq.matches)
+    sync()
+    mq.addEventListener("change", sync)
+    return () => mq.removeEventListener("change", sync)
+  }, [px])
+  return ok
+}
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
+  const wide = useAtLeast(768)
 
   return (
     <header className="relative bg-[#F3EFE7] text-[var(--navy)]">
@@ -40,12 +53,12 @@ export function SiteHeader() {
           </Link>
         </div>
         <Link href="/" className="flex min-h-11 items-center justify-center" aria-label="Ochré home">
-          <Wordmark tone="gold" className="!text-[#C6B849] !text-[32px] md:!text-[56px] font-semibold !tracking-[0.2em] [text-shadow:0_0_0.6px_#A89A35,0_1px_0_rgba(168,154,53,0.35)]" />
+          <Wordmark tone="gold" className="!text-[var(--gold-on-cream)] !text-[28px] sm:!text-[32px] md:!text-[56px] !tracking-[0.12em] md:!tracking-[0.2em]" />
         </Link>
         <nav className="flex items-center justify-end gap-6" aria-label="Shop">
-          <span className="hidden md:block"><AccountMenu className={`inline-flex cursor-pointer ${sideBase}`} /></span>
-          <span className="hidden min-w-[92px] md:block"><HeaderWallet className={`inline-flex cursor-pointer ${sideBase}`} /></span>
-          <BasketButton className={`inline-flex cursor-pointer ${sideBase}`} icon={<BagIcon />} />
+          {wide ? <span className="hidden md:block"><AccountMenu className={`inline-flex cursor-pointer ${sideBase}`} /></span> : null}
+          {wide ? <span className="hidden min-w-[92px] md:block"><HeaderWallet className={`inline-flex cursor-pointer ${sideBase}`} /></span> : null}
+          <BasketButton className={`inline-flex min-w-11 cursor-pointer justify-center ${sideBase}`} icon={<BagIcon />} />
         </nav>
       </div>
       <div className="mx-auto h-px max-w-[1440px] bg-[var(--navy)]/15" />
@@ -55,7 +68,7 @@ export function SiteHeader() {
             const inner = (
               <>
                 <span className="font-display text-2xl md:text-[32px]">{line.label}</span>
-                {line.live ? null : <span className="ml-1 font-mono text-[9px] tracking-[0.14em] uppercase opacity-60">soon</span>}
+                {line.live ? null : <span className="ml-1 font-mono text-[11px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">soon</span>}
               </>
             )
             return (
@@ -74,11 +87,11 @@ export function SiteHeader() {
         <div className="space-y-1 border-t border-[var(--navy)]/10 px-5 py-4 md:hidden">
           <Link href="/" className={`flex ${sideBase}`}><HouseIcon /> Home</Link>
           <AccountMenu compact className={`flex cursor-pointer ${sideBase}`} />
-          <HeaderWallet className={`flex cursor-pointer ${sideBase}`} />
+          {wide ? null : <HeaderWallet className={`flex cursor-pointer ${sideBase}`} />}
           <Link href="/artists/example-artist" className={`flex ${sideBase}`}>Artists</Link>
         </div>
       ) : null}
-      <p className="bg-[var(--navy)] px-4 py-2 text-center font-mono text-[10px] tracking-[0.14em] text-[var(--foil)] uppercase sm:tracking-[0.18em]">
+      <p className="bg-[var(--navy)] px-4 py-2 text-center font-mono text-xs leading-relaxed tracking-[0.12em] text-[var(--foil)] uppercase sm:tracking-[0.16em]">
         Every piece is numbered. A certificate of authenticity is issued for every piece. Pay by card or USDC.
       </p>
     </header>
@@ -191,18 +204,18 @@ export function FlowHeader({
     <header className="bg-[var(--navy)] text-[var(--porcelain)]">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 md:h-20 md:px-8">
         {onBack ? (
-          <button type="button" onClick={onBack} className="eyebrow !text-[10px] text-[var(--porcelain)] md:!text-[11px]">
+          <button type="button" onClick={onBack} className="eyebrow !text-[11px] text-[var(--porcelain)] md:!text-xs">
             ← {step === "upload" ? "Continue browsing" : "Back"}
           </button>
         ) : (
-          <Link href="/" className="eyebrow !text-[10px] md:!text-[11px]">
+          <Link href="/" className="eyebrow !text-[11px] !text-[var(--gold)] md:!text-xs">
             ← Continue browsing
           </Link>
         )}
         <Link href="/" aria-label="Ochré home">
           <Wordmark />
         </Link>
-        <p className="eyebrow !text-[10px] md:!text-[11px]">Card · USDC</p>
+        <p className="eyebrow !text-[11px] !text-[var(--gold)] md:!text-xs">Card · USDC</p>
       </div>
       <p className="py-3 text-center font-mono text-[11px] tracking-[0.18em] text-[var(--foil)] uppercase md:hidden">
         {String(index + 1).padStart(2, "0")} {steps[index][1]}
@@ -215,7 +228,7 @@ export function FlowHeader({
             <li key={id} className="flex items-center gap-2 md:gap-4">
               <span
                 className={`font-mono text-[10px] tracking-[0.14em] uppercase md:text-[11px] ${
-                  current ? "text-[var(--foil)] underline decoration-[var(--gold)] underline-offset-4" : done ? "text-[var(--porcelain)]" : "text-[var(--porcelain)]/40"
+                  current ? "text-[var(--foil)] underline decoration-[var(--gold)] underline-offset-4" : done ? "text-[var(--porcelain)]" : "text-[var(--porcelain)]/75"
                 }`}
               >
                 {done ? "✓ " : ""}
@@ -253,7 +266,7 @@ export function PaymentStrip() {
       <div className="mx-auto max-w-[1440px] border-y border-[#C6B849]/70 px-5 py-6 md:px-10">
         <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
           <p className="font-mono text-[10px] tracking-[0.2em] uppercase">
-            <span className="text-[#C6B849]">—</span> Secure payment
+            <span className="text-[var(--gold-ink)]">—</span> Secure payment
           </p>
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3" aria-label="Accepted payment methods">
             {PAYMENT_MARKS.map((item) => (

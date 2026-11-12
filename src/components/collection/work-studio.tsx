@@ -68,11 +68,11 @@ export function WorkStudio({
                 {size ? ` · ${size.name}` : ""}
               </p>
               <div className="shadow-[var(--shadow-art)]">
-                <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                <WorkImage motif={work.motif} image={work.image} title={work.title} priority sizes="(min-width: 1024px) 46vw, 92vw" />
               </div>
             </div>
           )}
-          <button type="button" className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs tracking-[0.14em] uppercase" onClick={() => setRoom((value) => !value)}>
+          <button type="button" className="absolute bottom-4 left-1/2 inline-flex min-h-11 -translate-x-1/2 items-center bg-[var(--paper)] px-4 text-[11px] tracking-[0.14em] text-[var(--ink)] uppercase" onClick={() => setRoom((value) => !value)}>
             {room ? "View the work" : "View in your room"}
           </button>
         </div>
@@ -145,7 +145,7 @@ export function WorkStudio({
                   type="button"
                   aria-pressed={on}
                   onClick={() => setSizeId(option.id)}
-                  className={`border px-3 py-3 text-left text-sm ${on ? "border-[var(--navy)] bg-[var(--navy)] text-[var(--porcelain)]" : "border-[var(--line)] bg-[var(--paper)]"}`}
+                  className={`min-h-11 border px-3 py-3 text-left text-sm ${on ? "border-[var(--navy)] bg-[var(--navy)] text-[var(--porcelain)]" : "border-[var(--line)] bg-[var(--paper)]"}`}
                 >
                   {option.orientation === "square" ? option.name : `${option.name} · ${option.orientation}`}
                 </button>
@@ -172,7 +172,7 @@ export function WorkStudio({
         {material.payable && price != null && countKnown && left > 0 && size ? (
           <button
             type="button"
-            className="mt-3 flex w-full items-center justify-center border border-[var(--navy)] py-3 text-[11px] tracking-[0.2em] uppercase transition hover:border-[#C6B849] hover:text-[#9a8c2e]"
+            className="mt-3 flex min-h-12 w-full items-center justify-center border border-[var(--navy)] py-3 text-[11px] tracking-[0.2em] uppercase transition hover:border-[#C6B849] hover:text-[var(--gold-ink)]"
             data-testid="add-to-basket"
             onClick={() =>
               addToBasket({
@@ -204,7 +204,7 @@ export function WorkStudio({
 
         <div className="mt-4 flex items-center gap-3 border border-[var(--line)] bg-[var(--paper)] p-3">
           <div className="size-14 shrink-0 bg-[var(--bone)]">
-            <WorkImage motif={work.motif} image={work.image} title="" />
+            <WorkImage motif={work.motif} image={work.image} title="" sizes="56px" />
           </div>
           <p className="text-sm">
             Includes a Certificate of Edition. {left > 0 ? `Edition No. ${String(nextNumber).padStart(3, "0")} of ${work.editionSize}` : "Sold through"}.

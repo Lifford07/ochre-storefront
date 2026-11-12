@@ -4,19 +4,22 @@ import "./globals.css";
 
 const sans = Inter({
   subsets: ["latin"],
+  display: "swap",
   variable: "--font-inter",
 });
 
 const serif = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "400",
   style: ["normal", "italic"],
+  display: "swap",
   variable: "--font-bodoni",
 });
 
 const mono = Azeret_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "400",
+  display: "swap",
   variable: "--font-azeret",
 });
 

@@ -55,7 +55,8 @@
   --navy-2: #131d47;
   --ink: #1b1b22;
   --charcoal: #3a3a42;
-  --mute: #77726a;
+  --mute: #6a655e;
+  --gold-on-cream: #948a37;
   --bone: #ece5d9;
   --paper: #fbf9f5;
   --line: #dcd4c6;
@@ -159,13 +160,15 @@
   line-height: 1.02;
 }
 
-.eyebrow {
-  font-family: var(--font-inter), Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--gold-ink);
+@layer components {
+  .eyebrow {
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+  }
 }
 
 .btn-foil,
@@ -266,7 +269,7 @@
   background: transparent;
   color: var(--charcoal);
   border-radius: 0;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   letter-spacing: 0.14em;
 }
@@ -291,12 +294,10 @@
     box-shadow 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.art-card:hover {
-  transform: translateY(-8px);
-}
-
-.page-enter {
-  animation: page-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+@media (hover: hover) and (pointer: fine) {
+  .art-card:hover {
+    transform: translateY(-8px);
+  }
 }
 
 .whorl-spin {
@@ -321,11 +322,6 @@
   to { transform: scaleX(1); }
 }
 
-@keyframes page-in {
-  from { opacity: 0; transform: scale(0.985); }
-  to { opacity: 1; transform: none; }
-}
-
 @keyframes whorl-spin {
   to { transform: rotate(360deg); }
 }
@@ -336,12 +332,18 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
+::selection {
+  background: var(--gold);
+  color: var(--navy);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn-foil::after,
   .whorl-spin,
   .seal-stamp,
   .hairline,
-  .art-card {
+  .art-card,
+  [class*="ochre-pop"] {
     animation: none;
     transition: none;
   }
@@ -351,14 +353,6 @@
   .btn-ghost:active {
     transform: none;
   }
-  .page-enter {
-    animation: fade-only 480ms ease both;
-  }
-}
-
-@keyframes fade-only {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 @keyframes ochre-pop {
   0% { transform: scale(0.4); box-shadow: 0 0 0 0 rgba(198, 184, 73, 0.7); }

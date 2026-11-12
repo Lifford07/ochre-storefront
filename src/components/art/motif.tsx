@@ -2,6 +2,19 @@ import type { Motif } from "@/config/works"
 
 const ground = "#E7E1D6"
 
+const scaled = new Set([
+  "/fela-the-goat.webp",
+  "/fingerprint-of-god.webp",
+  "/fingerprint-of-god-christian.webp",
+  "/curious-cat.webp",
+])
+
+export function artworkSources(src: string) {
+  if (!scaled.has(src)) return { src }
+  const small = src.replace(/\.webp$/, "-800.webp")
+  return { src: small, srcSet: `${small} 800w, ${src} 1200w` }
+}
+
 export function Motif({
   motif,
   className = "",
@@ -32,17 +45,31 @@ export function WorkImage({
   image,
   title,
   className = "",
+  priority = false,
+  sizes = "(min-width: 1024px) 33vw, 92vw",
 }: {
   motif: Motif
   image?: string
   title: string
   className?: string
+  priority?: boolean
+  sizes?: string
 }) {
   if (image) {
+    const picture = artworkSources(image)
     return (
       // Real files replace the drawing by setting `image` on the work.
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={image} alt={title} className={`h-full w-full object-cover ${className}`} />
+      <img
+        src={picture.src}
+        srcSet={picture.srcSet}
+        sizes={picture.srcSet ? sizes : undefined}
+        alt={title}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "low"}
+        decoding="async"
+        className={`h-full w-full object-cover ${className}`}
+      />
     )
   }
   return <Motif motif={motif} title={title} className={`h-full w-full ${className}`} />
