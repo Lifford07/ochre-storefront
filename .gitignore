@@ -46,3 +46,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /data/accounts/
+
+# Impeccable local install (skill, hooks, engine). Not part of the storefront.
+/.cursor/

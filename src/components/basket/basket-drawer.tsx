@@ -38,7 +38,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
           </span>
         ) : null}
       </button>
-      <div className={`fixed inset-0 z-[80] ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
+      <div className={`fixed inset-0 z-[80] ${open ? "" : "pointer-events-none"}`} inert={open ? undefined : true}>
         <div className={`absolute inset-0 bg-[#0b1332]/50 backdrop-blur-[2px] transition-opacity duration-500 ${open ? "opacity-100" : "opacity-0"}`} onClick={() => setOpen(false)} />
         <aside
           role="dialog"
@@ -49,7 +49,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
           <div className="h-1 bg-gradient-to-r from-[#a89a35] via-[#e6dc8c] to-[#a89a35]" />
           <div className="flex items-center justify-between px-6 pt-6 pb-4">
             <div>
-              <p className="font-mono text-[10px] tracking-[0.24em] text-[#9a8c2e] uppercase">Ochré</p>
+              <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--gold-ink)] uppercase">Ochré</p>
               <h2 className="font-display text-3xl">Your basket</h2>
             </div>
             <button type="button" onClick={() => setOpen(false)} className="min-h-11 min-w-11 text-2xl" aria-label="Close basket">×</button>
@@ -57,7 +57,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
           <div className="min-h-0 flex-1">
             <BasketView compact onNavigate={() => setOpen(false)} />
           </div>
-          <Link href="/basket" onClick={() => setOpen(false)} className="border-t border-[#C6B849]/40 py-3 text-center text-[11px] tracking-[0.2em] uppercase">
+          <Link href="/basket" onClick={() => setOpen(false)} className="flex min-h-11 w-full items-center justify-center border-t border-[#C6B849]/40 py-3 text-center text-[11px] tracking-[0.2em] uppercase">
             View full basket
           </Link>
         </aside>

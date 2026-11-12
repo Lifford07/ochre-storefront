@@ -574,7 +574,7 @@ export function WallPanel(props: Props & { defaultOpen?: boolean }) {
       <section className="my-6 border border-[#C6B849]/60 bg-[#F3EFE7] p-4 md:p-5" data-testid="wall-panel">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.22em] text-[#9a8c2e] uppercase">Live preview · to scale</p>
+            <p className="font-mono text-[10px] tracking-[0.22em] text-[var(--gold-ink)] uppercase">Live preview · to scale</p>
             <p className="font-display text-2xl">View on your wall</p>
           </div>
           <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="btn-foil px-5 py-2 text-[11px]" data-testid="wall-toggle">

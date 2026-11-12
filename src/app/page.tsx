@@ -124,11 +124,14 @@ export default function HomePage() {
                 <div className="bg-[#F3EFE7] p-3 md:p-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/certificate-of-authenticity.webp"
+                    src="/certificate-of-authenticity-800.webp"
+                    srcSet="/certificate-of-authenticity-800.webp 800w, /certificate-of-authenticity.webp 990w"
+                    sizes="(min-width: 768px) 400px, 86vw"
                     alt="Ochré certificate of authenticity"
-                    width={990}
-                    height={1400}
+                    width={800}
+                    height={1131}
                     loading="lazy"
+                    decoding="async"
                     className="block h-auto w-full"
                   />
                 </div>

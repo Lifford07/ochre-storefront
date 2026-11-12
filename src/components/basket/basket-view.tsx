@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { formatPrice } from "@/config/catalogue"
 import { removeItem, setQty, useBasket, type BasketItem } from "@/lib/basket"
+import { artworkSources } from "@/components/art/motif"
 import { DeliveryNote } from "@/components/checkout/delivery-note"
 
 const MARKS = ["VISA", "Mastercard", "AMEX", "Apple Pay", "G Pay", "USDC"]
@@ -22,7 +23,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
           <rect x="13" y="11" width="22" height="26" />
           <path d="M18 31l5-7 4 5 3-3 5 5" />
         </svg>
-        <p className="mt-6 font-mono text-[10px] tracking-[0.24em] text-[#C6B849] uppercase">Your basket</p>
+        <p className="mt-6 font-mono text-[11px] tracking-[0.18em] text-[var(--gold-ink)] uppercase">Your basket</p>
         <h2 className="font-display mt-2 text-4xl italic">The walls are waiting.</h2>
         <p className="mt-3 max-w-sm text-sm text-[var(--navy)]/65">Nothing has been chosen yet. Every piece is made to order, numbered and certified.</p>
         <div className="mt-6 h-px w-16 bg-[#C6B849]" />
@@ -42,31 +43,31 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
             <div className={`${compact ? "w-24" : "w-32"} aspect-[4/5] shrink-0 overflow-hidden bg-[var(--navy)] shadow-[0_10px_30px_-12px_rgba(11,19,50,0.45)]`}>
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                <img {...artworkSources(item.image)} alt={item.title} sizes="128px" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               ) : null}
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className={`font-display italic leading-tight ${compact ? "text-xl" : "text-2xl"}`}>{item.title}</p>
-                  <p className="mt-1 text-xs tracking-[0.16em] text-[var(--navy)]/60 uppercase">{item.artist}</p>
+                  <p className="mt-1 text-xs tracking-[0.16em] text-[var(--navy)]/80 uppercase">{item.artist}</p>
                 </div>
                 <p className="font-display text-lg whitespace-nowrap">{formatPrice(item.pricePence * item.qty)}</p>
               </div>
               <p className="mt-2 text-sm text-[var(--navy)]/75">
                 {item.materialName} · {item.sizeName}
               </p>
-              <p className="mt-1 font-mono text-[10px] tracking-[0.18em] text-[#9a8c2e] uppercase">
+              <p className="mt-1 font-mono text-[10px] tracking-[0.18em] text-[var(--gold-ink)] uppercase">
                 No. {item.editionNumber}
                 {item.qty > 1 ? `–${Math.min(item.editionSize, item.editionNumber + item.qty - 1)}` : ""} of {item.editionSize}
               </p>
               <div className="mt-auto flex items-center justify-between pt-3">
                 <div className="inline-flex items-center border border-[var(--navy)]/20">
-                  <button type="button" aria-label="Fewer" className="size-8" onClick={() => setQty(item.key, item.qty - 1)}>−</button>
+                  <button type="button" aria-label="Fewer" className="grid size-11 place-items-center" onClick={() => setQty(item.key, item.qty - 1)}>−</button>
                   <span className="w-8 text-center text-sm" data-testid="basket-qty">{item.qty}</span>
-                  <button type="button" aria-label="More" className="size-8" onClick={() => setQty(item.key, item.qty + 1)}>+</button>
+                  <button type="button" aria-label="More" className="grid size-11 place-items-center" onClick={() => setQty(item.key, item.qty + 1)}>+</button>
                 </div>
-                <button type="button" className="text-[11px] tracking-[0.16em] text-[var(--navy)]/60 uppercase underline-offset-4 hover:underline" onClick={() => removeItem(item.key)}>
+                <button type="button" className="inline-flex min-h-11 items-center text-[11px] tracking-[0.16em] text-[var(--navy)]/80 uppercase underline-offset-4 hover:underline" onClick={() => removeItem(item.key)}>
                   Remove
                 </button>
               </div>
@@ -76,7 +77,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
       </ul>
 
       <aside className={compact ? "border-t border-[#C6B849]/60 bg-[#F3EFE7] px-6 py-5" : "self-start border border-[#C6B849]/60 bg-white/40 p-7"}>
-        {compact ? null : <p className="font-mono text-[10px] tracking-[0.24em] text-[#9a8c2e] uppercase">Summary</p>}
+        {compact ? null : <p className="font-mono text-[10px] tracking-[0.24em] text-[var(--gold-ink)] uppercase">Summary</p>}
         <div className="flex items-baseline justify-between">
           <span className="text-sm tracking-[0.12em] uppercase">Subtotal · {count} {count === 1 ? "piece" : "pieces"}</span>
           <span className="font-display text-3xl" data-testid="basket-subtotal">{formatPrice(subtotal)}</span>
@@ -87,7 +88,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/certificate-of-authenticity.webp" alt="" className="h-14 w-11 border border-[#C6B849]/60 object-cover" />
           <p className="text-sm">
-            <span className="text-[#9a8c2e]">Certificate of authenticity included</span>
+            <span className="text-[var(--gold-ink)]">Certificate of authenticity included</span>
             <br />
             <span className="text-xs text-[var(--navy)]/60">Signed and numbered, issued with every piece.</span>
           </p>

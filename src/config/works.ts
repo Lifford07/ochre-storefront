@@ -24,6 +24,12 @@ export type HouseWork = {
   motif: Motif
   /** Set this to a public path when a real artwork file replaces the drawing. */
   image?: string
+  /**
+   * Further photographs of the same work. The page shows one picture until this
+   * has more than the lead image. A phone-sized file sits beside it as
+   * `<name>-800.webp`; the build records those, so a new picture needs no code change.
+   */
+  images?: string[]
   materialId: "real-glass" | "acrylic" | "canvas" | "gallery-bond" | "porcelain" | "card"
   sizeId: string
   editionSize: number
