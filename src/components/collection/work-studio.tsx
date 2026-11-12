@@ -18,7 +18,7 @@ import {
   type Size,
 } from "@/config/catalogue"
 import type { HouseWork } from "@/config/works"
-import { artworkSources } from "@/lib/artwork-sources"
+import { artworkSources } from "@/components/art/motif"
 import { hiddenSizeCount, orientationChoices, sizeFamilies, visibleSizes } from "@/lib/size-window"
 
 const offered: MaterialId[] = ["real-glass", "acrylic", "canvas"]
