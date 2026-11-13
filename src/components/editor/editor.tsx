@@ -261,6 +261,11 @@ export function Editor() {
             materialName={material.name}
             sizeName={sizeLabel(selected.size)}
             filter={filter}
+            imageWidth={photo.width}
+            imageHeight={photo.height}
+            offsetX={offset.x}
+            offsetY={offset.y}
+            fit={fit}
             defaultOpen
           />
         ) : null}
