@@ -235,8 +235,30 @@ export function PayPanel(props: PayPanelProps) {
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.85fr)]">
       <div className="space-y-8">
+        <details className="group border border-[var(--line)] bg-[var(--paper)] lg:hidden" data-testid="order-fold">
+          <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-3">
+            {props.summary.previewSrc ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={props.summary.previewSrc} alt="" className="size-10 object-cover" />
+            ) : null}
+            <span className="min-w-0 flex-1">
+              <span className="eyebrow block">Your order</span>
+              <span className="font-display block truncate text-lg italic">{props.summary.title}</span>
+            </span>
+            <span className="font-display text-xl">{formatPrice(order?.pricePence ?? livePrice)}</span>
+            <span aria-hidden className="text-xs transition-transform group-open:rotate-180">▾</span>
+          </summary>
+          <dl className="space-y-2 border-t border-[var(--line)] px-4 py-3 text-sm">
+            <Row label="Material" value={props.summary.materialName} />
+            <Row label="Size" value={props.summary.sizeName} />
+            <Row label="Edition" value={order?.editionLabel ?? props.summary.editionLabel} />
+            <Row label="Delivery" value="Included" />
+            <Row label="Arrives" value={props.summary.lead} />
+          </dl>
+        </details>
+
         <section>
-          <p className="eyebrow">01 · Contact & delivery</p>
+          <p className="eyebrow">01 · Where it is going</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="Email" value={contact.email} placeholder="you@example.com" onChange={(email) => setContact({ ...contact, email })} />
             <Field label="Full name" value={contact.fullName} placeholder="Your name" onChange={(fullName) => setContact({ ...contact, fullName })} />
@@ -267,7 +289,7 @@ export function PayPanel(props: PayPanelProps) {
             <span className="tag">{networkLabel()}</span>
           </div>
           <p className="mt-4 border border-[var(--navy)] bg-[var(--navy)] px-3 py-3 text-sm text-[var(--porcelain)]">
-            Solana Pay · USDC
+            Card by Stripe, or USDC on Solana
           </p>
 
           {order && attested ? (
@@ -300,7 +322,7 @@ export function PayPanel(props: PayPanelProps) {
         </label>
         {error ? <p className="text-sm text-[var(--bad)]">{error}</p> : null}
         <p className="text-xs leading-relaxed text-[var(--mute)]">
-          Payment is confirmed on Solana within seconds. Your certificate will be issued after that. It is not minted on-chain yet.
+          Card payments are taken by Stripe. USDC payments are confirmed on Solana within seconds. Your certificate is issued once the payment clears.
         </p>
       </div>
 
@@ -350,8 +372,17 @@ export function PayPanel(props: PayPanelProps) {
         {!attested ? <p className="mt-2 text-xs text-[var(--mute)]">Tick the rights line before payment.</p> : null}
         {!contactOk ? <p className="mt-2 text-xs text-[var(--mute)]">Add a valid email, name, street, city, postcode, and country.</p> : null}
         <p className="mt-3 text-center text-xs text-[var(--mute)]">Or scan the code. Both finish the same way.</p>
-        <div className="mt-5 bg-[var(--navy)] px-4 py-3 text-sm text-[var(--porcelain)]">
-          <span className="text-[var(--gold)]">Certificate included.</span> A numbered certificate will be issued when payment clears. It is awaiting the mint.
+        <div className="mt-5 border-t border-[var(--line)] pt-4" data-testid="comes-with-it">
+          <p className="eyebrow">Comes with it</p>
+          <div className="mt-3 flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/certificate-of-authenticity.webp" alt="" className="h-14 w-11 shrink-0 border border-[var(--gold)]/60 object-cover" />
+            <p className="flex-1 text-sm">
+              <span className="block">Certificate of authenticity</span>
+              <span className="block text-xs text-[var(--mute)]">Numbered, and issued once the payment clears.</span>
+            </p>
+            <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">Included</span>
+          </div>
         </div>
       </aside>
     </div>

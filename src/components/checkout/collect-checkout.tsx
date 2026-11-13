@@ -41,9 +41,11 @@ function CollectBody() {
   return (
     <>
       <FlowHeader step="checkout" />
-      <main className="page-enter mx-auto max-w-5xl px-4 py-8 md:px-8">
+      <main className="page-enter mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-8">
         <p className="text-center eyebrow">Collect · {work.title}</p>
-        <h1 className="font-display mt-3 text-center text-4xl md:text-6xl">Ready to be made.</h1>
+        <h1 className="font-display mt-3 text-center text-4xl md:text-6xl">
+          Where is it <span className="italic">going?</span>
+        </h1>
         <p className="mt-2 text-center text-[var(--charcoal)]">
           {wording}
         </p>

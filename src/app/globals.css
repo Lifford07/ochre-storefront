@@ -365,3 +365,14 @@
   40% { transform: scale(1.25); box-shadow: 0 0 0 8px rgba(198, 184, 73, 0); }
   100% { transform: scale(1); }
 }
+
+@keyframes ochre-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

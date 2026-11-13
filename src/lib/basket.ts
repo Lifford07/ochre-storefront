@@ -43,7 +43,15 @@ export function addToBasket(item: Omit<BasketItem, "key" | "qty">) {
   if (found) found.qty = Math.min(found.qty + 1, Math.max(1, item.editionSize - item.editionNumber + 1))
   else items.push({ ...item, key, qty: 1 })
   write(items)
-  window.dispatchEvent(new CustomEvent("ochre-basket-open"))
+  window.dispatchEvent(new CustomEvent<{ key: string }>(ADDED, { detail: { key } }))
+}
+
+/** Fired after a piece is added. The header shows a small "In your basket" sheet. */
+export const ADDED = "ochre-basket-added"
+
+/** Checkout is one piece at a time: this is where a basket line pays. */
+export function checkoutHref(item: Pick<BasketItem, "slug" | "materialId" | "sizeId">) {
+  return `/collect/${item.slug}?material=${item.materialId}&size=${item.sizeId}`
 }
 
 export function setQty(key: string, qty: number) {
