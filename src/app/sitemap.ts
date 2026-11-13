@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/make",
     "/collection",
+    "/verre-eglomise",
     "/guide",
     "/terms",
     "/privacy",

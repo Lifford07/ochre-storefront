@@ -1,7 +1,9 @@
 import Link from "next/link"
 import { HeroRoom } from "@/components/art/hero-room"
 import { WorkImage } from "@/components/art/motif"
-import { Crest, Endband } from "@/components/brand/mark"
+import { Crest, Endband, Whorl } from "@/components/brand/mark"
+import { VerrePath } from "@/components/brand/verre-path"
+import { verre } from "@/config/verre"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
 import { works, isExampleWork } from "@/config/works"
 
@@ -44,6 +46,36 @@ export default function HomePage() {
           </div>
         </section>
         <Endband />
+
+        <section className="bg-[#131D47] text-[var(--porcelain)]" aria-labelledby="verre-h">
+          <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-16 md:grid-cols-[5fr_7fr] md:px-12 md:py-24">
+            <div className="relative mx-auto grid aspect-square w-40 place-items-center rounded-full border border-[var(--gold)] text-[var(--foil)] md:w-72" aria-hidden>
+              <span className="absolute inset-2 rounded-full border border-[var(--foil)]/35" />
+              <Whorl className="size-2/3" />
+            </div>
+            <div>
+              <p className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--foil)" }}>
+                <span className="mb-3 block w-fit rounded-full border border-current px-2.5 py-1 text-[9px]">{verre.status}</span>
+                The signature craft
+              </p>
+              <h2 id="verre-h" className="font-display mt-4 text-5xl md:text-7xl">
+                Verre <span className="italic text-[var(--foil)]">églomisé</span>
+              </h2>
+              <p className="mt-5 max-w-xl leading-relaxed text-[var(--porcelain)]/80">
+                {verre.plain} {verre.lede}
+              </p>
+              <blockquote className="font-display mt-6 max-w-xl text-2xl leading-snug">
+                {verre.pitch[0]} <span className="block italic text-[var(--foil)]">{verre.pitch[1]}</span>
+              </blockquote>
+              <div className="mt-8">
+                <VerrePath dark />
+              </div>
+              <Link href="/verre-eglomise" className="btn-foil mt-8 inline-flex">
+                Follow the gold
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-12 md:py-28">
           <p className="eyebrow">The house of Ochré</p>
@@ -102,7 +134,7 @@ export default function HomePage() {
                 A <span className="italic text-[var(--foil)]">certificate of authenticity</span> is issued for every physical piece we create.
               </h2>
               <p className="mt-5 max-w-md text-[var(--porcelain)]/75">
-                Each work will also come with its own NFT (coming soon), a digital twin that proves you own the original.
+                Each work comes with a certificate of authenticity.
               </p>
               <dl className="mt-8 grid grid-cols-3 gap-4 text-sm">
                 <div>
