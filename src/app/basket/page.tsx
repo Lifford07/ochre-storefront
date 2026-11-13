@@ -9,10 +9,10 @@ export default function BasketPage() {
     <>
       <SiteHeader />
       <main className="bg-[#F3EFE7] text-[var(--navy)]">
-        <div className="mx-auto max-w-[1200px] px-5 py-14 md:px-10 md:py-20">
-          <p className="font-mono text-[10px] tracking-[0.24em] text-[#9a8c2e] uppercase">Ochré · Basket</p>
-          <h1 className="font-display mt-2 text-5xl md:text-6xl">Your selection</h1>
-          <div className="mt-4 mb-10 h-px w-24 bg-[#C6B849]" />
+        <div className="mx-auto max-w-[1200px] px-5 pt-10 pb-32 md:px-10 md:py-20">
+          <h1 className="font-display mb-8 text-5xl md:mb-10 md:text-6xl">
+            Your <span className="italic">basket</span>
+          </h1>
           <BasketView />
         </div>
       </main>
