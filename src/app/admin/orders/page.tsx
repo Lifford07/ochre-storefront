@@ -93,6 +93,11 @@ export default function AdminOrdersPage() {
         <p className="mt-2 text-sm text-[#5e574e]">
           Paid orders wait here for a person to check the image, the size, the material, and the shipping address before anything is printed.
         </p>
+        <p className="mt-3 text-sm">
+          <a href="/admin/passports" className="lnk">
+            Provenance passports
+          </a>
+        </p>
         {gate === "unconfigured" ? (
           <p className="mt-6 text-sm text-[#8d3428]">Set ADMIN_PASSWORD before the order desk can open.</p>
         ) : null}

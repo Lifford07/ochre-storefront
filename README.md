@@ -38,3 +38,5 @@ npm run lint
 `npm test` checks the DPI bands (too small under 150, good from 150, perfect from 300) and how far Enhance resolution enlarges a soft file.
 
 Open `/` for the house, `/collection` for editions, `/make` for the editor, and `/orders/preview` for the certificate layout. A paid order uses `/orders/[id]`.
+
+A one-of-one piece can have a provenance passport at `/p/<id>`, opened from a QR code or an NFC tag. The desk is `/admin/passports`. How to add a piece, record a transfer, and download the QR is in [docs/provenance-passports.md](docs/provenance-passports.md).

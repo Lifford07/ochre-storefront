@@ -18,10 +18,17 @@ export function Wordmark({
   tone = "foil",
   className = "",
 }: {
-  tone?: "foil" | "gold" | "navy"
+  tone?: "foil" | "gold" | "navy" | "on-dark"
   className?: string
 }) {
-  const colour = tone === "navy" ? "text-[var(--navy)]" : tone === "gold" ? "text-[var(--gold-ink)]" : "text-[var(--foil)]"
+  const colour =
+    tone === "navy"
+      ? "text-[var(--navy)]"
+      : tone === "gold"
+        ? "text-[var(--gold-ink)]"
+        : tone === "on-dark"
+          ? "text-[#f1e7b4]"
+          : "text-[var(--foil)]"
   return (
     <span className={`font-display inline-block text-[1.55rem] leading-none tracking-[0.28em] ${colour} ${className}`}>
       OCHRÉ
