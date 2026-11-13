@@ -77,7 +77,8 @@ export function hitFromTransaction(tx: ParsedTx | null, order: Pick<StoredOrder,
   }
 }
 
-export async function findPayment(connection: Connection, order: StoredOrder) {
+/** Works for a single order or a basket: both carry a reference, memo, mint, recipient and USDC amount. */
+export async function findPayment(connection: Connection, order: Pick<StoredOrder, "reference" | "memo" | "mint" | "recipient" | "usdcAmount">) {
   const reference = new PublicKey(order.reference)
   const signatures = await connection.getSignaturesForAddress(reference, { limit: 25 }, "confirmed")
   const hits: TransferHit[] = []
