@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { formatPrice } from "@/config/catalogue"
-import { checkoutHref, removeItem, setQty, useBasket } from "@/lib/basket"
+import { CHECKOUT, removeItem, setQty, useBasket } from "@/lib/basket"
 import { DeliveryNote } from "@/components/checkout/delivery-note"
 
 const MARKS = ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "USDC"]
@@ -30,8 +30,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
   }
 
   const first = items[0]
-  const one = items.length === 1 && first.qty === 1
-  const goLabel = `Checkout · ${formatPrice(first.pricePence)}`
+  const goLabel = `Checkout · ${formatPrice(subtotal)}`
 
   return (
     <div className={compact ? "flex h-full flex-col" : "grid items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14"}>
@@ -102,14 +101,14 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
         </dl>
         <p className="mt-1 text-xs text-[var(--navy)]/65">VAT and delivery included. Members of The Ochré Letter can use their code at card checkout.</p>
         {compact ? null : <DeliveryNote materialId={first.materialId} className="mt-4" />}
-        <Link href={checkoutHref(first)} onClick={onNavigate} className="btn-foil mt-5 flex w-full justify-center text-center" data-testid="basket-checkout">
+        <Link href={CHECKOUT} onClick={onNavigate} className="btn-foil mt-5 flex w-full justify-center text-center" data-testid="basket-checkout">
           {goLabel}
         </Link>
-        {one ? null : (
-          <p className="mt-2 text-xs text-[var(--navy)]/65" data-testid="basket-one-at-a-time">
-            For now pieces check out one at a time. This pays for one {first.title}; the rest stay here.
+        {count > 1 ? (
+          <p className="mt-2 text-xs text-[var(--navy)]/65" data-testid="basket-one-payment">
+            One payment for all {count} pieces.
           </p>
-        )}
+        ) : null}
         {compact ? null : (
           <>
             <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] tracking-[0.12em] text-[var(--navy)]/60 uppercase" aria-label="Accepted payment methods">
@@ -124,7 +123,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
 
       {compact ? null : (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#C6B849]/60 bg-[#F3EFE7] px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden" data-testid="basket-bar">
-          <Link href={checkoutHref(first)} className="btn-foil flex w-full justify-center text-center">
+          <Link href={CHECKOUT} className="btn-foil flex w-full justify-center text-center">
             {goLabel}
           </Link>
         </div>
