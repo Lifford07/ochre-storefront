@@ -172,6 +172,23 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
   )
 }
 
+/** Checkout for a basket of house works: no upload steps, just the way back and the mark. */
+export function CheckoutHeader() {
+  return (
+    <header className="bg-[var(--navy)] text-[var(--porcelain)]">
+      <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-20 md:px-8">
+        <Link href="/basket" className="eyebrow inline-flex min-h-11 items-center justify-self-start !text-[10px] !text-[var(--porcelain)] md:!text-[11px]">
+          ← Basket
+        </Link>
+        <Link href="/" aria-label="Ochré home">
+          <Wordmark />
+        </Link>
+        <p className="eyebrow justify-self-end !text-[10px] !text-[var(--foil)] md:!text-[11px]">Checkout</p>
+      </div>
+    </header>
+  )
+}
+
 export function FlowHeader({
   step,
   onBack,

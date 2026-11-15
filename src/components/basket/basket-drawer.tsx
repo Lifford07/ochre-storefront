@@ -3,11 +3,11 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { formatPrice } from "@/config/catalogue"
-import { ADDED, checkoutHref, readBasket, useBasket, type BasketItem } from "@/lib/basket"
+import { ADDED, CHECKOUT, readBasket, useBasket, type BasketItem } from "@/lib/basket"
 import { BasketView } from "@/components/basket/basket-view"
 
 export function BasketButton({ className, icon }: { className: string; icon: React.ReactNode }) {
-  const { count } = useBasket()
+  const { count, subtotal } = useBasket()
   const [open, setOpen] = useState(false)
   const [added, setAdded] = useState<BasketItem | null>(null)
   const [pulse, setPulse] = useState(false)
@@ -77,7 +77,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
         ) : null}
       </button>
 
-      {added ? <AddedSheet item={added} count={count} goRef={go} onClose={() => setAdded(null)} /> : null}
+      {added ? <AddedSheet item={added} count={count} total={subtotal} goRef={go} onClose={() => setAdded(null)} /> : null}
 
       <div className={`fixed inset-0 z-[80] ${open ? "" : "pointer-events-none"}`} aria-hidden={!open} inert={!open}>
         <div className={`absolute inset-0 bg-[#0b1332]/55 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`} onClick={() => setOpen(false)} />
@@ -112,11 +112,13 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
 function AddedSheet({
   item,
   count,
+  total,
   goRef,
   onClose,
 }: {
   item: BasketItem
   count: number
+  total: number
   goRef: React.RefObject<HTMLAnchorElement | null>
   onClose: () => void
 }) {
@@ -153,8 +155,8 @@ function AddedSheet({
           </div>
           <p className="font-display text-lg whitespace-nowrap">{formatPrice(item.pricePence)}</p>
         </div>
-        <Link ref={goRef} href={checkoutHref(item)} onClick={onClose} className="btn-foil mt-5 flex w-full justify-center" data-testid="added-checkout">
-          Checkout · {formatPrice(item.pricePence)}
+        <Link ref={goRef} href={CHECKOUT} onClick={onClose} className="btn-foil mt-5 flex w-full justify-center" data-testid="added-checkout">
+          Checkout · {formatPrice(total)}
         </Link>
         <div className="mt-1 flex items-center justify-between">
           <button type="button" onClick={onClose} className="min-h-11 text-[11px] tracking-[0.18em] uppercase underline underline-offset-4" data-testid="added-stay">

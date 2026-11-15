@@ -18,6 +18,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const order = await getOrder(id)
   if (!order || !t || order.viewToken !== t) return Response.json({ error: "Order not found." }, { status: 404 })
   if (order.status === "paid, awaiting Ochré check") return Response.json({ error: "This order is already paid." }, { status: 409 })
+  if (order.basketId) return Response.json({ error: "This piece is paid through its basket." }, { status: 409 })
   const base = origin(request)
   const name = `${order.artworkTitle ?? "Your image"} · ${order.materialName}, ${order.sizeName}`
   try {
