@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2560" width="2048" height="2560" role="img" aria-label="Ochré églomisé gilded shield panel">
+  <defs>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1814"/>
+      <stop offset="50%" stop-color="#12100e"/>
+      <stop offset="100%" stop-color="#0a0908"/>
+    </linearGradient>
+    <linearGradient id="gilt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff3c4"/>
+      <stop offset="25%" stop-color="#e8c547"/>
+      <stop offset="55%" stop-color="#c4a574"/>
+      <stop offset="80%" stop-color="#8b5a3c"/>
+      <stop offset="100%" stop-color="#f0d78c"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4b87a"/>
+      <stop offset="100%" stop-color="#6b4428"/>
+    </linearGradient>
+    <clipPath id="heater">
+      <path d="M1024 280 L1560 420 L1560 1180 C1560 1580 1280 1880 1024 2040 C768 1880 488 1580 488 1180 L488 420 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="2048" height="2560" fill="url(#glass)"/>
+  <!-- Panel frame -->
+  <rect x="120" y="120" width="1808" height="2320" fill="none" stroke="url(#frame)" stroke-width="28"/>
+  <rect x="160" y="160" width="1728" height="2240" fill="none" stroke="#3a2e22" stroke-width="4"/>
+  <!-- Gilded shield -->
+  <path d="M1024 280 L1560 420 L1560 1180 C1560 1580 1280 1880 1024 2040 C768 1880 488 1580 488 1180 L488 420 Z" fill="#1a1410" stroke="url(#gilt)" stroke-width="18"/>
+  <g clip-path="url(#heater)">
+    <path d="M1024 280 L1560 420 L1560 1180 C1560 1580 1280 1880 1024 2040 C768 1880 488 1580 488 1180 L488 420 Z" fill="#241c16" opacity="0.9"/>
+    <!-- Reverse-glass leaf motif -->
+    <g transform="translate(1024 1100)" opacity="0.95">
+      <path d="M0,-320 C90,-260 160,-120 170,0 C180,140 110,260 10,320 C-10,290 -20,250 -10,220 C-50,270 -100,290 -150,250 C-230,180 -260,40 -250,-80 C-240,-220 -120,-290 0,-320 Z" fill="url(#gilt)"/>
+      <path d="M0,-300 L8,280" fill="none" stroke="#2a1c12" stroke-opacity="0.4" stroke-width="3"/>
+      <circle cx="-40" cy="-60" r="2" fill="#fff3c4"/><circle cx="50" cy="80" r="1.6" fill="#fff3c4"/>
+      <circle cx="-80" cy="120" r="1.4" fill="#f0e0a8"/><circle cx="70" cy="-140" r="1.8" fill="#f0e0a8"/>
+    </g>
+    <!-- Micro hatching for deep zoom interest -->
+    <g stroke="#c4a574" stroke-opacity="0.12" stroke-width="1">
+      <path d="M600 600 L900 900"/><path d="M700 550 L1000 850"/><path d="M1100 560 L1400 860"/>
+      <path d="M650 1400 L950 1700"/><path d="M1200 1350 L1450 1600"/>
+    </g>
+  </g>
+  <text x="1024" y="2280" text-anchor="middle" fill="#c4a574" font-family="Cinzel, Georgia, serif" font-size="42" letter-spacing="10">ÉGLOMISÉ</text>
+  <text x="1024" y="2340" text-anchor="middle" fill="#a89884" font-family="Georgia, serif" font-size="28" letter-spacing="4">Ochré gilded glass panel</text>
+</svg>

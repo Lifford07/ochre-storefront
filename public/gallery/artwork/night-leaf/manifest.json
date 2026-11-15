@@ -1,0 +1,30 @@
+{
+  "width": 8533,
+  "height": 8533,
+  "tiers": [
+    {
+      "maxScale": 1,
+      "src": "/gallery/artwork/night-leaf/w384.webp",
+      "width": 384,
+      "height": 384
+    },
+    {
+      "maxScale": 2,
+      "src": "/gallery/artwork/night-leaf/w768.webp",
+      "width": 768,
+      "height": 768
+    },
+    {
+      "maxScale": 4,
+      "src": "/gallery/artwork/night-leaf/w1536.webp",
+      "width": 1536,
+      "height": 1536
+    },
+    {
+      "maxScale": 8,
+      "src": "/gallery/artwork/night-leaf/w3072.webp",
+      "width": 3072,
+      "height": 3072
+    }
+  ]
+}

@@ -15,7 +15,7 @@ const lines = [
   { href: "/verre-eglomise", label: "Verre églomisé", live: true },
   { href: "/collection", label: "Home", live: false },
   { href: "/collection", label: "Garments", live: false },
-  { href: "/collection", label: "Jewellery", live: false },
+  { href: "/jewellery", label: "Jewellery", live: true },
 ]
 
 const ico = "size-[18px] shrink-0"
@@ -117,7 +117,7 @@ export function SiteFooter() {
             ["Art", "/collection"],
             ["Home · soon", "/collection"],
             ["Ochré Atelier · soon", "/collection"],
-            ["Jewellery · soon", "/collection"],
+            ["Jewellery", "/jewellery"],
           ]}
         />
         <FooterCol
