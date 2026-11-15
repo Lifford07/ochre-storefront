@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/make",
     "/collection",
+    "/verre-eglomise",
     "/jewellery",
     "/jewellery/design",
     "/jewellery/commission",

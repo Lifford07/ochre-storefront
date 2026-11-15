@@ -404,6 +404,7 @@
 .jewellery-museum .choice {
   border: 1px solid var(--gallery-line);
   background: transparent;
+  min-height: 44px;
   padding: 0.75rem;
   text-align: left;
   color: var(--gallery-muted);
@@ -428,7 +429,7 @@
   color: var(--gallery-muted);
   background: transparent;
   border-radius: 0;
-  min-height: 36px;
+  min-height: 44px;
 }
 
 .jewellery-museum .chip-on,
@@ -501,9 +502,15 @@
     transparent 80%
   );
   background-size: 220% 100%;
-  animation: gold-sheen 4.5s ease-in-out infinite alternate;
   mix-blend-mode: screen;
   pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .jewellery-museum .gold-leaf-shimmer,
+  .gold-leaf-shimmer {
+    animation: gold-sheen 4.5s ease-in-out infinite alternate;
+  }
 }
 
 @keyframes gold-sheen {
@@ -514,5 +521,16 @@
 @media (prefers-reduced-motion: reduce) {
   .gold-leaf-shimmer {
     animation: none;
+  }
+}
+
+@keyframes ochre-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
