@@ -35,6 +35,11 @@ export type HouseWork = {
   editionSize: number
   year: number
   statement: string
+  /** Second line under the title, as on the house collection. */
+  sub?: string
+  fact?: string
+  /** The buyer's name is printed on the piece and is required before it can be bagged. */
+  personal?: boolean
 }
 
 export type HouseArtist = {
@@ -76,7 +81,9 @@ export const works: HouseWork[] = [
   },
   {
     slug: "fingerprint-of-god",
-    title: "Fingerprint of God — Arabic Edition",
+    title: "Fingerprint of God",
+    sub: "Arabic Edition",
+    fact: "The names of the surahs, set along the ridges of a fingerprint. Beneath it: Allah loves you.",
     artist: "SJ",
     artistSlug: "sj",
     line: "art",
@@ -90,7 +97,10 @@ export const works: HouseWork[] = [
   },
   {
     slug: "fingerprint-of-god-christian",
-    title: "Fingerprint of God — Christian Edition",
+    title: "Fingerprint of God",
+    sub: "Christian Edition",
+    personal: true,
+    fact: "Verses from Genesis to Revelation, set along the ridges of a fingerprint. Beneath it: God loves you, and a name.",
     artist: "SJ",
     artistSlug: "sj",
     line: "art",

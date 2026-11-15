@@ -51,7 +51,10 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
                   <p className="mt-1 font-mono text-[10px] tracking-[0.14em] text-[var(--navy)]/65 uppercase">
                     {item.materialName} · {item.sizeName}
                   </p>
-                  <p className="mt-0.5 font-mono text-[10px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">Edition of {item.editionSize}</p>
+                  <p className="mt-0.5 font-mono text-[10px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">
+                    Edition of {item.editionSize}
+                    {item.buyerName ? ` · ${item.buyerName}` : ""}
+                  </p>
                 </div>
                 <p className="font-display text-lg whitespace-nowrap">{formatPrice(item.pricePence * item.qty)}</p>
               </div>

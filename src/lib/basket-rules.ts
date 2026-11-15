@@ -5,7 +5,7 @@
 
 export const MAX_PIECES = 10
 
-export type BasketRequestLine = { slug: string; materialId: string; sizeId: string; qty: number }
+export type BasketRequestLine = { slug: string; materialId: string; sizeId: string; qty: number; buyerName?: string }
 
 /** Reads the lines sent by the browser. Same work, material and size are merged into one line. */
 export function readLines(raw: unknown): { lines: BasketRequestLine[] } | { error: string } {
@@ -14,16 +14,18 @@ export function readLines(raw: unknown): { lines: BasketRequestLine[] } | { erro
   const merged = new Map<string, BasketRequestLine>()
   for (const item of raw) {
     if (!item || typeof item !== "object") return { error: "A basket line was not readable." }
-    const { slug, materialId, sizeId, qty } = item as Record<string, unknown>
+    const { slug, materialId, sizeId, qty, buyerName } = item as Record<string, unknown>
     if (typeof slug !== "string" || typeof materialId !== "string" || typeof sizeId !== "string" || !slug || !materialId || !sizeId) {
       return { error: "A basket line was not readable." }
     }
     const count = Number(qty)
     if (!Number.isInteger(count) || count < 1) return { error: "A basket line has no quantity." }
-    const key = `${slug}:${materialId}:${sizeId}`
+    const name = typeof buyerName === "string" ? buyerName.trim().slice(0, 40) : ""
+    if (slug === "fingerprint-of-god-christian" && !name) return { error: "The Christian Edition needs the buyer’s name." }
+    const key = `${slug}:${materialId}:${sizeId}:${name}`
     const have = merged.get(key)
     if (have) have.qty += count
-    else merged.set(key, { slug, materialId, sizeId, qty: count })
+    else merged.set(key, { slug, materialId, sizeId, qty: count, buyerName: name || undefined })
   }
   const lines = [...merged.values()]
   if (pieceCount(lines) > MAX_PIECES) return { error: `A basket can hold up to ${MAX_PIECES} pieces.` }

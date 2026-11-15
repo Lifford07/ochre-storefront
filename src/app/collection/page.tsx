@@ -1,30 +1,46 @@
 import type { Metadata } from "next"
-import { CollectionGrid } from "@/components/collection/collection-grid"
-import { Endband } from "@/components/brand/mark"
+import Link from "next/link"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
+import { formatPrice, fromPrice } from "@/config/catalogue"
+import { works } from "@/config/works"
 
-export const metadata: Metadata = {
-  title: "The collection — OCHRÉ",
-  description: "Numbered editions by SJ on real glass, acrylic glass and canvas.",
-}
+export const metadata: Metadata = { title: "Collection — OCHRÉ" }
 
 export default function CollectionPage() {
+  const list = works.filter((work) => work.artistSlug === "sj" && work.image)
   return (
     <>
       <SiteHeader />
-      <main className="page-enter mx-auto max-w-[1440px] px-5 py-20 md:px-12 md:py-28">
-        <p className="eyebrow">The collection</p>
-        <div className="mt-4 flex flex-wrap items-end justify-between gap-8">
-          <h1 className="font-display text-4xl md:text-6xl">Works in numbered editions.</h1>
-          <p className="max-w-sm text-sm leading-relaxed text-[var(--charcoal)]">
-            Each work is printed to order in a fixed edition. The certificate will be issued for that edition.
-          </p>
-        </div>
-        <div className="mt-10">
-          <CollectionGrid />
-        </div>
+      <main id="main">
+        <section className="page">
+          <header className="phead">
+            <p className="kicker">Collection</p>
+            <h1>Works by <em>SJ</em></h1>
+            <p className="phead__lede">Numbered editions, made to order on real glass, acrylic and canvas.</p>
+          </header>
+          <div className="salon">
+            {list.map((work) => {
+              const from = fromPrice(work.materialId, { numbered: true })
+              return (
+                <Link key={work.slug} className="card" href={`/collection/${work.slug}`}>
+                  <span className="card__img">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={work.image} alt={`${work.title}, by ${work.artist}`} />
+                  </span>
+                  <span className="card__cap">
+                    <span className="card__t">{work.title}{work.sub ? <em> {work.sub}</em> : null}</span>
+                    <span className="mono">{work.artist} · Edition of {work.editionSize}{from == null ? "" : ` · from ${formatPrice(from)}`}</span>
+                  </span>
+                </Link>
+              )
+            })}
+            <Link className="card card--yours" href="/make">
+              <span className="card__img"><span className="empty"><i>Yours</i></span></span>
+              <span className="card__cap"><span className="card__t">Your photograph</span><span className="mono">Edition 1/1</span></span>
+            </Link>
+          </div>
+        </section>
       </main>
-      <Endband />
       <SiteFooter />
     </>
   )

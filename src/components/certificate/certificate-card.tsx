@@ -10,6 +10,7 @@ export type CertificateView = {
   materialName: string
   sizeName: string
   editionLabel: string
+  buyerName?: string
   number: number
   size: number
   owner: string
@@ -49,12 +50,11 @@ export function CertificateCard({ view }: { view: CertificateView }) {
                   <p>{view.issued}</p>
                 </div>
               </div>
+              {view.buyerName ? <Field label="Name" value={view.buyerName} /> : null}
               {view.artist ? <Field label="Artist" value={view.artist} /> : null}
               <Field label="Material" value={view.materialName} />
               <Field label="Size" value={view.sizeName} />
-              <Field label="Owner" value={walletOrWords(view.owner)} />
-              <Field label="USDC" value={walletOrWords(view.mint)} />
-              <Field label="Network" value={view.network} />
+              <Field label="Owner" value={view.owner.includes(" ") ? view.owner : "Recorded with the order"} />
             </dl>
             <div className="mt-8 flex items-end justify-between gap-4">
               <div>
@@ -62,7 +62,7 @@ export function CertificateCard({ view }: { view: CertificateView }) {
                 <p className="eyebrow mt-1">For the house</p>
               </div>
               <div className="text-right">
-                <p className="font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">Awaiting the mint</p>
+                <p className="font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">Issued with the piece</p>
                 {view.solscanUrl ? (
                   <Link href={view.solscanUrl} className="lnk mt-2 inline-block text-xs" target="_blank">
                     View the payment

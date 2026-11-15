@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Endband } from "@/components/brand/mark"
 import { WorkStudio } from "@/components/collection/work-studio"
+import { WorkBuy } from "@/components/house/work-buy"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
 import { workBySlug, works } from "@/config/works"
 import { countPaid } from "@/lib/orders-store"
@@ -37,8 +38,8 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
   return (
     <>
       <SiteHeader />
-      <main className="page-enter mx-auto max-w-[1440px] px-5 py-16 md:px-12 md:py-24">
-        <WorkStudio work={work} taken={taken} countKnown={countKnown} />
+      <main id="main" className="page">
+        {work.artistSlug === "sj" && work.image ? <WorkBuy work={work} /> : <WorkStudio work={work} taken={taken} countKnown={countKnown} />}
       </main>
       <Endband />
       <SiteFooter />

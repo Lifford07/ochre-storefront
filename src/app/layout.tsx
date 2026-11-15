@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Azeret_Mono, Bodoni_Moda, Inter } from "next/font/google";
-import { GalleryScroll } from "@/components/gallery/gallery-scroll";
 import "./globals.css";
+import "./house.css";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -41,8 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[var(--porcelain)] text-[var(--ink)]">
-        <GalleryScroll />
+      <body className="house min-h-full bg-[var(--porcelain)] text-[var(--ink)]">
         {children}
       </body>
     </html>

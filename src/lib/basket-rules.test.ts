@@ -15,6 +15,10 @@ test("readLines merges the same piece and rejects bad input", () => {
   assert.ok("error" in readLines([{ slug: "a", materialId: "m", sizeId: "s", qty: 0 }]))
   assert.ok("error" in readLines([{ slug: "a", materialId: "m", sizeId: "s", qty: 1.5 }]))
   assert.ok("error" in readLines([{ slug: "a", materialId: "m", sizeId: "s", qty: MAX_PIECES + 1 }]))
+  assert.ok("error" in readLines([{ slug: "fingerprint-of-god-christian", materialId: "m", sizeId: "s", qty: 1 }]))
+  const named = readLines([{ slug: "fingerprint-of-god-christian", materialId: "m", sizeId: "s", qty: 1, buyerName: "Adaeze" }])
+  assert.ok("lines" in named)
+  assert.equal(named.lines[0]?.buyerName, "Adaeze")
 })
 
 test("basketTotal adds every unit", () => {

@@ -78,6 +78,7 @@ export async function POST(request: Request) {
       widthMm: size.widthMm,
       heightMm: size.heightMm,
       qty: line.qty,
+      buyerName: line.buyerName,
       unitPence: priceFor(size, material.id, { zone, numbered: true }),
       editionSize: work.editionSize,
     })
@@ -150,6 +151,7 @@ export async function POST(request: Request) {
         editionSize: line.editionSize,
         artworkSlug: line.slug,
         artworkTitle: line.title,
+        buyerName: line.buyerName,
         email: c.email,
         fullName: c.fullName,
         address: c.address,
