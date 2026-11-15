@@ -94,7 +94,7 @@ export function HouseHeader() {
           <Link href="/make" className={active(pathname, "/make") ? "at" : ""}>Make yours</Link>
           <AccountMenu className="hdr__account" compact />
           <Link href="/basket" className={`hdr__bag${count ? " has" : ""}`} aria-label={`Bag, ${count}`}>
-            Bag <span className="mono">{count}</span>
+            Bag <span id="bagCount" className="mono">{count}</span>
           </Link>
         </nav>
       </header>
