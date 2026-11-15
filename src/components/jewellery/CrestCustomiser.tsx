@@ -15,7 +15,6 @@ import { createDefaultDesign } from "@/lib/crest/defaults"
 import { priceDesign } from "@/lib/crest/pricing"
 import { downloadDesignJson } from "@/lib/crest/serialize"
 import type { CrestDesign, PlacedSymbol } from "@/lib/crest/types"
-import { payWithSolanaPay } from "@/lib/jewellery/solana-pay-handoff"
 import {
   UPLOAD_ACCEPT_ATTR,
   gateClientUpload,
@@ -32,7 +31,7 @@ const CREST_STEPS: BuilderStep[] = [
   { id: "symbols", label: "Symbols" },
   { id: "upload", label: "Upload" },
   { id: "lettering", label: "Lettering" },
-  { id: "review", label: "Review & pay" },
+  { id: "review", label: "Review" },
 ]
 
 function uid() {
@@ -41,7 +40,7 @@ function uid() {
 
 /**
  * Jewellery crest customiser — Mix Part A stepped builder.
- * Option/pricing core and Solana Pay checkout are unchanged; UI wraps them.
+ * The guide price is shown here. Payment stays on the shop checkout, not on this brief.
  */
 export function CrestCustomiser() {
   const [design, setDesign] = useState<CrestDesign>(() => createDefaultDesign())
@@ -52,7 +51,6 @@ export function CrestCustomiser() {
   const [requestText, setRequestText] = useState("")
   const [status, setStatus] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
-  const [email, setEmail] = useState("")
   const [stepIndex, setStepIndex] = useState(0)
 
   const price = useMemo(() => priceDesign(design), [design])
@@ -142,22 +140,6 @@ export function CrestCustomiser() {
       )
     } catch (err) {
       setStatus(err instanceof Error ? err.message : "Upload failed.")
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  async function handleSolanaPay() {
-    if (!canContinueUpload) {
-      setStatus("Tick the crest ownership attestation before paying.")
-      return
-    }
-    setBusy(true)
-    try {
-      const result = await payWithSolanaPay(design)
-      setStatus(
-        `${result.message} Live total £${price.total}. Existing Solana Pay checkout is untouched — wire window.__OCHRE_SOLANA_PAY__ when ready.`,
-      )
     } finally {
       setBusy(false)
     }
@@ -433,29 +415,10 @@ export function CrestCustomiser() {
             <dd className="font-display text-2xl text-[color:var(--gallery-ink)]">£{price.total}</dd>
           </div>
         </dl>
-        <label className="mt-4 block text-sm">
-          <span className="text-[color:var(--gallery-muted)]">Email for the brief</span>
-          <input
-            className="field mt-1"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            aria-label="Email for the brief"
-            autoComplete="email"
-          />
-        </label>
+        <p className="mt-4 text-sm text-[color:var(--gallery-muted)]">A guide price. Nothing is charged on this page.</p>
         <div className="mt-6 flex flex-col gap-3">
-          <button
-            type="button"
-            disabled={busy || !canContinueUpload}
-            onClick={() => void handleSolanaPay()}
-            className="btn-primary disabled:opacity-40"
-          >
-            Pay with Solana Pay
-          </button>
-          <Link href="/contact" className="btn-secondary text-center">
-            Ask about card checkout
+          <Link href="/jewellery/commission" className="btn-primary text-center">
+            Send a commission brief
           </Link>
           {highValue ? (
             <a
@@ -465,8 +428,8 @@ export function CrestCustomiser() {
               Book a consultation
             </a>
           ) : null}
-          <Link className="btn-secondary text-center" href="/jewellery/commission">
-            Tell us your idea — commission brief
+          <Link href="/contact" className="btn-secondary text-center">
+            Write to the studio
           </Link>
         </div>
         <p className="mt-3 text-xs text-[color:var(--gallery-muted)]">
