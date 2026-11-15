@@ -49,9 +49,17 @@ export function addToBasket(item: Omit<BasketItem, "key" | "qty">) {
 /** Fired after a piece is added. The header shows a small "In your basket" sheet. */
 export const ADDED = "ochre-basket-added"
 
-/** Checkout is one piece at a time: this is where a basket line pays. */
+/** The whole basket pays in one go here. */
+export const CHECKOUT = "/checkout"
+
+/** Single piece, straight from its page. */
 export function checkoutHref(item: Pick<BasketItem, "slug" | "materialId" | "sizeId">) {
   return `/collect/${item.slug}?material=${item.materialId}&size=${item.sizeId}`
+}
+
+/** Empties the basket once a basket order has been paid. */
+export function clearBasket() {
+  write([])
 }
 
 export function setQty(key: string, qty: number) {

@@ -27,3 +27,37 @@ export function buyerOrder(order: StoredOrder) {
     message: order.message,
   }
 }
+
+/** What the paying browser needs for a basket. No other customer's record, and no child tokens until paid. */
+export function buyerBasket(basket: import("./order-types.ts").StoredBasket) {
+  return {
+    id: basket.id,
+    status: basket.status,
+    pieces: basket.pieces,
+    paymentMethod: basket.paymentMethod,
+    totalPence: basket.totalPence,
+    usdcAmount: basket.usdcAmount,
+    cluster: basket.cluster,
+    payUrl: basket.payUrl,
+    recipient: basket.recipient,
+    mint: basket.mint,
+    reference: basket.reference,
+    memo: basket.memo,
+    signature: basket.signature,
+    solscanUrl: basket.solscanUrl,
+    paidAt: basket.paidAt,
+    viewToken: basket.viewToken,
+    label: basket.label,
+    message: basket.message,
+    lines: basket.lines.map((line) => ({
+      slug: line.slug,
+      title: line.title,
+      materialName: line.materialName,
+      sizeName: line.sizeName,
+      qty: line.qty,
+      unitPence: line.unitPence,
+    })),
+  }
+}
+
+export type BuyerBasket = ReturnType<typeof buyerBasket>

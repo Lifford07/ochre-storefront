@@ -443,7 +443,21 @@ function WalletShell({
   )
 }
 
-function Payment({ order, onPaid }: { order: StoredOrder; onPaid: (order: StoredOrder) => void }) {
+const noop = () => undefined
+
+/** What the USDC box needs: a single order or a whole basket. */
+export type PayTarget = Pick<StoredOrder, "id" | "payUrl" | "usdcAmount" | "pricePence" | "recipient" | "mint" | "reference" | "memo" | "status" | "viewToken">
+
+/** The USDC box for a basket: same QR, wallet links and polling as a single order. */
+export function UsdcPay({ target, cluster }: { target: PayTarget; cluster: StoredOrder["cluster"] }) {
+  return (
+    <WalletShell cluster={cluster}>
+      <Payment order={target as StoredOrder} onPaid={noop} kind="basket" />
+    </WalletShell>
+  )
+}
+
+function Payment({ order, onPaid, kind = "order" }: { order: StoredOrder; onPaid: (order: StoredOrder) => void; kind?: "order" | "basket" }) {
   const router = useRouter()
   const { connection } = useConnection()
   const { publicKey, sendTransaction, connected } = useWallet()
@@ -473,15 +487,17 @@ function Payment({ order, onPaid }: { order: StoredOrder; onPaid: (order: Stored
       let step = 0
       while (!stop && elapsed < 15 * 60 * 1000) {
         try {
-          const response = await fetch(`/api/orders/${order.id}/confirm`, { method: "POST" })
-          const body = (await response.json()) as { found?: boolean; order?: StoredOrder; error?: string }
-          if (body.order?.status === "paid, awaiting Ochré check") {
-            setPaid(body.order)
-            onPaid(body.order)
+          const response = await fetch(`/api/${kind === "basket" ? "baskets" : "orders"}/${order.id}/confirm`, { method: "POST" })
+          const body = (await response.json()) as { found?: boolean; order?: StoredOrder; basket?: StoredOrder; error?: string }
+          const seen = body.order ?? body.basket
+          if (seen?.status === "paid, awaiting Ochré check") {
+            const settled = { ...order, ...seen }
+            setPaid(settled)
+            onPaid(settled)
             setWaiting(false)
             sessionStorage.removeItem("ochre-open-order")
-            const token = body.order.viewToken ? `?t=${body.order.viewToken}` : ""
-            router.push(`/orders/${order.id}${token}`)
+            const token = settled.viewToken ? `?t=${settled.viewToken}` : ""
+            router.push(`/${kind === "basket" ? "baskets" : "orders"}/${order.id}${token}`)
             return
           }
           if (response.status === 429) setError("Checking a little less often.")
@@ -499,7 +515,7 @@ function Payment({ order, onPaid }: { order: StoredOrder; onPaid: (order: Stored
     return () => {
       stop = true
     }
-  }, [order.id, onPaid, paid, router])
+  }, [order, kind, onPaid, paid, router])
 
   async function payWithWallet() {
     if (!publicKey) {
