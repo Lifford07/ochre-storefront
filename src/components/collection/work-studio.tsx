@@ -5,6 +5,7 @@ import { addToBasket } from "@/lib/basket"
 import { isExampleWork } from "@/config/works"
 
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { useMemo, useState } from "react"
 import { WorkImage } from "@/components/art/motif"
 import { InspectPlate } from "@/components/gallery/inspect-plate"
@@ -25,6 +26,11 @@ import { hiddenSizeCount, visibleSizes } from "@/lib/size-window"
 
 const offered: MaterialId[] = ["real-glass", "acrylic", "canvas"]
 
+const WallPanel = dynamic(() => import("@/components/editor/wall-preview").then((m) => m.WallPanel), {
+  ssr: false,
+  loading: () => <p className="mt-6 text-sm text-[var(--mute)]">Opening the wall…</p>,
+})
+
 export function WorkStudio({
   work,
   taken,
@@ -36,7 +42,7 @@ export function WorkStudio({
 }) {
   const [materialId, setMaterialId] = useState<MaterialId>(work.materialId)
   const [sizeId, setSizeId] = useState(work.sizeId)
-  const [room, setRoom] = useState(false)
+  const [wall, setWall] = useState(false)
   const [moreSizes, setMoreSizes] = useState(false)
   const [frame, setFrame] = useState(0)
   const material = materialById(materialId)
@@ -84,36 +90,36 @@ export function WorkStudio({
           <span> / {work.title}</span>
         </p>
         <figure className="mt-8">
-          {room ? (
-            <div className="grid min-h-[520px] place-items-center bg-[#e7e1d6] px-8 py-20">
-              <div className="w-full max-w-sm">
-                <div className="mx-auto w-1/2">
-                  {slides.length > 0 ? <InspectPlate slides={slides}>{plate}</InspectPlate> : plate}
-                </div>
-                <div className="mt-8 h-16 bg-[#f7f4ee]" />
-                <p className="mt-4 text-center font-mono text-[11px] tracking-[0.14em] text-[var(--mute)] uppercase">
-                  Room view · stand-in
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-auto max-w-2xl">
-              {slides.length > 0 ? <InspectPlate slides={slides}>{plate}</InspectPlate> : plate}
-            </div>
-          )}
+          <div className="mx-auto max-w-2xl">
+            {slides.length > 0 ? <InspectPlate slides={slides}>{plate}</InspectPlate> : plate}
+          </div>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-            <button
-              type="button"
-              className="gallery-text-link min-h-11 text-xs tracking-[0.16em] uppercase"
-              onClick={() => setRoom((value) => !value)}
-            >
-              {room ? "View the work" : "View in a room"}
-            </button>
             <p className="text-xs tracking-[0.14em] text-[var(--mute)] uppercase">
               Shown in {material.name}
               {size ? ` · ${size.name}` : ""}
             </p>
           </div>
+          {activeImage && size ? (
+            wall ? (
+              <WallPanel
+                defaultOpen
+                src={artworkSources(activeImage).src}
+                widthMm={size.widthMm}
+                heightMm={size.heightMm}
+                materialId={materialId}
+                materialName={material.name}
+                sizeName={size.name}
+              />
+            ) : (
+              <button
+                type="button"
+                className="gallery-text-link mt-4 inline-flex min-h-11 items-center text-xs tracking-[0.16em] uppercase"
+                onClick={() => setWall(true)}
+              >
+                View on your wall
+              </button>
+            )
+          ) : null}
           {frames.length > 1 ? (
             <ul className="mt-4 flex gap-2 overflow-x-auto">
               {frames.map((src, index) => (
@@ -211,11 +217,7 @@ export function WorkStudio({
         </fieldset>
 
         <p className="font-display mt-10 text-5xl">{price == null ? "—" : formatPrice(price)}</p>
-        <p className="mt-2 text-sm text-[var(--mute)]">
-          ≈ USDC at checkout <span className="ex">Rate</span>
-          <span className="mx-2">·</span>
-          {material.lead}
-        </p>
+        <p className="mt-2 text-sm text-[var(--mute)]">{material.lead}</p>
 
         {material.payable && price != null && countKnown && left > 0 && size ? (
           <Link
