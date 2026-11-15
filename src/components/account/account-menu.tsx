@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
+import { useOverlayLock } from "@/components/gallery/overlay-lock"
 
 type Me = { id: string; email: string; firstName: string; lastName: string }
 type Mode = "signin" | "register" | "forgot" | null
@@ -102,6 +103,7 @@ const primary = "mt-5 w-full bg-[var(--navy)] py-3 font-sans text-[12px] font-se
 function AccountModal({ google, mode, setMode, onDone }: { google: boolean; mode: Exclude<Mode, null>; setMode: (m: Mode) => void; onDone: (u: Me) => void }) {
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  useOverlayLock(true)
 
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === "Escape" && setMode(null)
@@ -146,7 +148,7 @@ function AccountModal({ google, mode, setMode, onDone }: { google: boolean; mode
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0b1332]/55 p-4 backdrop-blur-[2px]" onMouseDown={(e) => e.target === e.currentTarget && setMode(null)}>
-      <div role="dialog" aria-modal="true" aria-label={title} className="relative max-h-[92vh] w-full max-w-[420px] overflow-y-auto bg-[#F3EFE7] px-7 pt-8 pb-7 text-center text-[var(--navy)] shadow-2xl sm:px-10">
+      <div role="dialog" aria-modal="true" aria-label={title} data-lenis-prevent className="relative max-h-[92vh] w-full max-w-[420px] overflow-y-auto bg-[#F3EFE7] px-7 pt-8 pb-7 text-center text-[var(--navy)] shadow-2xl sm:px-10">
         <button type="button" aria-label="Close" onClick={() => setMode(null)} className="absolute top-3 right-3 inline-flex size-10 items-center justify-center text-xl text-[var(--navy)]/70 hover:text-[var(--navy)]">
           ×
         </button>

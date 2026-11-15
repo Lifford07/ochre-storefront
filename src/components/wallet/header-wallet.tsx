@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { ConnectionProvider, useWallet, WalletProvider } from "@solana/wallet-adapter-react"
 import { WalletAdapterNetwork, WalletReadyState, type WalletName } from "@solana/wallet-adapter-base"
 import { buildWalletAdapters, walletConnectProjectId } from "@/lib/wallet-adapters"
+import { useOverlayLock } from "@/components/gallery/overlay-lock"
 
 /**
  * Header wallet. Uses the same adapter set and the same localStorage key ("walletName")
@@ -105,6 +106,7 @@ function WalletButton({ className }: { className: string }) {
 
 function WalletPicker({ onClose }: { onClose: () => void }) {
   const { wallets, select, connect, wallet, publicKey } = useWallet()
+  useOverlayLock(true)
   const [pending, setPending] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -150,7 +152,7 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0b1332]/55 p-4 backdrop-blur-[2px]" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div role="dialog" aria-modal="true" aria-label="Connect a wallet" className="relative max-h-[92vh] w-full max-w-[420px] overflow-y-auto bg-[#F3EFE7] px-7 pt-8 pb-7 text-[var(--navy)] shadow-2xl">
+      <div role="dialog" aria-modal="true" aria-label="Connect a wallet" data-lenis-prevent className="relative max-h-[92vh] w-full max-w-[420px] overflow-y-auto bg-[#F3EFE7] px-7 pt-8 pb-7 text-[var(--navy)] shadow-2xl">
         <button type="button" aria-label="Close" onClick={onClose} className="absolute top-3 right-3 inline-flex size-10 items-center justify-center text-xl text-[var(--navy)]/70 hover:text-[var(--navy)]">
           ×
         </button>

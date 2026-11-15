@@ -6,6 +6,7 @@ import { formatPrice } from "@/config/catalogue"
 import { ADDED, CHECKOUT, readBasket, useBasket, type BasketItem } from "@/lib/basket"
 import { artworkSources } from "@/components/art/motif"
 import { BasketView } from "@/components/basket/basket-view"
+import { useOverlayLock } from "@/components/gallery/overlay-lock"
 
 export function BasketButton({ className, icon }: { className: string; icon: React.ReactNode }) {
   const { count, subtotal } = useBasket()
@@ -14,7 +15,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
   const [pulse, setPulse] = useState(false)
   const go = useRef<HTMLAnchorElement>(null)
   const closeBtn = useRef<HTMLButtonElement>(null)
-
+  useOverlayLock(open)
   useEffect(() => {
     const onAdded = (event: Event) => {
       const key = (event as CustomEvent<{ key: string }>).detail?.key
@@ -86,6 +87,7 @@ export function BasketButton({ className, icon }: { className: string; icon: Rea
           role="dialog"
           aria-modal="true"
           aria-label="Your basket"
+          data-lenis-prevent
           className={`absolute top-0 right-0 flex h-full w-full max-w-[460px] flex-col bg-[#F3EFE7] text-[var(--navy)] shadow-[-30px_0_60px_-30px_rgba(11,19,50,0.6)] transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none ${open ? "translate-x-0" : "translate-x-full"}`}
           data-testid="basket-drawer"
         >

@@ -12,9 +12,9 @@ export default function CollectionPage() {
   return (
     <>
       <SiteHeader />
-      <main className="page-enter mx-auto max-w-[1440px] px-5 py-12 md:px-12 md:py-16">
+      <main className="page-enter mx-auto max-w-[1440px] px-5 py-20 md:px-12 md:py-28">
         <p className="eyebrow">The collection</p>
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-6">
+        <div className="mt-4 flex flex-wrap items-end justify-between gap-8">
           <h1 className="font-display text-4xl md:text-6xl">Works in numbered editions.</h1>
           <p className="max-w-sm text-sm leading-relaxed text-[var(--charcoal)]">
             Each work is printed to order in a fixed edition. The certificate will be issued for that edition.
