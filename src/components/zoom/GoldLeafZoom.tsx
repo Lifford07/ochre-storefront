@@ -46,7 +46,9 @@ export function GoldLeafZoom({ alt, width, height, tiers, className = '' }: Prop
   const dragOrigin = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null)
   const pinchRef = useRef<{ dist: number; scale: number } | null>(null)
   const scaleRef = useRef(scale)
-  scaleRef.current = scale
+  useEffect(() => {
+    scaleRef.current = scale
+  }, [scale])
 
   const active = useMemo(() => pickTier(tiers, scale), [tiers, scale])
   const nextTier = useMemo(() => {
@@ -71,8 +73,9 @@ export function GoldLeafZoom({ alt, width, height, tiers, className = '' }: Prop
     const rect = el.getBoundingClientRect()
     const px = cx - rect.left - rect.width / 2
     const py = cy - rect.top - rect.height / 2
+    const s = clamp(nextScale, MIN_SCALE, MAX_SCALE)
+    scaleRef.current = s
     setScale((prev) => {
-      const s = clamp(nextScale, MIN_SCALE, MAX_SCALE)
       const ratio = s / prev
       setTx((x) => x * ratio + px * (1 - ratio))
       setTy((y) => y * ratio + py * (1 - ratio))
@@ -81,6 +84,7 @@ export function GoldLeafZoom({ alt, width, height, tiers, className = '' }: Prop
   }, [])
 
   const reset = useCallback(() => {
+    scaleRef.current = 1
     setScale(1)
     setTx(0)
     setTy(0)
