@@ -6,6 +6,7 @@ export function buyerOrder(order: StoredOrder) {
     id: order.id,
     status: order.status,
     editionLabel: order.editionLabel,
+    buyerName: order.buyerName,
     editionNumber: order.editionNumber,
     editionSize: order.editionSize,
     usdcAmount: order.usdcAmount,

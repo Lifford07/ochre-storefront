@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { formatPrice, priceFor, sizes, type MaterialId } from "@/config/catalogue"
 import { UsdcPay } from "@/components/checkout/pay-panel"
+import { PathRail } from "@/components/house/path-rail"
 import { CheckoutHeader } from "@/components/shell/site-chrome"
 import { useBasket, type BasketItem } from "@/lib/basket"
 import type { BuyerBasket } from "@/lib/order-public"
@@ -78,7 +79,7 @@ export function BasketCheckout() {
         body: JSON.stringify({
           ...contact,
           paymentMethod: method,
-          lines: items.map((item) => ({ slug: item.slug, materialId: item.materialId, sizeId: item.sizeId, qty: item.qty })),
+          lines: items.map((item) => ({ slug: item.slug, materialId: item.materialId, sizeId: item.sizeId, qty: item.qty, buyerName: item.buyerName })),
         }),
       })
       const body = (await response.json()) as { basket?: BuyerBasket; error?: string }
@@ -136,6 +137,7 @@ export function BasketCheckout() {
               <p className="font-display truncate text-lg italic leading-tight">{item.title}</p>
               <p className="font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">
                 {item.materialName} · {item.sizeName}
+                {item.buyerName ? ` · ${item.buyerName}` : ""}
               </p>
               <p className="font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">
                 {item.qty} × {formatPrice(unit)}
@@ -168,6 +170,7 @@ export function BasketCheckout() {
     <>
       <CheckoutHeader />
       <main className="page-enter mx-auto max-w-5xl px-4 pt-6 pb-16 md:px-8 md:pt-8">
+        <PathRail at={4} />
         <h1 className="font-display text-center text-4xl md:text-6xl">
           Where is it <span className="italic">going?</span>
         </h1>

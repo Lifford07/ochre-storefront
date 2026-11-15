@@ -83,6 +83,7 @@ export function viewFromOrder(order: StoredOrder, token?: string): CertificateVi
     materialName: order.materialName,
     sizeName: order.sizeName,
     editionLabel: order.editionLabel,
+    buyerName: order.buyerName,
     number,
     size,
     owner: order.payer || "Recorded when the payment confirms",

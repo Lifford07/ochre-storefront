@@ -47,6 +47,8 @@ export type StoredOrder = {
   editionSize?: number
   artworkSlug?: string
   artworkTitle?: string
+  /** Printed beneath the Christian Edition. */
+  buyerName?: string
   email?: string
   fullName?: string
   address?: string
@@ -95,6 +97,7 @@ export type BasketLine = {
   sizeName: string
   qty: number
   unitPence: number
+  buyerName?: string
   /** One order per piece, so each gets its own edition number and certificate. */
   orderIds: string[]
 }

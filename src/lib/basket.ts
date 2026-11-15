@@ -16,6 +16,8 @@ export type BasketItem = {
   editionSize: number
   pricePence: number
   qty: number
+  /** Printed on the Christian Edition. Required before that piece can be bagged. */
+  buyerName?: string
 }
 
 const KEY = "ochre-basket"
@@ -37,7 +39,7 @@ function write(items: BasketItem[]) {
 }
 
 export function addToBasket(item: Omit<BasketItem, "key" | "qty">) {
-  const key = `${item.slug}:${item.materialId}:${item.sizeId}`
+  const key = `${item.slug}:${item.materialId}:${item.sizeId}:${item.buyerName ?? ""}`
   const items = readBasket()
   const found = items.find((entry) => entry.key === key)
   if (found) found.qty = Math.min(found.qty + 1, Math.max(1, item.editionSize - item.editionNumber + 1))
