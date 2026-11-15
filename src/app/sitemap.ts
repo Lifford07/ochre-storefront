@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/",
     "/make",
     "/collection",
+    "/verre-eglomise",
     "/guide",
     "/terms",
     "/privacy",
