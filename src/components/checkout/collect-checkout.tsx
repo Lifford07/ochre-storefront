@@ -1,12 +1,17 @@
 "use client"
 
 import { Suspense } from "react"
+import dynamic from "next/dynamic"
 import { useParams, useSearchParams } from "next/navigation"
-import { PayPanel } from "@/components/checkout/pay-panel"
 import { SiteFooter, SiteHeader, FlowHeader } from "@/components/shell/site-chrome"
 import { materialById, priceFor, sizes } from "@/config/catalogue"
 import { workBySlug } from "@/config/works"
 import { verdictFor } from "@/lib/quality"
+
+const PayPanel = dynamic(() => import("@/components/checkout/pay-panel").then((m) => m.PayPanel), {
+  ssr: false,
+  loading: () => <p className="py-10 text-center text-sm text-[var(--charcoal)]">Opening payment…</p>,
+})
 
 function CollectBody() {
   const params = useParams<{ slug: string }>()
@@ -41,9 +46,11 @@ function CollectBody() {
   return (
     <>
       <FlowHeader step="checkout" />
-      <main className="page-enter mx-auto max-w-5xl px-4 py-8 md:px-8">
+      <main className="page-enter mx-auto max-w-5xl px-4 py-6 md:px-8 md:py-8">
         <p className="text-center eyebrow">Collect · {work.title}</p>
-        <h1 className="font-display mt-3 text-center text-4xl md:text-6xl">Ready to be made.</h1>
+        <h1 className="font-display mt-3 text-center text-4xl md:text-6xl">
+          Where is it <span className="italic">going?</span>
+        </h1>
         <p className="mt-2 text-center text-[var(--charcoal)]">
           {wording}
         </p>

@@ -50,7 +50,7 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
         <p className="mt-10 text-sm text-[var(--mute)]">Nothing in this material yet.</p>
       ) : (
         <ul className="mt-14 grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((work) => {
+          {visible.map((work, index) => {
             const shownMaterial = filter === "all" ? work.materialId : filter
             const material = materialById(shownMaterial)
             const from = fromPrice(shownMaterial, { numbered: work.editionSize > 1 })
@@ -58,7 +58,13 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
               <li key={work.slug}>
                 <Link href={`/collection/${work.slug}${filter === "all" ? "" : `?material=${filter}`}`} className="block">
                   <div className="plate-frame aspect-[4/5] overflow-hidden">
-                    <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                    <WorkImage
+                      motif={work.motif}
+                      image={work.image}
+                      title={work.title}
+                      priority={index === 0}
+                      sizes="(min-width: 1024px) 33vw, 92vw"
+                    />
                   </div>
                   <h3 className="font-display mt-6 text-3xl italic">{work.title}</h3>
                   <p className="mt-2 text-sm text-[var(--mute)]">
@@ -67,7 +73,7 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
                   <WallCaption facts={wallFacts(work, shownMaterial)} className="mt-4" />
                   <p className="mt-4 text-sm">
                     {from == null ? "Soon" : formatPrice(from)}
-                    <span className="mt-1 block font-mono text-[10px] tracking-[0.12em] text-[var(--mute)] uppercase">
+                    <span className="mt-1 block font-mono text-[11px] tracking-[0.12em] text-[var(--mute)] uppercase">
                       {material.name}
                     </span>
                   </p>

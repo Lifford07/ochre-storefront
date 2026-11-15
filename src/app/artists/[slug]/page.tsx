@@ -46,11 +46,17 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
         <section className="mx-auto max-w-[1440px] px-5 py-12 md:px-12">
           <h2 className="font-display text-4xl">Works in numbered editions.</h2>
           <ul className="mt-14 grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            {list.map((work) => (
+            {list.map((work, index) => (
               <li key={work.slug}>
                 <Link href={`/collection/${work.slug}`} className="block">
                   <div className="plate-frame aspect-[4/5]">
-                    <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                    <WorkImage
+                      motif={work.motif}
+                      image={work.image}
+                      title={work.title}
+                      priority={index === 0}
+                      sizes="(min-width: 1024px) 33vw, 92vw"
+                    />
                   </div>
                   <h3 className="font-display mt-6 text-3xl italic">{work.title}</h3>
                   <WallCaption facts={wallFacts(work)} className="mt-4" />

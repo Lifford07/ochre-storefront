@@ -7,6 +7,7 @@ import type { StoredOrder } from "@/lib/order-types"
 
 export async function recordPayment(order: StoredOrder) {
   if (order.status === "paid, awaiting Ochré check") return order
+  if (order.basketId) return null
   const rpc = serverRpc(order.cluster)
   if (!rpc) throw new Error("Set SOLANA_RPC_URL on the server before payments can be checked.")
   const decision = await findPayment(new Connection(rpc, "confirmed"), order)
@@ -45,12 +46,25 @@ export async function reconcileUnpaid() {
   for (const order of waiting) {
     const current = (await getOrder(order.id)) ?? order
     if (current.status === "paid, awaiting Ochré check") continue
+    // A piece in a basket is paid through its basket, never on its own.
+    if (current.basketId) continue
     try {
       const result = await recordPayment(current)
       if (result) paid.push(result)
     } catch (error) {
       console.error("reconcile", order.id, error instanceof Error ? error.message : "failed")
     }
+  }
+  try {
+    const { reconcileBaskets } = await import("@/lib/settle-basket")
+    for (const basket of await reconcileBaskets()) {
+      for (const line of basket.lines) for (const id of line.orderIds) {
+        const child = await getOrder(id)
+        if (child) paid.push(child)
+      }
+    }
+  } catch (error) {
+    console.error("reconcile-baskets", error instanceof Error ? error.message : "failed")
   }
   return paid
 }

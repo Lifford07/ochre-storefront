@@ -1,0 +1,30 @@
+{
+  "width": 8533,
+  "height": 10667,
+  "tiers": [
+    {
+      "maxScale": 1,
+      "src": "/gallery/eglomise/gilded-shield/w384.webp",
+      "width": 307,
+      "height": 384
+    },
+    {
+      "maxScale": 2,
+      "src": "/gallery/eglomise/gilded-shield/w768.webp",
+      "width": 614,
+      "height": 768
+    },
+    {
+      "maxScale": 4,
+      "src": "/gallery/eglomise/gilded-shield/w1536.webp",
+      "width": 1229,
+      "height": 1536
+    },
+    {
+      "maxScale": 8,
+      "src": "/gallery/eglomise/gilded-shield/w3072.webp",
+      "width": 2457,
+      "height": 3072
+    }
+  ]
+}

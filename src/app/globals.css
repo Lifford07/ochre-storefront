@@ -55,7 +55,8 @@
   --navy-2: #131d47;
   --ink: #1b1b22;
   --charcoal: #3a3a42;
-  --mute: #77726a;
+  --mute: #6a655e;
+  --gold-on-cream: #948a37;
   --bone: #ece5d9;
   --paper: #fbf9f5;
   --line: #dcd4c6;
@@ -159,13 +160,15 @@
   line-height: 1.02;
 }
 
-.eyebrow {
-  font-family: var(--font-inter), Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--gold-ink);
+@layer components {
+  .eyebrow {
+    font-family: var(--font-inter), Inter, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+  }
 }
 
 .btn-foil,
@@ -266,7 +269,7 @@
   background: transparent;
   color: var(--charcoal);
   border-radius: 0;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   letter-spacing: 0.14em;
 }
@@ -291,12 +294,10 @@
     box-shadow 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.art-card:hover {
-  transform: translateY(-8px);
-}
-
-.page-enter {
-  animation: page-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+@media (hover: hover) and (pointer: fine) {
+  .art-card:hover {
+    transform: translateY(-8px);
+  }
 }
 
 .whorl-spin {
@@ -321,11 +322,6 @@
   to { transform: scaleX(1); }
 }
 
-@keyframes page-in {
-  from { opacity: 0; transform: scale(0.985); }
-  to { opacity: 1; transform: none; }
-}
-
 @keyframes whorl-spin {
   to { transform: rotate(360deg); }
 }
@@ -335,6 +331,7 @@
   70% { opacity: 1; transform: scale(0.94); }
   100% { opacity: 1; transform: scale(1); }
 }
+
 
 .btn-gallery {
   display: inline-flex;
@@ -353,9 +350,23 @@
   transition: background-color 420ms ease, color 420ms ease, border-color 420ms ease;
 }
 
-.btn-gallery:hover {
-  background: var(--gold);
-  color: var(--navy);
+@media (hover: hover) and (pointer: fine) {
+  .btn-gallery:hover {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .btn-gallery.on-light:hover {
+    background: var(--navy-2);
+    border-color: var(--navy-2);
+    color: var(--porcelain);
+  }
+
+  .btn-gallery.quiet:hover {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--porcelain);
+  }
 }
 
 .btn-gallery.on-light {
@@ -364,22 +375,10 @@
   color: var(--porcelain);
 }
 
-.btn-gallery.on-light:hover {
-  background: var(--navy-2);
-  border-color: var(--navy-2);
-  color: var(--porcelain);
-}
-
 .btn-gallery.quiet {
   border-color: var(--navy);
   background: transparent;
   color: var(--navy);
-}
-
-.btn-gallery.quiet:hover {
-  background: var(--navy);
-  border-color: var(--navy);
-  color: var(--porcelain);
 }
 
 .btn-gallery:focus-visible,
@@ -476,6 +475,11 @@
   text-transform: uppercase;
 }
 
+::selection {
+  background: var(--gold);
+  color: var(--navy);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn-foil::after,
   .whorl-spin,
@@ -483,7 +487,8 @@
   .hairline,
   .art-card,
   .btn-gallery,
-  .certificate-rest {
+  .certificate-rest,
+  [class*="ochre-pop"] {
     animation: none;
     transition: none;
   }
@@ -495,17 +500,182 @@
   .certificate-rest:hover {
     transform: none;
   }
-  .page-enter {
-    animation: fade-only 480ms ease both;
-  }
 }
 
-@keyframes fade-only {
-  from { opacity: 0; }
-  to { opacity: 1; }
+body:has(.passport-root) {
+  background: #100e0c;
 }
 @keyframes ochre-pop {
   0% { transform: scale(0.4); box-shadow: 0 0 0 0 rgba(198, 184, 73, 0.7); }
   40% { transform: scale(1.25); box-shadow: 0 0 0 8px rgba(198, 184, 73, 0); }
   100% { transform: scale(1); }
+}
+
+/* Jewellery Mix (Parts A–B): aliases map to existing Ochré tokens — not a second palette. */
+.jewellery-museum {
+  --gallery-bg: var(--navy);
+  --gallery-panel: var(--navy-2);
+  --gallery-line: color-mix(in srgb, var(--gold) 32%, transparent);
+  --gallery-ink: var(--porcelain);
+  --gallery-muted: color-mix(in srgb, var(--porcelain) 58%, transparent);
+  --gallery-ochre: var(--gold);
+  background:
+    radial-gradient(900px 500px at 12% -8%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 55%),
+    radial-gradient(700px 420px at 100% 0%, color-mix(in srgb, var(--foil) 10%, transparent), transparent 50%),
+    var(--navy);
+  color: var(--gallery-ink);
+}
+
+.jewellery-museum .museum-shell,
+.museum-shell {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.jewellery-museum .gallery-panel {
+  border: 1px solid var(--gallery-line);
+  background: color-mix(in srgb, var(--navy-2) 92%, black);
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .jewellery-museum .gallery-panel {
+    padding: 1.5rem;
+  }
+}
+
+.jewellery-museum .choice {
+  border: 1px solid var(--gallery-line);
+  background: transparent;
+  min-height: 44px;
+  padding: 0.75rem;
+  text-align: left;
+  color: var(--gallery-muted);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.jewellery-museum .choice:hover {
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--gallery-line));
+}
+
+.jewellery-museum .choice-on {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--porcelain);
+}
+
+.jewellery-museum .chip {
+  border: 1px solid var(--gallery-line);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--gallery-muted);
+  background: transparent;
+  border-radius: 0;
+  min-height: 44px;
+}
+
+.jewellery-museum .chip-on,
+.jewellery-museum .chip.on {
+  border-color: var(--gold);
+  color: var(--porcelain);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+}
+
+.jewellery-museum .field {
+  width: 100%;
+  border: 1px solid var(--gallery-line);
+  background: color-mix(in srgb, var(--navy) 88%, black);
+  padding: 0.7rem 0.8rem;
+  color: var(--porcelain);
+  outline: none;
+}
+
+.jewellery-museum .field:focus {
+  border-color: var(--gold);
+}
+
+.jewellery-museum .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--navy);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.jewellery-museum .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--gallery-line);
+  background: transparent;
+  color: var(--porcelain);
+  padding: 0.85rem 1rem;
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jewellery-museum .btn-secondary:hover {
+  border-color: var(--gold);
+}
+
+.jewellery-museum .preview-stage {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
+}
+
+.jewellery-museum .gold-leaf-shimmer,
+.gold-leaf-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    color-mix(in srgb, var(--gold) 18%, transparent) 35%,
+    color-mix(in srgb, var(--foil) 35%, transparent) 50%,
+    color-mix(in srgb, var(--gold) 18%, transparent) 65%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .jewellery-museum .gold-leaf-shimmer,
+  .gold-leaf-shimmer {
+    animation: gold-sheen 4.5s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes gold-sheen {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-leaf-shimmer {
+    animation: none;
+  }
+}
+
+@keyframes ochre-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { HeroRoom } from "@/components/art/hero-room"
 import { WorkImage } from "@/components/art/motif"
-import { Crest, Endband } from "@/components/brand/mark"
+import { Crest, Endband, Whorl } from "@/components/brand/mark"
+import { VerrePath } from "@/components/brand/verre-path"
 import { WallCaption } from "@/components/gallery/wall-label"
+import { verre } from "@/config/verre"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
 import { works, isExampleWork } from "@/config/works"
 import { wallFacts } from "@/lib/caption"
@@ -11,7 +13,7 @@ const lines = [
   { index: "01", name: "Art", note: "Bespoke artwork, made from real glass, acrylic glass and canvas.", href: "/collection", live: true },
   { index: "02", name: "Home", note: "The most aesthetically pleasing home decor.", href: "/collection", live: false },
   { index: "03", name: "Ochré Atelier", note: "Cut and embroidered pieces, in small runs.", href: "/collection", live: false },
-  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/collection", live: false },
+  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/jewellery", live: true },
 ]
 
 export default function HomePage() {
@@ -27,7 +29,14 @@ export default function HomePage() {
             {opening ? (
               <figure className="order-1 md:order-2">
                 <Link href={`/collection/${opening.slug}`} className="plate-frame block">
-                  <WorkImage motif={opening.motif} image={opening.image} title={opening.title} className="aspect-[4/5] max-h-[70vh] w-full object-cover" />
+                  <WorkImage
+                    motif={opening.motif}
+                    image={opening.image}
+                    title={opening.title}
+                    priority
+                    sizes="(min-width: 768px) 58vw, 92vw"
+                    className="aspect-[4/5] max-h-[70vh] w-full object-cover"
+                  />
                 </Link>
                 <figcaption className="mt-6 max-w-md">
                   <p className="font-display text-3xl italic text-[var(--porcelain)]">{opening.title}</p>
@@ -60,6 +69,36 @@ export default function HomePage() {
           </div>
         </section>
         <Endband />
+
+        <section className="bg-[#131D47] text-[var(--porcelain)]" aria-labelledby="verre-h">
+          <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-16 md:grid-cols-[5fr_7fr] md:px-12 md:py-24">
+            <div className="relative mx-auto grid aspect-square w-40 place-items-center rounded-full border border-[var(--gold)] text-[var(--foil)] md:w-72" aria-hidden>
+              <span className="absolute inset-2 rounded-full border border-[var(--foil)]/35" />
+              <Whorl className="size-2/3" />
+            </div>
+            <div>
+              <p className="font-mono text-[11px] tracking-[0.2em] uppercase" style={{ color: "var(--foil)" }}>
+                <span className="mb-3 block w-fit rounded-full border border-current px-2.5 py-1 text-[11px]">{verre.status}</span>
+                The signature craft
+              </p>
+              <h2 id="verre-h" className="font-display mt-4 text-5xl md:text-7xl">
+                Verre <span className="italic text-[var(--foil)]">églomisé</span>
+              </h2>
+              <p className="mt-5 max-w-xl leading-relaxed text-[var(--porcelain)]/80">
+                {verre.plain} {verre.lede}
+              </p>
+              <blockquote className="font-display mt-6 max-w-xl text-2xl leading-snug">
+                {verre.pitch[0]} <span className="block italic text-[var(--foil)]">{verre.pitch[1]}</span>
+              </blockquote>
+              <div className="mt-8">
+                <VerrePath dark />
+              </div>
+              <Link href="/verre-eglomise" className="btn-gallery mt-8">
+                Follow the gold
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <section className="mx-auto max-w-[1440px] px-5 py-24 md:px-12 md:py-32">
           <p className="eyebrow">The house of Ochré</p>
@@ -96,7 +135,7 @@ export default function HomePage() {
                 <li key={work.slug}>
                   <Link href={`/collection/${work.slug}`} className="block">
                     <div className="plate-frame aspect-[4/5]">
-                      <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                      <WorkImage motif={work.motif} image={work.image} title={work.title} sizes="(min-width: 1024px) 40vw, 92vw" />
                     </div>
                     <h3 className="font-display mt-6 text-3xl italic">{work.title}</h3>
                     <p className="mt-2 text-sm text-[var(--mute)]">
@@ -117,9 +156,7 @@ export default function HomePage() {
               <h2 className="font-display mt-4 text-4xl md:text-6xl">
                 A <span className="italic text-[var(--foil)]">certificate of authenticity</span> is issued for every physical piece we create.
               </h2>
-              <p className="mt-6 max-w-md text-[var(--porcelain)]/75">
-                Each work will also come with its own NFT (coming soon), a digital twin that proves you own the original.
-              </p>
+              <p className="mt-6 max-w-md text-[var(--porcelain)]/75">Each work comes with a certificate of authenticity.</p>
               <dl className="mt-12 grid gap-8 sm:grid-cols-3">
                 <div>
                   <dt className="text-[var(--gold)]">Ordered</dt>
@@ -138,15 +175,18 @@ export default function HomePage() {
             <div className="grid items-center gap-10 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1fr)]">
               <HeroRoom className="aspect-[640/460] h-auto w-full bg-[#e7e1d6]" />
               <figure className="mx-auto w-full max-w-[280px]">
-                <Link href="/orders/preview" className="certificate-rest group block rotate-[-1.5deg] bg-[#1a1a1a] p-2.5 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-out hover:rotate-0 md:p-3">
+                <Link href="/orders/preview" className="certificate-rest group block rotate-[-1.5deg] bg-[#1a1a1a] p-2.5 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.75)] md:p-3">
                   <div className="bg-[#F3EFE7] p-3">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src="/certificate-of-authenticity.webp"
+                      src="/certificate-of-authenticity-800.webp"
+                      srcSet="/certificate-of-authenticity-800.webp 800w, /certificate-of-authenticity.webp 990w"
+                      sizes="280px"
                       alt="Ochré certificate of authenticity"
-                      width={990}
-                      height={1400}
+                      width={800}
+                      height={1131}
                       loading="lazy"
+                      decoding="async"
                       className="block h-auto w-full"
                     />
                   </div>

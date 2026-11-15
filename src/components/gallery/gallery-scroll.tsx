@@ -23,7 +23,8 @@ export function GalleryScroll() {
   useEffect(() => {
     if (!enabled) return
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (reduce.matches) return
+    const coarse = window.matchMedia("(pointer: coarse)")
+    if (reduce.matches || coarse.matches) return
 
     let cancelled = false
     let lenis: { stop: () => void; start: () => void; destroy: () => void } | null = null
