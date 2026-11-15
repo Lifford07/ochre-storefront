@@ -12,6 +12,7 @@ const HeaderWallet = dynamic(() => import("@/components/wallet/header-wallet").t
 
 const lines = [
   { href: "/collection", label: "Walls", live: true },
+  { href: "/verre-eglomise", label: "Verre églomisé", live: true },
   { href: "/collection", label: "Home", live: false },
   { href: "/collection", label: "Garments", live: false },
   { href: "/collection", label: "Jewellery", live: false },
