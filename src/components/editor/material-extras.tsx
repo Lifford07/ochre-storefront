@@ -25,7 +25,7 @@ export function MaterialExtras({ materialId }: { materialId: string }) {
   return (
     <div className="mt-6 space-y-5" data-testid="material-extras">
       <div className="border border-[#C6B849]/60 bg-[#F3EFE7] p-4">
-        <p className="font-mono text-[10px] tracking-[0.2em] text-[#9a8c2e] uppercase">Finish</p>
+        <p className="font-mono text-[10px] tracking-[0.2em] text-[var(--gold-ink)] uppercase">Finish</p>
         <div className="mt-2 flex items-center justify-between border-b border-[#C6B849]/30 pb-2 text-sm">
           <span>{materialId === "canvas" ? "Ready to hang (hanging set in the box)" : "Ready to hang (hanger fitted)"}</span>
           <span className="font-mono text-[10px] tracking-[0.16em] uppercase">Included</span>
@@ -42,14 +42,14 @@ export function MaterialExtras({ materialId }: { materialId: string }) {
                   <span className="size-3" style={{ background: colour }} /> {name}
                 </span>
               ))}
-              <span className="self-center font-mono text-[10px] tracking-[0.16em] text-[#9a8c2e] uppercase">Coming soon</span>
+              <span className="self-center font-mono text-[10px] tracking-[0.16em] text-[var(--gold-ink)] uppercase">Coming soon</span>
             </div>
           </div>
         ) : null}
       </div>
       {faq ? (
         <div>
-          <p className="font-mono text-[10px] tracking-[0.2em] text-[#9a8c2e] uppercase">About this material</p>
+          <p className="font-mono text-[10px] tracking-[0.2em] text-[var(--gold-ink)] uppercase">About this material</p>
           <ul className="mt-2 border-t border-[#C6B849]/50">
             {faq.map(([q, a]) => (
               <li key={q} className="border-b border-[#C6B849]/30">

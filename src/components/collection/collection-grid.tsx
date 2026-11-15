@@ -48,7 +48,7 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
         <p className="mt-10 text-sm text-[var(--mute)]">Nothing in this material yet.</p>
       ) : (
         <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((work) => {
+          {visible.map((work, index) => {
             const shownMaterial = filter === "all" ? work.materialId : filter
             const material = materialById(shownMaterial)
             const from = fromPrice(shownMaterial, { numbered: work.editionSize > 1 })
@@ -56,11 +56,11 @@ export function CollectionGrid({ items = houseWorks }: { items?: HouseWork[] }) 
               <li key={work.slug}>
                 <Link href={`/collection/${work.slug}${filter === "all" ? "" : `?material=${filter}`}`} className="art-card group block">
                   <div className="aspect-[4/5] overflow-hidden bg-[var(--bone)] shadow-[var(--shadow-art)]">
-                    <WorkImage motif={work.motif} image={work.image} title={work.title} />
+                    <WorkImage motif={work.motif} image={work.image} title={work.title} priority={index === 0} sizes="(min-width: 1024px) 33vw, 92vw" />
                   </div>
                   <div className="mt-4 flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-display text-2xl italic">{work.title}</h3>
+                      <h2 className="font-display text-2xl italic">{work.title}</h2>
                       <p className="mt-1 text-sm text-[var(--mute)]">
                         {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
                       </p>

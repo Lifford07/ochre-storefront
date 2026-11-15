@@ -150,7 +150,7 @@ function AccountModal({ google, mode, setMode, onDone }: { google: boolean; mode
         <button type="button" aria-label="Close" onClick={() => setMode(null)} className="absolute top-3 right-3 inline-flex size-10 items-center justify-center text-xl text-[var(--navy)]/70 hover:text-[var(--navy)]">
           ×
         </button>
-        <p className="font-display text-[28px] leading-none tracking-[0.2em] text-[#C6B849]">OCHRÉ</p>
+        <p className="font-display text-[28px] leading-none tracking-[0.2em] text-[var(--gold-on-cream)]">OCHRÉ</p>
         <h2 className="font-display mt-4 text-2xl leading-tight">{title}</h2>
         {mode === "forgot" ? (
           <ForgotForm onBack={() => setMode("signin")} onContact={() => setMode(null)} />

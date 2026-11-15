@@ -1,12 +1,17 @@
 "use client"
 
 import { Suspense } from "react"
+import dynamic from "next/dynamic"
 import { useParams, useSearchParams } from "next/navigation"
-import { PayPanel } from "@/components/checkout/pay-panel"
 import { SiteFooter, SiteHeader, FlowHeader } from "@/components/shell/site-chrome"
 import { materialById, priceFor, sizes } from "@/config/catalogue"
 import { workBySlug } from "@/config/works"
 import { verdictFor } from "@/lib/quality"
+
+const PayPanel = dynamic(() => import("@/components/checkout/pay-panel").then((m) => m.PayPanel), {
+  ssr: false,
+  loading: () => <p className="py-10 text-center text-sm text-[var(--charcoal)]">Opening payment…</p>,
+})
 
 function CollectBody() {
   const params = useParams<{ slug: string }>()

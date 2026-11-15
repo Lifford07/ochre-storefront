@@ -154,7 +154,7 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
         <button type="button" aria-label="Close" onClick={onClose} className="absolute top-3 right-3 inline-flex size-10 items-center justify-center text-xl text-[var(--navy)]/70 hover:text-[var(--navy)]">
           ×
         </button>
-        <p className="text-center font-display text-[28px] leading-none tracking-[0.2em] text-[#C6B849]">OCHRÉ</p>
+        <p className="text-center font-display text-[28px] leading-none tracking-[0.2em] text-[var(--gold-on-cream)]">OCHRÉ</p>
         <h2 className="mt-4 text-center font-display text-2xl">Connect a wallet</h2>
         <p className="mt-1 text-center text-sm text-[var(--navy)]/65">For USDC on Solana. Card payments need no wallet.</p>
         <ul className="mt-6 space-y-2">

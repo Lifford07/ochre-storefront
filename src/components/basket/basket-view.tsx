@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { formatPrice } from "@/config/catalogue"
 import { CHECKOUT, removeItem, setQty, useBasket } from "@/lib/basket"
+import { artworkSources } from "@/components/art/motif"
 import { DeliveryNote } from "@/components/checkout/delivery-note"
 
 const MARKS = ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "USDC"]
@@ -40,7 +41,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
             <div className={`${compact ? "w-20" : "w-24 md:w-32"} aspect-[4/5] shrink-0 overflow-hidden bg-[var(--navy)]`}>
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                <img {...artworkSources(item.image)} alt={item.title} sizes="128px" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               ) : null}
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
@@ -50,7 +51,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
                   <p className="mt-1 font-mono text-[10px] tracking-[0.14em] text-[var(--navy)]/65 uppercase">
                     {item.materialName} · {item.sizeName}
                   </p>
-                  <p className="mt-0.5 font-mono text-[10px] tracking-[0.14em] text-[#8A7E2B] uppercase">Edition of {item.editionSize}</p>
+                  <p className="mt-0.5 font-mono text-[10px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">Edition of {item.editionSize}</p>
                 </div>
                 <p className="font-display text-lg whitespace-nowrap">{formatPrice(item.pricePence * item.qty)}</p>
               </div>
@@ -76,7 +77,7 @@ export function BasketView({ compact = false, onNavigate }: { compact?: boolean;
       </ul>
 
       <aside className={compact ? "border-t border-[#C6B849]/60 bg-[#F3EFE7] px-6 py-5" : "border border-[#C6B849]/60 bg-[var(--paper)] p-6 md:p-7 lg:sticky lg:top-24"}>
-        {compact ? null : <p className="font-mono text-[10px] tracking-[0.24em] text-[#8A7E2B] uppercase">Summary</p>}
+        {compact ? null : <p className="font-mono text-[10px] tracking-[0.24em] text-[var(--gold-ink)] uppercase">Summary</p>}
         <dl className={`space-y-2 text-sm ${compact ? "" : "mt-4"}`}>
           <div className="flex justify-between">
             <dt>

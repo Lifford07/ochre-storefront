@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { formatPrice } from "@/config/catalogue"
 import { ADDED, CHECKOUT, readBasket, useBasket, type BasketItem } from "@/lib/basket"
+import { artworkSources } from "@/components/art/motif"
 import { BasketView } from "@/components/basket/basket-view"
 
 export function BasketButton({ className, icon }: { className: string; icon: React.ReactNode }) {
@@ -131,7 +132,7 @@ function AddedSheet({
         className="relative w-full border-t-2 border-[#C6B849] bg-[#F3EFE7] px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-[var(--navy)] shadow-[0_-20px_50px_-20px_rgba(11,19,50,0.5)] motion-safe:animate-[ochre-rise_.35s_cubic-bezier(.2,.8,.2,1)] md:max-w-[400px] md:border md:border-[#C6B849]/70"
       >
         <div className="flex items-center justify-between">
-          <p className="font-mono text-[10px] tracking-[0.24em] text-[#8A7E2B] uppercase">In your basket</p>
+          <p className="font-mono text-[10px] tracking-[0.24em] text-[var(--gold-ink)] uppercase">In your basket</p>
           <button type="button" onClick={onClose} className="-mr-2 min-h-11 min-w-11 text-xl" aria-label="Close">
             ×
           </button>
@@ -140,7 +141,7 @@ function AddedSheet({
           <div className="aspect-[4/5] w-16 shrink-0 overflow-hidden bg-[var(--navy)]">
             {item.image ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={item.image} alt="" className="h-full w-full object-cover" />
+              <img {...artworkSources(item.image)} alt="" sizes="64px" loading="lazy" decoding="async" className="h-full w-full object-cover" />
             ) : null}
           </div>
           <div className="min-w-0 flex-1">

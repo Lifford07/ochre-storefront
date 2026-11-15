@@ -3,14 +3,13 @@
 import { useMemo, useState } from "react"
 import { DeliveryNote } from "@/components/checkout/delivery-note"
 import { formatPrice, priceFor, sizesFor, type MaterialId } from "@/config/catalogue"
+import { hiddenSizeCount, visibleSizes } from "@/lib/size-window"
 
 const MATERIALS: { id: MaterialId; label: string; line: string }[] = [
   { id: "real-glass", label: "Real glass", line: "Printed behind real glass. Deep colour, quiet sheen." },
   { id: "acrylic", label: "Acrylic glass", line: "Fine-art acrylic. Crisp, luminous, gallery finish." },
   { id: "canvas", label: "Canvas", line: "Stretched canvas with a soft woven texture." },
 ]
-
-const VISIBLE = 6
 
 export function MakeEntry({ onStart }: { onStart: (choice: { materialId: MaterialId; sizeId: string; orientation: "portrait" | "landscape" }) => void }) {
   const [materialId, setMaterialId] = useState<MaterialId>("real-glass")
@@ -28,7 +27,9 @@ export function MakeEntry({ onStart }: { onStart: (choice: { materialId: Materia
   }, [materialId])
   const [sizeId, setSizeId] = useState<string | null>(null)
   const selected = rows.find((row) => row.size.id === sizeId) ?? rows[0]
-  const shown = more ? rows : rows.slice(0, VISIBLE)
+  const selectedIndex = Math.max(0, rows.findIndex((row) => row.size.id === selected?.size.id))
+  const shown = visibleSizes(rows, selectedIndex, more)
+  const hidden = hiddenSizeCount(rows.length, false)
   const material = MATERIALS.find((m) => m.id === materialId)!
 
   return (
@@ -101,9 +102,9 @@ export function MakeEntry({ onStart }: { onStart: (choice: { materialId: Materia
                 )
               })}
             </ul>
-            {rows.length > VISIBLE ? (
-              <button type="button" onClick={() => setMore((v) => !v)} className="mt-3 text-sm text-[var(--gold-ink)] underline underline-offset-4">
-                {more ? "Fewer formats" : `More formats (${rows.length - VISIBLE})`}
+            {hidden > 0 ? (
+              <button type="button" onClick={() => setMore((v) => !v)} className="mt-3 inline-flex min-h-11 items-center text-sm text-[var(--gold-ink)] underline underline-offset-4">
+                {more ? "Fewer formats" : `More formats (${hidden})`}
               </button>
             ) : null}
             <DeliveryNote materialId={materialId} className="mt-4" />
