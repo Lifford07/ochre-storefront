@@ -24,11 +24,10 @@ import { editionWording } from "@/lib/edition"
 import { saveToAccount } from "@/lib/save-to-account"
 import { ingestFile, type IngestedPhoto, type IngestProgress } from "@/lib/ingest-file"
 import { CARE_PROMISE, lookLabel, previewFilter, type Look } from "@/lib/copy"
-import { centredOffset, PrintView, type FitMode } from "@/components/editor/print-view"
+import { centredOffset, type FitMode } from "@/components/editor/print-view"
 import { QualityMeter } from "@/components/editor/quality-meter"
-import { RoomPreview } from "@/components/editor/room-preview"
 import { MaterialExtras } from "@/components/editor/material-extras"
-import { WallPanel } from "@/components/editor/wall-preview"
+import { ObjectStage } from "@/components/editor/object-stage"
 
 const PayPanel = dynamic(() => import("@/components/checkout/pay-panel").then((mod) => mod.PayPanel), {
   ssr: false,
@@ -75,7 +74,6 @@ export function Editor() {
   const [sizeId, setSizeId] = useState<string | null>(null)
   const [fit, setFit] = useState<FitMode>("fill")
   const [crop, setCrop] = useState<{ sizeId: string; x: number; y: number } | null>(null)
-  const [wall, setWall] = useState(false)
   const [canvasEdge, setCanvasEdge] = useState<CanvasEdge>("mirror")
   const [edgeInk, setEdgeInk] = useState<EdgeInk>("ivory")
   const [softAck, setSoftAck] = useState(false)
@@ -252,21 +250,24 @@ export function Editor() {
       <p className="border-b border-[var(--line)] bg-[var(--paper)] px-5 py-2 text-center text-sm">{CARE_PROMISE}</p>
       <main className="mx-auto max-w-6xl px-4 py-6 pb-28 md:px-8 md:pb-10">
         {(step === "material" || step === "size" || step === "preview" || step === "checkout") && photo && selected ? (
-          <WallPanel
-            key={step}
+          <ObjectStage
             src={photo.src}
+            imageWidth={photo.width}
+            imageHeight={photo.height}
             widthMm={selected.size.widthMm}
             heightMm={selected.size.heightMm}
             materialId={materialId}
             materialName={material.name}
             sizeName={sizeLabel(selected.size)}
             filter={filter}
-            imageWidth={photo.width}
-            imageHeight={photo.height}
+            fit={fit}
             offsetX={offset.x}
             offsetY={offset.y}
-            fit={fit}
-            defaultOpen
+            edge={materialId === "canvas" ? canvasEdge : "mirror"}
+            edgeColour={EDGE_INK[edgeInk]}
+            interactive={step === "size"}
+            onOffset={(x, y) => setCrop({ sizeId: selected.size.id, x, y })}
+            onFit={setFit}
           />
         ) : null}
         {step === "upload" ? (
@@ -307,16 +308,11 @@ export function Editor() {
 
         {step === "size" && photo && selected ? (
           <SizeStep
-            photo={photo}
             material={material}
             options={sizeOptions}
             selectedId={selected.size.id}
             selectedScore={selected.score}
             orientation={orientation}
-            fit={fit}
-            offset={offset}
-            filter={filter}
-            wall={wall}
             canvasEdge={canvasEdge}
             edgeInk={edgeInk}
             canReady={canReady}
@@ -324,15 +320,11 @@ export function Editor() {
             softAck={softAck}
             enhanceNote={enhanceNote}
             error={error}
-            onFit={setFit}
-            onOffset={(next) => setCrop({ sizeId: selected.size.id, x: next.x, y: next.y })}
             onSelectSize={(id) => {
               setSizeId(id)
-              setWall(false)
               setSoftAck(false)
             }}
             onOrientation={chooseOrientation}
-            onWall={setWall}
             onEnhance={showEnhanceNote}
             onSoftAck={setSoftAck}
             onCanvasEdge={setCanvasEdge}
@@ -580,7 +572,7 @@ function MaterialStep({
       <h1 className="font-display text-5xl">Material</h1>
       <p className="mt-2 text-sm leading-relaxed text-[#5e574e]">{CATALOGUE_NOTICE}</p>
       <div className="mt-6 space-y-2">
-        {materials.filter((item) => item.id === "real-glass" || item.id === "acrylic" || item.id === "canvas").map((item) => {
+        {materials.filter((item) => item.id === "real-glass" || item.id === "acrylic" || item.id === "gallery-bond" || item.id === "canvas").map((item) => {
           const on = selected === item.id
           const from = fromPrice(item.id)
           return (
@@ -626,16 +618,11 @@ function MaterialStep({
 }
 
 function SizeStep({
-  photo,
   material,
   options,
   selectedId,
   selectedScore,
   orientation,
-  fit,
-  offset,
-  filter,
-  wall,
   canvasEdge,
   edgeInk,
   canReady,
@@ -643,27 +630,19 @@ function SizeStep({
   softAck,
   enhanceNote,
   error,
-  onFit,
-  onOffset,
   onSelectSize,
   onOrientation,
-  onWall,
   onEnhance,
   onSoftAck,
   onReady,
   onCanvasEdge,
   onEdgeInk,
 }: {
-  photo: Photo
   material: { name: string; note?: string; mark?: string; id: MaterialId; lead: string }
   options: { size: { id: string; name: string; widthMm: number; heightMm: number; orientation: Orientation }; score: PrintScore; price: number }[]
   selectedId: string
   selectedScore: PrintScore
   orientation: Exclude<Orientation, "square">
-  fit: FitMode
-  offset: { x: number; y: number }
-  filter?: string
-  wall: boolean
   canvasEdge: CanvasEdge
   edgeInk: EdgeInk
   canReady: boolean
@@ -671,99 +650,16 @@ function SizeStep({
   softAck: boolean
   enhanceNote: boolean
   error: string | null
-  onFit: (fit: FitMode) => void
-  onOffset: (offset: { x: number; y: number }) => void
   onSelectSize: (id: string) => void
   onOrientation: (orientation: Exclude<Orientation, "square">) => void
-  onWall: (wall: boolean) => void
   onEnhance: () => void
   onSoftAck: (value: boolean) => void
   onReady: () => void
   onCanvasEdge: (edge: CanvasEdge) => void
   onEdgeInk: (ink: EdgeInk) => void
 }) {
-  const chosen = options.find((option) => option.size.id === selectedId)!
-
   return (
-    <section className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start">
-      <div>
-        <div className="mb-3 flex gap-2 text-sm">
-          <button
-            type="button"
-            className={`px-3 py-1 ${!wall ? "bg-[#1a1814] text-[#f6f1ea]" : "bg-[#e7dfd4]"}`}
-            onClick={() => onWall(false)}
-          >
-            Crop
-          </button>
-          <button
-            type="button"
-            className={`px-3 py-1 ${wall ? "bg-[#1a1814] text-[#f6f1ea]" : "bg-[#e7dfd4]"}`}
-            onClick={() => onWall(true)}
-          >
-            On the wall
-          </button>
-        </div>
-        {wall ? (
-          <div className="mx-auto w-full max-w-md">
-            <RoomPreview
-              src={photo.src}
-              imageWidth={photo.width}
-              imageHeight={photo.height}
-              widthMm={chosen.size.widthMm}
-              heightMm={chosen.size.heightMm}
-              offsetX={offset.x}
-              offsetY={offset.y}
-              fit={fit}
-              filter={filter}
-              materialId={material.id}
-              sizeName={`${sizeLabel(chosen.size)} ${material.name.toLowerCase()}`}
-            />
-          </div>
-        ) : (
-          <>
-            <div
-              className="mx-auto w-full"
-              style={{ maxWidth: `min(100%, calc(38vh * ${chosen.size.widthMm} / ${chosen.size.heightMm}))` }}
-            >
-              <PrintView
-                src={photo.src}
-                imageWidth={photo.width}
-                imageHeight={photo.height}
-                widthMm={chosen.size.widthMm}
-                heightMm={chosen.size.heightMm}
-                offsetX={offset.x}
-                offsetY={offset.y}
-                fit={fit}
-                filter={filter}
-                edge={material.id === "canvas" ? canvasEdge : "mirror"}
-                edgeColour={EDGE_INK[edgeInk]}
-                interactive
-                onOffsetChange={(x, y) => onOffset({ x, y })}
-              />
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2 text-sm">
-              <button
-                type="button"
-                className={`px-3 py-1 ${fit === "fill" ? "bg-[#1a1814] text-[#f6f1ea]" : "bg-[#e7dfd4]"}`}
-                onClick={() => onFit("fill")}
-              >
-                Fill
-              </button>
-              <button
-                type="button"
-                className={`px-3 py-1 ${fit === "fit" ? "bg-[#1a1814] text-[#f6f1ea]" : "bg-[#e7dfd4]"}`}
-                onClick={() => onFit("fit")}
-              >
-                Fit
-              </button>
-              <span className="self-center text-xs text-[#5e574e]">
-                {fit === "fill" ? "Drag to move the crop." : "The whole photo, with space around it."}
-              </span>
-            </div>
-          </>
-        )}
-      </div>
-
+    <section>
       <div>
         <h1 className="font-display text-5xl">Size</h1>
         <p className="mt-2 text-sm text-[#5e574e]">
