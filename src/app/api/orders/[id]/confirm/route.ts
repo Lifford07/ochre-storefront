@@ -21,9 +21,6 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     throw error
   }
   if (!existing) return Response.json({ error: "No order with that id." }, { status: 404 })
-  if (existing.status === "paid, awaiting Ochré check") {
-    return Response.json({ found: true, order: buyerOrder(existing) })
-  }
 
   try {
     const paid = await recordPayment(existing)

@@ -1,12 +1,15 @@
 import { Connection } from "@solana/web3.js"
 import { serverRpc, solscanTx } from "@/config/solana"
 import { findPayment } from "@/lib/find-payment"
-import { alertFounder } from "@/lib/mail"
+import { notifyFounderOnce } from "@/lib/paid-alert"
 import { getOrder, listUnpaid, markPaid } from "@/lib/orders-store"
 import type { StoredOrder } from "@/lib/order-types"
 
 export async function recordPayment(order: StoredOrder) {
-  if (order.status === "paid, awaiting Ochré check") return order
+  if (order.status === "paid, awaiting Ochré check") {
+    await notifyFounderOnce(order)
+    return order
+  }
   const rpc = serverRpc(order.cluster)
   if (!rpc) throw new Error("Set SOLANA_RPC_URL on the server before payments can be checked.")
   const decision = await findPayment(new Connection(rpc, "confirmed"), order)
@@ -27,15 +30,7 @@ export async function recordPayment(order: StoredOrder) {
     payer: decision.payer ?? order.payer,
     paymentFlags: paymentFlags.length > 0 ? paymentFlags : undefined,
   })
-  const ship = [paid.fullName, paid.address, paid.city, paid.postcode, paid.country, paid.email, paid.phone]
-    .filter(Boolean)
-    .join("\n")
-  await alertFounder({
-    id: paid.id,
-    summary: `${paid.materialName}, ${paid.sizeName}, ${paid.editionLabel}, ${paid.usdcAmount} USDC`,
-    ship,
-    payer: paid.payer || "not recorded",
-  })
+  await notifyFounderOnce(paid)
   return paid
 }
 

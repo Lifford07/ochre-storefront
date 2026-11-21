@@ -8,7 +8,7 @@ import { editionWording } from "@/lib/edition"
 import { gbpToUsdc } from "@/lib/fx"
 import { measureImage } from "@/lib/image-measure"
 import { contentTypeForRef, isFileImageRef, isPrivateBlobUrl, readStoredFile } from "@/lib/order-image"
-import { confirmCustomer } from "@/lib/mail"
+import { confirmCustomer, mailEnabled } from "@/lib/mail"
 import { buyerOrder } from "@/lib/order-public"
 import { listOrders, OrderStoreError, saveOrder, type StoredOrder } from "@/lib/orders-store"
 import type { PrintSpec } from "@/lib/order-types"
@@ -318,12 +318,13 @@ export async function POST(request: Request) {
   try {
     const saved = await saveOrder(order)
     const link = `${shopOrigin(request)}/orders/${saved.id}?t=${viewToken}`
-    await confirmCustomer({
+    const mailed = await confirmCustomer({
       to: saved.email || contact.contact.email,
       id: saved.id,
       summary: `${saved.materialName}, ${saved.sizeName}, ${saved.paymentMethod === "card" ? `£${(saved.pricePence / 100).toFixed(2)} by card (Stripe)` : `${saved.usdcAmount} USDC`}. Ship to ${saved.city}, ${saved.country}.`,
       link,
     })
+    if (mailEnabled() && !mailed.sent) console.error("order-mail", saved.id, "the order email was not accepted")
     return Response.json({ order: buyerOrder(saved) }, { status: 201 })
   } catch (error) {
     if (error instanceof OrderStoreError) {

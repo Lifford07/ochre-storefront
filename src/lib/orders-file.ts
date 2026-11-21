@@ -74,7 +74,7 @@ export function markPaid(order: StoredOrder) {
     const orders = await readAll()
     const index = orders.findIndex((item) => item.id === order.id)
     const previous = index >= 0 ? orders[index] : null
-    if (previous?.status === "paid, awaiting Ochré check" && previous.editionNumber != null) {
+    if (previous?.status === "paid, awaiting Ochré check") {
       return previous
     }
     let next = order

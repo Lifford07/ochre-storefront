@@ -1,5 +1,5 @@
 import crypto from "node:crypto"
-import { alertFounder } from "@/lib/mail"
+import { notifyFounderOnce } from "@/lib/paid-alert"
 import { getOrder, markPaid } from "@/lib/orders-store"
 import type { StoredOrder } from "@/lib/order-types"
 
@@ -46,7 +46,10 @@ export type CheckoutSession = {
 export async function settleStripe(orderId: string, sessionId: string): Promise<StoredOrder | null> {
   const order = await getOrder(orderId)
   if (!order) return null
-  if (order.status === "paid, awaiting Ochré check") return order
+  if (order.status === "paid, awaiting Ochré check") {
+    await notifyFounderOnce(order)
+    return order
+  }
   if (!order.stripeSessionId || order.stripeSessionId !== sessionId) return order
   const session = await stripe<CheckoutSession>(`/checkout/sessions/${encodeURIComponent(sessionId)}`)
   if (
@@ -65,15 +68,7 @@ export async function settleStripe(orderId: string, sessionId: string): Promise<
     paidAt: new Date().toISOString(),
     payer: session.customer_details?.email ?? order.email,
   })
-  const ship = [paid.fullName, paid.address, paid.city, paid.postcode, paid.country, paid.email, paid.phone].filter(Boolean).join("\n")
-  try {
-    await alertFounder({
-      id: paid.id,
-      summary: `${paid.materialName}, ${paid.sizeName}, ${paid.editionLabel}, paid by card (Stripe)`,
-      ship,
-      payer: paid.payer || "card",
-    })
-  } catch {}
+  await notifyFounderOnce(paid)
   return paid
 }
 

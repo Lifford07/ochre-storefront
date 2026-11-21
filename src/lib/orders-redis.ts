@@ -73,27 +73,38 @@ export async function listUnpaid() {
 
 export async function markPaid(order: StoredOrder) {
   const redis = client()
-  const existing = asOrder(await redis.get<StoredOrder | string>(orderKey(order.id)))
-  if (existing?.status === "paid, awaiting Ochré check" && existing.editionNumber != null) return existing
-  let next = order
-  if (next.artworkSlug && next.editionKind === "drop" && next.editionNumber == null) {
-    const size = next.editionSize ?? next.editionRun
-    const number = await redis.incr(editionKey(next.artworkSlug))
-    if (number > size) throw new Error("This edition is complete.")
-    next = {
-      ...next,
-      editionNumber: number,
-      editionSize: size,
-      editionLabel: editionWording("drop", number, size),
-    }
+  const lockKey = `ochre:paylock:${order.id}`
+  const locked = await redis.set(lockKey, "1", { nx: true, ex: 30 })
+  if (locked !== "OK") {
+    const current = asOrder(await redis.get<StoredOrder | string>(orderKey(order.id)))
+    if (current?.status === "paid, awaiting Ochré check") return current
+    throw new Error("Payment is already being recorded.")
   }
-  const score = Date.parse(next.createdAt)
-  const pipe = redis.pipeline()
-  pipe.set(orderKey(next.id), next)
-  pipe.zadd(INDEX, { score: Number.isFinite(score) ? score : Date.now(), member: next.id })
-  pipe.srem(UNPAID, next.id)
-  await pipe.exec()
-  return next
+  try {
+    const existing = asOrder(await redis.get<StoredOrder | string>(orderKey(order.id)))
+    if (existing?.status === "paid, awaiting Ochré check") return existing
+    let next = order
+    if (next.artworkSlug && next.editionKind === "drop" && next.editionNumber == null) {
+      const size = next.editionSize ?? next.editionRun
+      const number = await redis.incr(editionKey(next.artworkSlug))
+      if (number > size) throw new Error("This edition is complete.")
+      next = {
+        ...next,
+        editionNumber: number,
+        editionSize: size,
+        editionLabel: editionWording("drop", number, size),
+      }
+    }
+    const score = Date.parse(next.createdAt)
+    const pipe = redis.pipeline()
+    pipe.set(orderKey(next.id), next)
+    pipe.zadd(INDEX, { score: Number.isFinite(score) ? score : Date.now(), member: next.id })
+    pipe.srem(UNPAID, next.id)
+    await pipe.exec()
+    return next
+  } finally {
+    await redis.del(lockKey)
+  }
 }
 
 export async function deleteOrder(id: string) {

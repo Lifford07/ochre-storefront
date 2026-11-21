@@ -10,13 +10,19 @@ export async function sendMail(letter: Letter) {
   const key = process.env.RESEND_API_KEY?.trim()
   const from = process.env.RESEND_FROM?.trim()
   if (!key || !from) return { sent: false as const }
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-    body: JSON.stringify({ from, to: [letter.to], subject: letter.subject, text: letter.text }),
-  })
+  let response: Response
+  try {
+    response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
+      body: JSON.stringify({ from, to: [letter.to], subject: letter.subject, text: letter.text }),
+    })
+  } catch (error) {
+    console.error("order-mail", error instanceof Error ? error.message : "failed")
+    return { sent: false as const }
+  }
   if (!response.ok) {
-    console.error("order-mail", response.status)
+    console.error("order-mail", response.status, letter.subject)
     return { sent: false as const }
   }
   return { sent: true as const }
