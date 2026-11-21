@@ -402,9 +402,9 @@ function UploadStep({
 }) {
   return (
     <section className="mx-auto max-w-lg">
-      <h1 className="font-display text-5xl">Begin with your image.</h1>
+      <h1 className="font-display text-5xl">Commission a piece.</h1>
       <p className="mt-3 text-base leading-relaxed text-[#3c3832]">
-        It becomes real glass, acrylic glass, or canvas. One step at a time.
+        Bring an image. It becomes real glass, acrylic glass, or canvas. One step at a time.
       </p>
       <label
         className="mt-8 flex min-h-52 cursor-pointer flex-col items-center justify-center border border-dashed border-[#1a1814]/40 bg-[#faf6f1] px-6 py-10 text-center"

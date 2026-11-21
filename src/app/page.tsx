@@ -1,124 +1,108 @@
 import Link from "next/link"
-import { HeroRoom } from "@/components/art/hero-room"
-import { WorkImage } from "@/components/art/motif"
-import { Crest, Endband, Whorl } from "@/components/brand/mark"
-import { VerrePath } from "@/components/brand/verre-path"
-import { verre } from "@/config/verre"
+import { HouseImage } from "@/components/brand/picture"
+import { HouseLockup } from "@/components/brand/lockup"
+import { PrototypeGate } from "@/components/shell/prototype-gate"
 import { SiteFooter, SiteHeader } from "@/components/shell/site-chrome"
-import { works, isExampleWork } from "@/config/works"
 
-const lines = [
-  { index: "01", name: "Art", note: "Bespoke artwork, made from real glass, acrylic glass and canvas.", href: "/collection", live: true },
-  { index: "02", name: "Home", note: "The most aesthetically pleasing home decor.", href: "/collection", live: false },
-  { index: "03", name: "Ochré Atelier", note: "Cut and embroidered pieces, in small runs.", href: "/collection", live: false },
-  { index: "04", name: "Jewellery", note: "Personalisation at its finest.", href: "/jewellery", live: true },
-]
+const hang = [
+  {
+    name: "fela",
+    href: "/collection/fela-the-goat",
+    title: "Fela the Goat",
+    meta: "SJ · 2026 · Real glass · 30 × 30 cm · Edition of 20",
+    alt: "Fela the Goat, an existing Ochré work: a black and white portrait with the word FELA.",
+    width: 960,
+    height: 895,
+    widths: [480, 960],
+  },
+  {
+    name: "fingerprint",
+    href: "/collection/fingerprint-of-god",
+    title: "Fingerprint of God — Arabic Edition",
+    meta: "SJ · 2026 · Real glass · 30 × 30 cm · Edition of 20",
+    alt: "Fingerprint of God, Arabic edition: a fingerprint drawn in lines of text.",
+    width: 960,
+    height: 1152,
+    widths: [480, 960],
+  },
+  {
+    name: "cat",
+    href: "/collection/curious-cat",
+    title: "Curious Cat",
+    meta: "SJ · 2026 · Canvas · 30 × 30 cm · Edition of 25",
+    alt: "Curious Cat, an existing Ochré canvas of a cat.",
+    width: 960,
+    height: 960,
+    widths: [480, 960],
+  },
+] as const
 
 export default function HomePage() {
-  const featured = works.filter((work) => work.artistSlug === "sj").slice(0, 4)
-
   return (
     <>
-      <SiteHeader />
-      <main className="page-enter">
-        <section className="bg-[var(--navy)] text-[var(--porcelain)]">
-          <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-12 md:py-20">
+      <SiteHeader mark="word" showWallet={false} />
+      <main>
+        <section id="house" className="bg-[var(--porcelain)]">
+          <div className="mx-auto grid max-w-[1120px] items-end gap-10 px-5 py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16 md:px-10 md:py-16">
             <div>
-              <Crest className="size-16 text-[var(--gold)]" />
-              <p className="eyebrow mt-6 text-[var(--gold)]">Made to order · numbered</p>
-              <h1 className="font-display mt-4 text-5xl text-[var(--porcelain)] md:text-7xl">
-                Your image, made into an <span className="italic text-[var(--foil)]">object.</span>
+              <HouseLockup />
+              <p className="eyebrow mt-8">House of Junaid · Birmingham</p>
+              <h1 className="font-display mt-3 max-w-[12ch] text-[2.65rem] text-[var(--navy)] md:text-6xl">
+                Your image, made into an <em className="text-[var(--antique)]">object.</em>
               </h1>
-              <div className="hairline mt-5" />
-              <p className="mt-6 max-w-md text-lg leading-relaxed text-[var(--porcelain)]/80">
-                Bespoke artwork on real glass, acrylic glass and canvas. Each piece is numbered. A certificate is issued with it.
+              <p className="mt-5 max-w-md text-lg leading-relaxed text-[var(--navy)]">
+                Bring an image or an idea. OCHRÉ makes one physical object to order, numbered, with a certificate and a provenance passport.
               </p>
+              <p className="font-display mt-4 text-xl italic text-[var(--navy)]">Born of earth pigment, faith and three homelands.</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link href="/make" className="btn-foil">
-                  Begin with your image
+                <Link href="/collection" className="btn-navy">
+                  See the work
                 </Link>
-                <Link href="/collection" className="btn-ghost on-dark">
-                  View the collection
+                <Link href="/salon" className="btn-ghost">
+                  Salon Nº 01
                 </Link>
               </div>
             </div>
-            <HeroRoom className="aspect-[640/460] h-auto w-full bg-[#e7e1d6] shadow-[var(--shadow-art)]" />
-          </div>
-        </section>
-        <Endband />
-
-        <section className="bg-[#131D47] text-[var(--porcelain)]" aria-labelledby="verre-h">
-          <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-16 md:grid-cols-[5fr_7fr] md:px-12 md:py-24">
-            <div className="relative mx-auto grid aspect-square w-40 place-items-center rounded-full border border-[var(--gold)] text-[var(--foil)] md:w-72" aria-hidden>
-              <span className="absolute inset-2 rounded-full border border-[var(--foil)]/35" />
-              <Whorl className="size-2/3" />
-            </div>
-            <div>
-              <p className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--foil)" }}>
-                <span className="mb-3 block w-fit rounded-full border border-current px-2.5 py-1 text-[9px]">{verre.status}</span>
-                The signature craft
-              </p>
-              <h2 id="verre-h" className="font-display mt-4 text-5xl md:text-7xl">
-                Verre <span className="italic text-[var(--foil)]">églomisé</span>
-              </h2>
-              <p className="mt-5 max-w-xl leading-relaxed text-[var(--porcelain)]/80">
-                {verre.plain} {verre.lede}
-              </p>
-              <blockquote className="font-display mt-6 max-w-xl text-2xl leading-snug">
-                {verre.pitch[0]} <span className="block italic text-[var(--foil)]">{verre.pitch[1]}</span>
-              </blockquote>
-              <div className="mt-8">
-                <VerrePath dark />
-              </div>
-              <Link href="/verre-eglomise" className="btn-foil mt-8 inline-flex">
-                Follow the gold
-              </Link>
-            </div>
+            <figure>
+              <HouseImage
+                name="fela"
+                alt={hang[0].alt}
+                width={hang[0].width}
+                height={hang[0].height}
+                widths={[...hang[0].widths]}
+                sizes="(max-width: 768px) 100vw, 46vw"
+                className="h-auto w-full bg-[var(--bone)]"
+              />
+              <figcaption className="mt-3">
+                <span className="font-display text-xl italic">{hang[0].title}</span>
+                <span className="mt-1 block text-[11px] tracking-[0.14em] text-[var(--gold-ink)] uppercase">{hang[0].meta}</span>
+              </figcaption>
+            </figure>
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-12 md:py-28">
-          <p className="eyebrow">The house of Ochré</p>
-          <h2 className="font-display mt-3 text-4xl md:text-6xl">
-            One house. <span className="italic">Four lines.</span>
-          </h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-4">
-            {lines.map((line) => (
-              <Link key={line.name} href={line.href} className="art-card border border-[var(--line)] bg-[var(--paper)] p-5">
-                <p className="font-mono text-[11px] text-[var(--gold-ink)]">{line.index}</p>
-                <h3 className="font-display mt-6 text-3xl">{line.name}</h3>
-                <p className="mt-3 min-h-16 text-sm leading-relaxed text-[var(--charcoal)]">{line.note}</p>
-                <p className="mt-6 eyebrow">{line.live ? "Enter" : "Soon"}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="bg-[var(--paper)]">
-          <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-12">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="eyebrow">Featured artist · SJ</p>
-                <h2 className="font-display mt-3 text-4xl md:text-5xl">New editions, quietly released.</h2>
-              </div>
-              <Link href="/collection" className="lnk">
-                View the collection
-              </Link>
-            </div>
-            <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {featured.map((work) => (
-                <li key={work.slug}>
-                  <Link href="/artists/sj" className="art-card block">
-                    <div className="aspect-[4/5] bg-[var(--bone)] shadow-[var(--shadow-art)]">
-                      <WorkImage motif={work.motif} image={work.image} title={work.title} />
-                    </div>
-                    <h3 className="font-display mt-4 text-2xl italic">{work.title}</h3>
-                    <p className="mt-1 text-sm text-[var(--mute)]">
-                      {work.artist} {isExampleWork(work) ? <span className="ex">Example</span> : null}
-                    </p>
-                    <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-[var(--gold-ink)] uppercase">
-                      Edition of {work.editionSize}
-                    </p>
+        <section id="work" className="border-t border-[var(--line)] bg-[var(--porcelain)]">
+          <div className="mx-auto max-w-[1120px] px-5 py-14 md:px-10 md:py-20">
+            <p className="eyebrow">On the wall now</p>
+            <h2 className="font-display mt-2 text-4xl text-[var(--navy)] md:text-5xl">
+              Three works, <em className="text-[var(--antique)]">one hang.</em>
+            </h2>
+            <p className="mt-3 max-w-md text-[var(--navy)]">One work is loud. The label stays quiet.</p>
+            <ul className="mt-10 grid gap-8 sm:grid-cols-3">
+              {hang.map((work) => (
+                <li key={work.name}>
+                  <Link href={work.href} className="block">
+                    <HouseImage
+                      name={work.name}
+                      alt={work.alt}
+                      width={work.width}
+                      height={work.height}
+                      widths={[...work.widths]}
+                      sizes="(max-width: 640px) 100vw, 30vw"
+                      className="h-auto w-full bg-[var(--bone)]"
+                    />
+                    <span className="mt-3 block font-display text-2xl italic">{work.title}</span>
+                    <span className="mt-1 block text-[11px] tracking-[0.12em] text-[var(--gold-ink)] uppercase">{work.meta}</span>
                   </Link>
                 </li>
               ))}
@@ -126,78 +110,134 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="bg-[var(--navy)] text-[var(--porcelain)]">
-          <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-20 md:grid-cols-2 md:px-12">
+        <section id="pairings" className="bg-[var(--navy)] text-[var(--porcelain)]">
+          <div className="mx-auto max-w-[1120px] px-5 py-14 md:px-10 md:py-20">
+            <p className="eyebrow !text-[var(--gold)]">House pairings</p>
+            <h2 className="font-display mt-2 max-w-[16ch] text-4xl md:text-5xl">
+              Two plain things. <em className="text-[var(--gold)]">Together, something.</em>
+            </h2>
+            <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <li>
+                <Link href="/verre-eglomise" className="block">
+                  <span className="block border border-[var(--gold)]/40 p-4">
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--gold)] uppercase">01 · Not for sale</span>
+                    <span className="font-display mt-6 block text-3xl">Gold + glass</span>
+                    <span className="mt-3 block text-sm leading-relaxed text-[var(--porcelain)]/80">
+                      Verre églomisé, the signature craft. It is being learned. Nothing gilded is priced or sold.
+                    </span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <figure>
+                  <HouseImage
+                    name="fingerprint-wall"
+                    alt="Fingerprint of God, Christian edition, in a black frame on a white wall."
+                    width={640}
+                    height={853}
+                    widths={[640]}
+                    sizes="(max-width: 1024px) 92vw, 280px"
+                    className="h-auto w-full"
+                  />
+                  <figcaption className="mt-3">
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--gold)] uppercase">02 · Existing work</span>
+                    <span className="mt-2 block text-sm">Text + portrait. A finished fingerprint piece, on the wall.</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li>
+                <figure>
+                  <HouseImage
+                    name="junaid-canvas"
+                    alt="A finished black canvas with the name Junaid written in Arabic."
+                    width={640}
+                    height={853}
+                    widths={[640]}
+                    sizes="(max-width: 1024px) 92vw, 280px"
+                    className="h-auto w-full"
+                  />
+                  <figcaption className="mt-3">
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--gold)] uppercase">03 · Finished piece</span>
+                    <span className="mt-2 block text-sm">Crest + name. The name Junaid, in Arabic, on canvas.</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li>
+                {/* TODO: native-speaker check before baile / ilé are printed on a piece. */}
+                <div className="flex h-full min-h-48 flex-col justify-between border border-[var(--gold)]/40 p-4">
+                  <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--gold)] uppercase">04 · Not a piece</span>
+                  <span className="font-display text-4xl italic leading-tight">
+                    baile
+                    <span className="mt-1 block text-[var(--gold)]">ilé</span>
+                  </span>
+                  <span className="text-sm text-[var(--porcelain)]/80">Gaeilge and Yoruba, set side by side. Not for sale.</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section id="provenance" className="bg-[var(--porcelain)]">
+          <div className="mx-auto grid max-w-[1120px] items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-10 md:py-20">
             <div>
-              <p className="eyebrow text-[var(--gold)]">Provenance</p>
-              <h2 className="font-display mt-3 text-4xl md:text-6xl">
-                A <span className="italic text-[var(--foil)]">certificate of authenticity</span> is issued for every physical piece we create.
+              <p className="eyebrow">Provenance</p>
+              <h2 className="font-display mt-2 text-4xl text-[var(--navy)] md:text-5xl">
+                Every piece has <em className="text-[var(--antique)]">a passport.</em>
               </h2>
-              <p className="mt-5 max-w-md text-[var(--porcelain)]/75">
-                Each work comes with a certificate of authenticity.
+              <p className="mt-5 max-w-md leading-relaxed">
+                A headband, a ring, a glass panel: each one carries a record of who made it, where, and which number it is. The passport travels with the piece.
               </p>
-              <dl className="mt-8 grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <dt className="text-[var(--gold)]">Ordered</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">Pay in fiat or crypto.</dd>
+              <dl className="mt-8 max-w-md border-t border-[var(--line)] text-sm">
+                <div className="grid grid-cols-[7rem_1fr] gap-3 border-b border-[var(--line)] py-3">
+                  <dt className="eyebrow !tracking-[0.16em]">Art</dt>
+                  <dd>The passport goes in the certificate envelope.</dd>
                 </div>
-                <div>
-                  <dt className="text-[var(--gold)]">Numbered</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">Edition 1 of 1, or No. X of N.</dd>
-                </div>
-                <div>
-                  <dt className="text-[var(--gold)]">Certified</dt>
-                  <dd className="mt-1 text-[var(--porcelain)]/70">A certificate of authenticity comes with every piece.</dd>
+                <div className="grid grid-cols-[7rem_1fr] gap-3 border-b border-[var(--line)] py-3">
+                  <dt className="eyebrow !tracking-[0.16em]">Jewellery</dt>
+                  <dd>The passport card is planned for the pouch. That line is still a prototype.</dd>
                 </div>
               </dl>
-            </div>
-            <figure className="mx-auto w-full max-w-[340px] md:max-w-[400px]">
-              <Link href="/orders/preview" className="group block rotate-[-2deg] bg-[#1a1a1a] p-2.5 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.75),0_10px_20px_-10px_rgba(0,0,0,0.5)] transition-transform duration-500 hover:rotate-0 md:p-3">
-                <div className="bg-[#F3EFE7] p-3 md:p-4">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/certificate-of-authenticity.webp"
-                    alt="Ochré certificate of authenticity"
-                    width={990}
-                    height={1400}
-                    loading="lazy"
-                    className="block h-auto w-full"
-                  />
-                </div>
-              </Link>
-              <figcaption className="mt-6 text-center">
-                <Link href="/orders/preview" className="text-sm text-[var(--foil)] underline underline-offset-4 hover:text-[var(--gold)]">
-                  View a sample certificate
+              <p className="mt-6">
+                <Link href="/orders/preview" className="lnk">
+                  Sample certificate
                 </Link>
-              </figcaption>
+              </p>
+            </div>
+            <figure className="mx-auto w-full max-w-[320px]">
+              <HouseImage
+                name="certificate"
+                alt="Sample Ochré certificate of authenticity."
+                width={960}
+                height={1358}
+                widths={[480, 960]}
+                sizes="320px"
+                className="h-auto w-full bg-[var(--bone)] shadow-[var(--shadow-art)]"
+              />
             </figure>
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-12 md:py-28">
-          <p className="eyebrow text-center">How it is made</p>
-          <h2 className="font-display mt-3 text-center text-4xl md:text-6xl">Four quiet steps.</h2>
-          <ol className="mt-12 grid gap-8 md:grid-cols-4">
-            {[
-              ["i.", "Begin", "Upload a photograph from this computer."],
-              ["ii.", "Refine", "Crop, colour and the size of the print."],
-              ["iii.", "Choose", "Real glass, acrylic glass or canvas."],
-              ["iv.", "Ready", "Pay by card or USDC. We check the file, then make and number the piece."],
-            ].map(([index, title, copy]) => (
-              <li key={index}>
-                <p className="font-display text-3xl italic text-[var(--gold-ink)]">{index}</p>
-                <h3 className="font-display mt-3 text-3xl">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--charcoal)]">{copy}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-12 text-center">
-            <Link href="/make" className="btn-foil">
-              Begin with your image
-            </Link>
-          </div>
-        </section>
-        <Endband />
+        <PrototypeGate name="Salon Nº 01">
+          <section id="salon" className="bg-[var(--navy)] text-[var(--porcelain)]">
+            <div className="mx-auto grid max-w-[1120px] items-center gap-8 px-5 py-14 md:grid-cols-[1fr_1fr] md:px-10 md:py-20">
+              <div>
+                <p className="eyebrow !text-[var(--gold)]">Salon drop</p>
+                <h2 className="font-display mt-2 text-4xl md:text-6xl">
+                  Salon Nº 01 <em className="text-[var(--gold)]">Vitrine</em>
+                </h2>
+                <p className="mt-5 max-w-md leading-relaxed text-[var(--porcelain)]/80">
+                  One theme. Five objects. One named day. Everything would be made to order inside the window. The day is not set, and nothing in the salon is for sale.
+                </p>
+                <Link href="/salon" className="btn-ghost on-dark mt-8">
+                  View the salon
+                </Link>
+              </div>
+              <p className="border border-[var(--gold)]/40 p-6 text-sm leading-relaxed text-[var(--porcelain)]/80">
+                No headband has been sewn. No price and no edition size are set. The photograph in the early concept was a render, and it is not shown here.
+              </p>
+            </div>
+          </section>
+        </PrototypeGate>
       </main>
       <SiteFooter />
     </>

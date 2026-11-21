@@ -26,7 +26,7 @@ export default function CertificatePreview() {
                 Download PDF
               </a>
               <Link href="/make" className="inline-flex items-center border border-[var(--porcelain)]/40 px-6 py-3 text-[12px] tracking-[0.2em] uppercase">
-                Begin with your image
+                Commission a piece
               </Link>
             </div>
             <p className="mt-3 text-xs text-[var(--porcelain)]/50">PDF, about 11 MB.</p>

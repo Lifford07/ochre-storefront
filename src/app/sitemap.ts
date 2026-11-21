@@ -10,6 +10,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const passports = await listPassports()
   const paths = [
     "/",
+    "/about",
+    "/studio",
+    "/salon",
+    "/atelier",
+    "/character",
     "/make",
     "/collection",
     "/verre-eglomise",

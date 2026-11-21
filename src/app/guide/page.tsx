@@ -71,7 +71,7 @@ export default function GuidePage() {
         <p className="mt-10 border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-sm">{CARE_PROMISE}</p>
         <p className="mt-6">
           <Link href="/make" className="lnk">
-            Begin with your image
+            Commission a piece
           </Link>
         </p>
       </main>

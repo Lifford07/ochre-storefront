@@ -17,7 +17,7 @@ export default function PhoneClosedPage() {
           Sending a photo from another device is not available. Open the editor on the computer you are using and upload the file there.
         </p>
         <Link href="/make" className="btn-foil mt-8 inline-flex">
-          Begin with your image
+          Commission a piece
         </Link>
       </main>
       <SiteFooter />

@@ -1,23 +1,39 @@
 import type { Metadata } from "next";
-import { Azeret_Mono, Bodoni_Moda, Inter } from "next/font/google";
+import { Azeret_Mono, Cinzel, Cormorant_Garamond, EB_Garamond } from "next/font/google";
 import "./globals.css";
 
-const sans = Inter({
-  subsets: ["latin"],
+const sans = EB_Garamond({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400"],
+  style: ["normal", "italic"],
   variable: "--font-inter",
+  display: "optional",
+  preload: false,
 });
 
-const serif = Bodoni_Moda({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const serif = Cormorant_Garamond({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500"],
   style: ["normal", "italic"],
   variable: "--font-bodoni",
+  display: "optional",
+  preload: true,
+});
+
+const mark = Cinzel({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500"],
+  variable: "--font-cinzel",
+  display: "optional",
+  preload: true,
 });
 
 const mono = Azeret_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400"],
   variable: "--font-azeret",
+  display: "optional",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -27,7 +43,7 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description:
-    "A quiet private gallery. Your image, made into an object. Numbered, with a certificate issued with the piece.",
+    "Bring an image or an idea. OCHRÉ makes one physical object to order, numbered, with a certificate and a provenance passport.",
 };
 
 export default function RootLayout({
@@ -36,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable} h-full antialiased`}>
+    <html lang="en" className={`${sans.variable} ${serif.variable} ${mark.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-full bg-[var(--porcelain)] text-[var(--ink)]">{children}</body>
     </html>
   );

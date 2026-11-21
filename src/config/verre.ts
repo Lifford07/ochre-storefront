@@ -15,7 +15,7 @@ export const verre = {
     { when: "February to March 2027", what: "Gilded originals, by commission only", now: false },
   ],
   series:
-    "Cherubim and Seraphim angels, drawn as Black Nigerian. Benin-plaque figures with coral-bead crowns. Gold leaf on a celestial navy ground, with the Ochré O as the halo.",
+    "Gold leaf on a midnight ground. Figures drawn from Benin bronze. The mark, when it appears, is the Cherub.",
   ahead: [
     "Commissions for churches, schools, courthouses, salons, retail and private clients",
     "A gilded glass coffee table, after Miriam Ellner",

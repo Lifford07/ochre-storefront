@@ -51,9 +51,9 @@ export function MakeEntry({ onStart }: { onStart: (choice: { materialId: Materia
         <div className="flex flex-col justify-center px-5 py-10 md:px-12 md:py-14">
           <p className="eyebrow text-[var(--gold-ink)]">Made to order · numbered</p>
           <h1 className="font-display mt-3 text-4xl leading-[1.05] md:text-6xl">
-            Wall art, <span className="italic text-[var(--gold-ink)]">made to order.</span>
+            Commission <span className="italic text-[var(--gold-ink)]">a piece.</span>
           </h1>
-          <p className="mt-4 max-w-md text-[var(--navy)]/75">Choose your material and size, then upload your image.</p>
+          <p className="mt-4 max-w-md text-[var(--navy)]/75">Choose a material and a size, then bring the image. One object, made to order.</p>
           <div className="mt-6 h-px w-16 bg-[#C6B849]" />
 
           <label className="mt-7 block">
