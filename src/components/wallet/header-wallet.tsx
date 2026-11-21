@@ -199,7 +199,7 @@ function WalletPicker({ onClose }: { onClose: () => void }) {
           )}
         </ul>
         {error ? <p role="alert" className="mt-3 text-sm text-[#a33a2b]">{error}</p> : null}
-        <p className="mt-5 text-center text-[11px] text-[var(--navy)]/55">On a phone, open ochre-storefront.vercel.app inside your wallet app’s browser, or pay by QR code at checkout.</p>
+        <p className="mt-5 text-center text-[11px] text-[var(--navy)]/55">On a phone, open www.ochrestore.co.uk inside your wallet app’s browser, or pay by QR code at checkout.</p>
       </div>
     </div>
   )

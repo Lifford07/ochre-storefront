@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { PUBLIC_SITE } from "@/lib/public-site"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin", "/api", "/phone"],
     },
-    sitemap: "https://ochre-storefront.vercel.app/sitemap.xml",
+    sitemap: `${PUBLIC_SITE}/sitemap.xml`,
   }
 }

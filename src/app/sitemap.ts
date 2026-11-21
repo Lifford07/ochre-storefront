@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next"
 import { works } from "@/config/works"
 import { GALLERY_PIECES } from "@/lib/jewellery/pieces"
 import { listPassports } from "@/lib/passports-store"
+import { PUBLIC_SITE } from "@/lib/public-site"
 
-const base = "https://ochre-storefront.vercel.app"
+const base = PUBLIC_SITE
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()

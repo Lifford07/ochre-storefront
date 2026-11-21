@@ -3,6 +3,8 @@
  * A passport is a public page at /p/<id>. It is not a token.
  */
 
+import { PUBLIC_SITE } from "./public-site.ts"
+
 export const PASSPORT_LINES = ["art", "home", "garms", "jewellery"] as const
 export type PassportLine = (typeof PASSPORT_LINES)[number]
 
@@ -12,7 +14,7 @@ export type PassportStatus = (typeof PASSPORT_STATUSES)[number]
 export const EVENT_KINDS = ["recorded", "made", "sold", "transferred"] as const
 export type ProvenanceKind = (typeof EVENT_KINDS)[number]
 
-export const PASSPORT_SITE = "https://ochre-storefront.vercel.app"
+export const PASSPORT_SITE = PUBLIC_SITE
 
 const ID_PATTERN = /^[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?$/
 const EVENT_ID_PATTERN = /^[a-zA-Z0-9-]{1,80}$/

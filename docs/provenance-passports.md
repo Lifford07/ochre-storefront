@@ -60,7 +60,7 @@ There is no form for a customer to transfer a piece themselves. Anyone on the in
 
 On the passport, **Download QR** saves a PNG. The same control is on the desk. The code points at the passport URL, with high error correction so a small print still scans. It is dark on a cream ground. Do not invert it.
 
-Set `PASSPORT_ORIGIN` to the public site before you print a tag or write an NFC tag, for example `https://ochre-storefront.vercel.app`. While you are only checking the page on your own computer, leave it unset and the code uses the address you have open.
+Set `PASSPORT_ORIGIN` to the public site before you print a tag or write an NFC tag: `https://www.ochrestore.co.uk`. While you are only checking the page on your own computer, leave it unset and the code uses the address you have open.
 
 An NFC tag stores the same URL as a web address (a URI record). Any tag-writer app can do that. This site does not write the tag: iPhone cannot write NFC from the browser. The phone, tapping the tag, opens the passport.
 

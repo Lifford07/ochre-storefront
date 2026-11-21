@@ -1,4 +1,5 @@
 import { getOrder, saveOrder } from "@/lib/orders-store"
+import { PUBLIC_SITE } from "@/lib/public-site"
 import { clientIp, rateLimit, tooMany } from "@/lib/rate-limit"
 import { stripe, stripeReady, type CheckoutSession } from "@/lib/stripe"
 
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic"
 function origin(request: Request) {
   const host = request.headers.get("x-forwarded-host") || request.headers.get("host")
   const proto = request.headers.get("x-forwarded-proto") || "https"
-  return host ? `${proto}://${host}` : "https://ochre-storefront.vercel.app"
+  return host ? `${proto}://${host}` : PUBLIC_SITE
 }
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {

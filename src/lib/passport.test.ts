@@ -119,5 +119,5 @@ test("a saved copy replaces the seed, and a new id can start blank", () => {
   const merged = mergePassports(seedPassports, [edited])
   assert.equal(merged.find((item) => item.id === "btc-001")?.title, "Bitcoin, gold heart")
   assert.equal(blankPassport("heart-002").status, "draft")
-  assert.equal(passportUrl("btc-001", "https://ochre-storefront.vercel.app"), "https://ochre-storefront.vercel.app/p/btc-001")
+  assert.equal(passportUrl("btc-001", "https://www.ochrestore.co.uk"), "https://www.ochrestore.co.uk/p/btc-001")
 })

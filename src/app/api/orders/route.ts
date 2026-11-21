@@ -17,6 +17,7 @@ import { parseContact } from "@/lib/shipping"
 import { scorePrint } from "@/lib/quality"
 import { imageBackend, imageUnavailableMessage, ordersAvailable } from "@/lib/storage-mode"
 import { usdcFromPence } from "@/lib/usdc"
+import { PUBLIC_SITE } from "@/lib/public-site"
 
 export const dynamic = "force-dynamic"
 
@@ -149,7 +150,7 @@ function customerSpec(value: unknown): { spec: Extract<PrintSpec, { kind: "custo
 function shopOrigin(request: Request) {
   const host = request.headers.get("x-forwarded-host") || request.headers.get("host")
   const proto = request.headers.get("x-forwarded-proto") || "https"
-  return host ? `${proto}://${host}` : "https://ochre-storefront.vercel.app"
+  return host ? `${proto}://${host}` : PUBLIC_SITE
 }
 
 export async function POST(request: Request) {

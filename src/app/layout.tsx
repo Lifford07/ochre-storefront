@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PUBLIC_SITE } from "@/lib/public-site";
 import { Azeret_Mono, Cinzel, Cormorant_Garamond, EB_Garamond } from "next/font/google";
 import "./globals.css";
 
@@ -37,7 +38,7 @@ const mono = Azeret_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ochre-storefront.vercel.app"),
+  metadataBase: new URL(PUBLIC_SITE),
   title: {
     default: "OCHRÉ",
     template: "%s",

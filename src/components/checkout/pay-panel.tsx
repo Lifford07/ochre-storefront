@@ -18,6 +18,7 @@ import { DeliveryNote } from "@/components/checkout/delivery-note"
 import type { PrintSpec, StoredOrder } from "@/lib/order-types"
 import { renderPrintFile } from "@/lib/render-print"
 import { COUNTRIES, parseContact } from "@/lib/shipping"
+import { PUBLIC_SITE } from "@/lib/public-site"
 
 if (typeof window !== "undefined") {
   const target = window as Window & { Buffer?: typeof Buffer }
@@ -525,7 +526,7 @@ function Payment({ order, onPaid }: { order: StoredOrder; onPaid: (order: Stored
     }
   }
 
-  const origin = typeof window === "undefined" ? "https://ochre-storefront.vercel.app" : window.location.origin
+  const origin = typeof window === "undefined" ? PUBLIC_SITE : window.location.origin
   const phantom = `https://phantom.app/ul/v1/browse/${encodeURIComponent(order.payUrl)}?ref=${encodeURIComponent(origin)}`
   const solflare = `https://solflare.com/ul/v1/browse/${encodeURIComponent(order.payUrl)}?ref=${encodeURIComponent(origin)}`
 
